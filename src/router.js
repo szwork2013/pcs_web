@@ -1,24 +1,24 @@
 import React from 'react'
 import { Router, Route } from 'dva/router'
-import IndexPage from './routes/IndexPage'
-
+import App from './components/layout/app'
 export default ({ history, app }) => {
-	const requireAuth = (nextState, replace) => {
-		if (!window.localStorage.getItem(Token) && nextState.location.pathname !== '/login') {
-			replace({
-				pathname: '/login'
-			})
-		}
-	}
+	// const requireAuth = (nextState, replace) => {
+	// 	if (!window.localStorage.getItem(Token) && nextState.location.pathname !== '/login') {
+	// 		replace({
+	// 			pathname: '/login'
+	// 		})
+	// 	}
+	// }
 
 	const routes = [
 		{
-			path: '/login',
-			getComponent (nextState, cb) {
-				require.ensure([], require => {
-					cb(null, require('./components/login'))
-				})
-			}
+			path: '/',
+      component: App,
+      getIndexRoute (nextState, cb) {
+        require.ensure([], require => {
+          cb(null, {component: require('./pages/main')})
+        })
+      },
 		}
 	]
 
