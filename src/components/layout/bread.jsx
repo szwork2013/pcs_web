@@ -1,13 +1,14 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import { Breadcrumb, Icon } from 'antd'
 import styles from './layout.less'
 import { menu } from '../../utils'
 
 let pathSet = []
-const getPathSet = function (menuArray, parentPath) {
+const getPathSet = (menuArray, parentPath) => {
+  menuArray = menuArray || []
   parentPath = parentPath || '/'
   menuArray.map(item => {
-    pathSet[(parentPath + item.key).replace(/\//g, '-')] = {
+    pathSet[(parentPath + item.key)] = {
       path: parentPath + item.key,
       name: item.name,
       icon: item.icon || '',
@@ -20,32 +21,35 @@ const getPathSet = function (menuArray, parentPath) {
 }
 getPathSet(menu)
 
-const Bread = props => {
+const Bread = ({ location }) => {
   let pathNames = []
   location.pathname.substr(1).split('/').map((item, key) => {
     if (key > 0) {
-      pathNames.push((pathNames[key - 1] + '-' + item))
+      pathNames.push((pathNames[key - 1] + item))
     } else {
-      pathNames.push(('-' + item))
+      pathNames.push((item))
     }
   })
-  const breads = pathNames.map((item, key) => {
-    if (!(item in pathSet)) {
-      item = '-main'
+  let temp = []
+  const tempBread = pathNames.map((item, key) => {
+    if (pathSet[temp] !== undefined) {
+      temp.push(item)
     }
-		console.log(item, pathSet);
-    return (
-      <Breadcrumb.Item key={key} {...((pathNames.length - 1 === key) || !pathSet[item].clickable) ? '' : { href: '#' + pathSet[item].path }}>
-        {pathSet[item].icon
-          ? <Icon type={pathSet[item].icon} />
-          : ''}
-        <span>{pathSet[item].name}</span>
-      </Breadcrumb.Item>
-    )
   })
 
-	return (
-		<div className={styles.bread}>
+  const breads = temp.map((item, key) => {
+    return (
+        <Breadcrumb.Item key={key} {...((pathNames.length - 1 === key) || !pathSet[item].clickable) ? '' : { href: '#' + pathSet[item].path }}>
+          {pathSet[item].icon
+            ? <Icon type={pathSet[item].icon} />
+            : ''}
+          <span>{pathSet[item].name}</span>
+        </Breadcrumb.Item>
+      )
+  })
+
+  return (
+    <div className={styles.bread}>
       <Breadcrumb>
         <Breadcrumb.Item href='#/'><Icon type='home' />
           <span>主页</span>
@@ -53,11 +57,11 @@ const Bread = props => {
         {breads}
       </Breadcrumb>
     </div>
-	)
+  )
 }
 
 Bread.propTypes = {
-	location: PropTypes.object
+  location: PropTypes.object
 }
 
 export default Bread

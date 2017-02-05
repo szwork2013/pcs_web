@@ -4,7 +4,7 @@ import { Link } from 'dva/router'
 import { menu } from '../../utils'
 
 const topMenus = menu.map(item => item.key)
-const getMenus = function (menuArray, siderFold, parentPath) {
+const getMenus = (menuArray, siderFold, parentPath) => {
   parentPath = parentPath || '/'
   return menuArray.map(item => {
     if (item.child) {
@@ -16,7 +16,7 @@ const getMenus = function (menuArray, siderFold, parentPath) {
     } else {
       return (
         <Menu.Item key={item.key}>
-          <Link to={parentPath + item.key}>
+          <Link to={item.key}>
             {item.icon ? <Icon type={item.icon} /> : ''}
             {siderFold && topMenus.indexOf(item.key) >= 0 ? '' : item.name}
           </Link>

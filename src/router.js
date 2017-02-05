@@ -19,6 +19,35 @@ export default ({ history, app }) => {
           cb(null, {component: require('./pages/main')})
         })
       },
+			childRoutes: [
+				{
+          path: 'main',
+          name: 'main',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              cb(null, require('./pages/main'))
+            })
+          }
+        },
+				{
+          path: 'sysuser',
+          name: 'sysuser',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              cb(null, require('./pages/sys_user'))
+            })
+          }
+        },
+				{
+					path: '*',
+					name: 'error',
+					getComponent (nextState, cb) {
+						require.ensure([], require => {
+							cb(null, require('./com_page/page_404'))
+						})
+					}
+				}
+			]
 		}
 	]
 
