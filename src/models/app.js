@@ -1,11 +1,13 @@
+import * as cookie from '../utils/cookie'
+import { login } from '../services/sys_user'
+import { hashHistory } from 'dva/router'
+
 export default {
 	namespace: 'app',
 	state: {
-		login: true,
+		login: cookie.load('user'),
 		loading: false,
-		user: {
-			name: 'ldd'
-		},
+		user: null,
 		loginBtnLoading: false,
 		menuPopoverVisible: false,
     siderFold: localStorage.getItem('antdAdminSiderFold') === 'true',
@@ -22,10 +24,11 @@ export default {
 	effects: {
 		*login ({payload}, {call, put}) {
 			yield put({type: 'showLoginBtnLoading'})
-			if (true) {
-				yield put({type: 'loginSuccess', payload: {
-					user: {name: 'ldd1'}
-				}})
+			const data = yield call(login, payload)
+			if (data) {
+				cookie.save('user', data)
+				hashHistory.push({pathname: '/'})
+				yield put({type: 'loginSuccess', payload: {user: data}})
 			} else {
 				yield put({type: 'loginFail'})
 			}
@@ -44,6 +47,7 @@ export default {
       yield put({type: 'handleSwitchMenuPopver'})
     },
 		*logout ({payload}, {call, put}) {
+			cookie.remove('user')
 			yield put({type: 'logoutSuccess'})
 		},
 		*switchSider ({payload}, {put}) {

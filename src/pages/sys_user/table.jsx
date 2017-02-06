@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
 import MTable from '../../components/table'
+import { formatSex, formatUserType, formatSysUserStatus } from '../../utils/format'
 
-const Table = props => {
+const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange}) => {
   const columns = [
     {
 			title: '姓名',
@@ -26,59 +27,32 @@ const Table = props => {
     {
 			title: '性别',
 			dataIndex: 'sex',
-			key: 'sex'
+			key: 'sex',
+			render: text => formatSex(text)
 		},
     {
 			title: '用户类别',
 			dataIndex: 'userType',
-			key: 'userType'
+			key: 'userType',
+			render: text => formatUserType(text)
 		},
     {
 			title: '状态',
 			dataIndex: 'status',
-			key: 'status'
-		},
-    {
-			title: '备注',
-			dataIndex: 'brief',
-			key: 'brief'
+			key: 'status',
+			render: text => formatSysUserStatus(text)
 		}
   ]
 
   const tableProps = {
     columns,
-    loading: false,
-    current: 1,
-    total: 12,
-    dataSource: [
-      {
-        "unicode": "11111111",
-        "brief": "vvvvvvvvvvv"
-      },
-      {
-        "unicode": "11111111",
-        "brief": "vvvvvvvvvvv"
-      },
-      {
-        "unicode": "11111111",
-        "brief": "vvvvvvvvvvv"
-      },
-      {
-        "unicode": "11111111",
-        "brief": "vvvvvvvvvvv"
-      },
-      {
-        "unicode": "11111111",
-        "brief": "vvvvvvvvvvv"
-      },
-      {
-        "unicode": "11111111",
-        "brief": "vvvvvvvvvvv"
-      }
-    ],
-    onChange (page) {
-
-    }
+    loading,
+    pageIndex,
+    pageSize,
+    total,
+    dataSource,
+    onChange: onPageChange,
+    rowKey: record => record.id
   }
 
   return (

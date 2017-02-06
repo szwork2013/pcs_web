@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import { Menu, Icon, Popover } from 'antd'
 import styles from './layout.less'
+import Menus from './menu'
 
 const SubMenu = Menu.SubMenu
 
@@ -30,7 +31,7 @@ const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisi
         <SubMenu style={{
           float: 'right'
         }} title={< span > <Icon type='user' />
-          {user.name} < /span>}>
+          {user.userName} < /span>}>
           <Menu.Item key='logout'>
             <a>注销</a>
           </Menu.Item>

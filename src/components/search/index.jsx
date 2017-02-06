@@ -34,7 +34,7 @@ class Search extends Component {
     this.setState({
       clearVisible: false
     })
-    this.handleSearch()
+    // this.handleSearch()
   }
   render () {
     const {size, select, selectOptions, selectProps, style, keyword} = this.props
@@ -44,7 +44,7 @@ class Search extends Component {
         {select && <Select ref='searchSelect' onChange={this.handeleSelectChange} size={size} {...selectProps}>
           {selectOptions && selectOptions.map((item, key) => <Select.Option value={item.value} key={key}>{item.name || item.value}</Select.Option>)}
         </Select>}
-        <Input ref='searchInput' size={size} onChange={this.handleInputChange} onPressEnter={this.handleSearch} defaultValue={keyword}/>
+        <Input ref='searchInput' size={size} onChange={this.handleInputChange} onPressEnter={this.handleSearch} defaultValue={keyword} placeholder={this.props.placeholder || ''}/>
         <Button size={size} type='primary' onClick={this.handleSearch}>搜索</Button>
         {clearVisible && <Icon type='cross' onClick={this.handleClearInput} />}
       </Input.Group>

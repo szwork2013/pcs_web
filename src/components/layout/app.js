@@ -9,6 +9,7 @@ import Bread from './bread'
 import Login from '../../com_page/login'
 import { classnames } from '../../utils'
 import styles from './layout.less'
+import './common.less'
 
 
 const App = ({children, location, dispatch, app}) => {

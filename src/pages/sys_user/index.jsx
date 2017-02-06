@@ -1,18 +1,53 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
 import Table from './table'
-import MSearch from '../../components/search'
+import { connect } from 'dva'
+import Search from './search'
+import Modal from './modal'
 
-const SysUser = props => {
+const SysUser = ({dispatch, sysuser}) => {
+  const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible} = sysuser
+
+  const searchProps = {
+    onSearch (data) {
+      dispatch({type: 'sysuser/getList', payload: {pageIndex: 1, pageSize, key: data.keyword}})
+    },
+    onAdd () {
+      dispatch({type: 'sysuser/showModal', payload: {modalType: 'create'}})
+    }
+  }
+
+  const modalProps = {
+    item: modalType === 'create' ? {} : currentItem,
+    type: modalType,
+    visible: modalVisible,
+    onOk (data) {
+      dispatch({type: 'sysuser/create', payload: {data}})
+    },
+    onCancel () {
+      dispatch({type: 'sysuser/hideModal'})
+    }
+  }
+
+  const tableProps = {
+    total,
+    dataSource,
+    loading,
+    pageIndex,
+    pageSize,
+    onPageChange (page) {
+      dispatch({type: 'sysuser/getList', payload: {pageIndex: page, pageSize}})
+    }
+  }
+
+  const ModalGen = () => <Modal {...modalProps}/>
+
   return (
-    <div>
-    <MSearch style={{width: 200, marginBottom: 16}}/>
-      <Table/>
+    <div className='content-inner'>
+      <Search {...searchProps}/>
+      <Table {...tableProps}/>
+      <ModalGen/>
     </div>
   )
 }
 
-SysUser.propTypes = {
-  
-}
-
-export default SysUser
+export default connect(({sysuser}) => ({sysuser}))(SysUser)

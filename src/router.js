@@ -1,18 +1,32 @@
 import React from 'react'
 import { Router, Route } from 'dva/router'
 import App from './components/layout/app'
+import * as cookie from './utils/cookie'
+
+//解决model重复注册问题
+const cached = {};
+const registerModel = (app, model) => {
+  if (!cached[model.namespace]) {
+		try {
+    app.model(model);
+    cached[model.namespace] = 1;
+  	} catch(e) {}
+  }
+}
+
 export default ({ history, app }) => {
-	// const requireAuth = (nextState, replace) => {
-	// 	if (!window.localStorage.getItem(Token) && nextState.location.pathname !== '/login') {
-	// 		replace({
-	// 			pathname: '/login'
-	// 		})
-	// 	}
-	// }
+	const requireAuth = (nextState, replace) => {
+		if (!cookie.load('user') && nextState.location.pathname !== '/login') {
+			replace({
+				pathname: '/login'
+			})
+		}
+	}
 
 	const routes = [
 		{
 			path: '/',
+			onEnter: requireAuth,
       component: App,
       getIndexRoute (nextState, cb) {
         require.ensure([], require => {
@@ -34,6 +48,8 @@ export default ({ history, app }) => {
           name: 'sysuser',
           getComponent (nextState, cb) {
             require.ensure([], require => {
+							registerModel(app, require('./models/sys_user'))
+							// app.model(require('./models/sys_user'));
               cb(null, require('./pages/sys_user'))
             })
           }

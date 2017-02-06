@@ -30,7 +30,7 @@ const login = ({
 			</div>
 			<form>
 				<FormItem hasFeedback>
-					{getFieldDecorator('username', {
+					{getFieldDecorator('key', {
 						rules: [
 							{
 								required: true,
@@ -47,7 +47,7 @@ const login = ({
 								message: '请输入密码'
 							}
 						]
-					})(<Input size='large' onPressEnter={handleOk} placeholder='密码'/>)}
+					})(<Input type='password' size='large' onPressEnter={handleOk} placeholder='密码'/>)}
 				</FormItem>
 				<Row>
 					<Button type='primary' size='large' onClick={handleOk} loading={loginBtnLoading}>登录</Button>
