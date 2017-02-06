@@ -4,19 +4,21 @@ import { valid_required, valid_max, valid_phone, valid_email } from '../../utils
 
 const FormItem = Form.Item
 
-const SysUserModel = ({visible, onCancel, onOk, item = {}, 
+const SysUserModel = ({visible, onCancel, onOk, item, 
 	form: {
     getFieldDecorator,
     validateFields,
     getFieldsValue
   }}) => {
+	item = item || {}
 	const handleOk = () => {
     validateFields((errors) => {
       if (errors) {
         return
       }
       const data = {
-        ...getFieldsValue()
+        ...getFieldsValue(),
+				status: getFieldsValue()['status'] ? 'aa' : 'nn'
       }
       onOk(data)
     })
@@ -63,7 +65,7 @@ const SysUserModel = ({visible, onCancel, onOk, item = {},
 				<FormItem label='邮箱：' {...formItemLayout}>
 					{getFieldDecorator('email', {
             initialValue: item.email,
-            rules: [valid_required('邮箱不能为空'), valid_max(25, "邮箱最大长度为25"), valid_email()]
+            rules: [valid_max(25, "邮箱最大长度为25"), valid_email()]
           })(<Input />)}
 				</FormItem>
 				<FormItem label='性别：' {...formItemLayout}>
@@ -91,7 +93,7 @@ const SysUserModel = ({visible, onCancel, onOk, item = {},
 				<FormItem label='状态：' {...formItemLayout}>
 					{getFieldDecorator('status', {
 						valuePropName: 'checked',
-            initialValue: item.status !== 'aa'
+            initialValue: item.status !== 'nn'
           })(<Checkbox />)}
 				</FormItem>
 			</Form>

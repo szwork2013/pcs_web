@@ -1,8 +1,11 @@
 import React, {PropTypes} from 'react'
 import MTable from '../../components/table'
 import { formatSex, formatUserType, formatSysUserStatus } from '../../utils/format'
+import { Button, Popconfirm } from 'antd'
 
-const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange}) => {
+const ButtonGroup = Button.Group
+
+const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, onDel, onEdit}) => {
   const columns = [
     {
 			title: '姓名',
@@ -41,6 +44,25 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange}) 
 			dataIndex: 'status',
 			key: 'status',
 			render: text => formatSysUserStatus(text)
+		},
+		{
+			title: '操作',
+			dataIndex: 'oper',
+			key: 'oper',
+			render (text, row) {
+				let del = <div></div>
+				if (row.status !== 'aa') {
+					del = <Popconfirm title = '确认删除该账户么?' onConfirm = {() => onDel(row.id)}>
+									<Button type='danger' size='small'>删除</Button>
+								</Popconfirm>
+				}
+				return (
+					<ButtonGroup>
+						<Button type='primary' size='small' onClick={() => onEdit(row.id) }>编辑</Button>
+						{del}
+					</ButtonGroup>
+				)
+			}
 		}
   ]
 

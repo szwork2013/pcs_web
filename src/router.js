@@ -55,6 +55,16 @@ export default ({ history, app }) => {
           }
         },
 				{
+          path: 'sysrole',
+          name: 'sysrole',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							// registerModel(app, require('./models/sys_user'))
+              cb(null, require('./pages/sys_role'))
+            })
+          }
+        },
+				{
 					path: '*',
 					name: 'error',
 					getComponent (nextState, cb) {

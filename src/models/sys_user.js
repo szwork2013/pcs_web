@@ -26,10 +26,33 @@ export default {
 				yield put({type: 'fail', payload: {dataSource: [], total: 0}})
 			}
 		},
+		*getOne ({payload}, {call, put}) {
+			yield put({ type: 'common', payload: {currentKey: payload.id}})
+			const data = yield call(sysUser.getOne, {id: payload.id})
+			if (data) {
+				yield put({type: 'showModal', payload: {currentItem: data, modalType: 'edit'}})
+			} else {
+				yield put({type: 'fail', payload: {currentItem: null}})
+			}
+		},
 		*create ({payload}, {call, put}) {
-			yield put({ type: 'hideModal' })
+			yield put({ type: 'hideModal', payload: {currentKey: null}})
       yield put({ type: 'showLoading' })
 			const data = yield call(sysUser.addSysUser, payload.data)
+      if (data) {
+        yield put({type: 'getList'})
+      }
+		},
+		*update ({payload}, {call, put}) {
+			yield put({ type: 'hideModal' })
+      yield put({ type: 'showLoading' })
+			const data = yield call(sysUser.uptSysUser, payload.data)
+      if (data) {
+        yield put({type: 'getList'})
+      }
+		},
+		*del ({payload}, {call, put}) {
+			const data = yield call(sysUser.delSysUser, payload)
       if (data) {
         yield put({type: 'getList', payload})
       }

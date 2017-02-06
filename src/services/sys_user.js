@@ -1,4 +1,4 @@
-import { get, post } from '../utils/request'
+import { get, post, remove, put } from '../utils/request'
 
 const url = 'sysuser'
 
@@ -36,4 +36,37 @@ export async function login(params) {
  */
 export async function addSysUser(params) {
 	return post(url, params)
+}
+
+/**
+ * sysuser
+ * 删除用户
+ * @export
+ * @param {any} params
+ * @returns
+ */
+export async function delSysUser(params) {
+	return remove(url, params)
+}
+
+/**
+ * sysuser
+ * 获取单个用户
+ * @export
+ * @param {any} params
+ * @returns
+ */
+export async function getOne(params) {
+	return get(`${url}/one`, params)
+}
+
+/**
+ * sysuser
+ * 编辑用户
+ * @export
+ * @param {any} params
+ * @returns
+ */
+export async function uptSysUser(params) {
+	return put(url, params)
 }

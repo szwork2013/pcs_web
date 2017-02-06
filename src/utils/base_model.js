@@ -7,7 +7,8 @@ const comState = {
 	pageSize: 10,
 	modalType: 'create',
 	modalVisible: false,
-	currentItem: null
+	currentItem: null,
+	currentKey: null
 }
 // 公用reducer
 const comReducer = {

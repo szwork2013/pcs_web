@@ -5,7 +5,7 @@ import Search from './search'
 import Modal from './modal'
 
 const SysUser = ({dispatch, sysuser}) => {
-  const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible} = sysuser
+  const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey} = sysuser
 
   const searchProps = {
     onSearch (data) {
@@ -21,7 +21,12 @@ const SysUser = ({dispatch, sysuser}) => {
     type: modalType,
     visible: modalVisible,
     onOk (data) {
-      dispatch({type: 'sysuser/create', payload: {data}})
+      if (currentKey) {
+        data.id = currentKey
+        dispatch({type: 'sysuser/update', payload: {data}})
+      } else {
+        dispatch({type: 'sysuser/create', payload: {data}})
+      }      
     },
     onCancel () {
       dispatch({type: 'sysuser/hideModal'})
@@ -36,6 +41,12 @@ const SysUser = ({dispatch, sysuser}) => {
     pageSize,
     onPageChange (page) {
       dispatch({type: 'sysuser/getList', payload: {pageIndex: page, pageSize}})
+    },
+    onDel (id) {
+      dispatch({type: 'sysuser/del', payload: {id}})
+    },
+    onEdit (id) {
+      dispatch({type: 'sysuser/getOne', payload: {id, modalType: 'edit'}})
     }
   }
 
