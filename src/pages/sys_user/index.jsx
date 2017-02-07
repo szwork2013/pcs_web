@@ -48,6 +48,9 @@ const SysUser = ({dispatch, sysuser}) => {
     },
     onEdit (id) {
       dispatch({type: 'sysuser/getOne', payload: {id, modalType: 'edit'}})
+    },
+    onResetPwd (id) {
+      dispatch({type: 'sysuser/resetPwd', payload: {id}})
     }
   }
 

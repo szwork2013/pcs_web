@@ -70,3 +70,7 @@ export async function getOne(params) {
 export async function uptSysUser(params) {
 	return put(url, params)
 }
+
+export async function resetPwdService(params) {
+	return post(`${url}/resetPwd`, params)
+}

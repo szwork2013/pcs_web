@@ -5,7 +5,7 @@ import { Button, Popconfirm } from 'antd'
 
 const ButtonGroup = Button.Group
 
-const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, onDel, onEdit, onOpenRole}) => {
+const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, onDel, onEdit, onResetPwd}) => {
   const columns = [
     {
 			title: '姓名',
@@ -58,7 +58,9 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 				}*/
 				return (
 					<ButtonGroup>
-						<Button type='primary' size='small' onClick={() => onOpenRole(row.id) }>角色设置</Button>
+						<Popconfirm title = '确认重置该用户密码么?' onConfirm = {() => onResetPwd(row.id)}>
+							<Button type='primary' size='small'>密码重置</Button>
+						</Popconfirm>						
 						<Button type='goest' size='small' onClick={() => onEdit(row.id) }>编辑</Button>
 						{/*{del}*/}
 					</ButtonGroup>

@@ -1,6 +1,6 @@
 import { comState, comReducer } from '../utils/base_model'
 import * as sysUser from '../services/sys_user'
-import { message } from '../utils'
+import * as message from '../utils/message_box'
 
 export default {
 	namespace: 'sysuser',
@@ -59,6 +59,15 @@ export default {
 			const data = yield call(sysUser.delSysUser, payload)
       if (data) {
         yield put({type: 'getList', payload})
+      } else {
+				yield put({type: 'fail'})
+			}
+		},
+		*resetPwd ({payload}, {call, put}) {
+			const data = yield call(sysUser.resetPwdService, payload)
+      if (data) {
+        yield put({type: 'success'})
+				message.successBox("密码重置成功")
       } else {
 				yield put({type: 'fail'})
 			}
