@@ -1,18 +1,19 @@
 import React from 'react'
 import Table from './table'
 import { connect } from 'dva'
-import Search from './search'
+import SearchPanel from '../../components/search_panel'
 import Modal from './modal'
 
 const SysUser = ({dispatch, sysuser}) => {
   const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey} = sysuser
 
   const searchProps = {
+    placeholder: '姓名、登录名或手机号',
     onSearch (data) {
       dispatch({type: 'sysuser/getList', payload: {pageIndex: 1, pageSize, key: data.keyword}})
     },
     onAdd () {
-      dispatch({type: 'sysuser/showModal', payload: {modalType: 'create'}})
+      dispatch({type: 'sysuser/showModal', payload: {modalType: 'create', currentKey: null}})
     }
   }
 
@@ -54,7 +55,7 @@ const SysUser = ({dispatch, sysuser}) => {
 
   return (
     <div className='content-inner'>
-      <Search {...searchProps}/>
+      <SearchPanel {...searchProps}/>
       <Table {...tableProps}/>
       <ModalGen/>
     </div>

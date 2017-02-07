@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react'
 import { Table } from 'antd'
 
-const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onChange, rowKey}) => {
-  const pagination = {
+const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onChange, rowKey, showPage = true}) => {
+  const pagination = showPage ? {
 		total,
 		pageSize: pageSize || 10,
 		defaultCurrent: 1,
@@ -11,7 +11,7 @@ const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onCha
 		showTotal (total) {
 			return `每页 ${pagination.pageSize} 条， 总共 ${total} 条数据`
 		}
-	}
+	} : false
 
   return (
     <Table
@@ -21,17 +21,14 @@ const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onCha
       rowKey={rowKey}
       pagination={pagination}
       scroll={{ x: 768 }}
-      size='middle'
+      size='small'
       bordered={true}/>
   )
 }
 
 DTable.propTypes = {
   columns: PropTypes.array.isRequired,
-  total: PropTypes.number.isRequired,
-  pageIndex: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired
+  loading: PropTypes.bool.isRequired
 }
 
 export default DTable

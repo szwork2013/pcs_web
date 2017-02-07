@@ -59,7 +59,7 @@ export default ({ history, app }) => {
           name: 'sysrole',
           getComponent (nextState, cb) {
             require.ensure([], require => {
-							// registerModel(app, require('./models/sys_user'))
+							registerModel(app, require('./models/sys_role'))
               cb(null, require('./pages/sys_role'))
             })
           }

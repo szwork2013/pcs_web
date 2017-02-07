@@ -36,12 +36,14 @@ export default {
 			}
 		},
 		*create ({payload}, {call, put}) {
-			yield put({ type: 'hideModal', payload: {currentKey: null}})
+			yield put({ type: 'hideModal' })
       yield put({ type: 'showLoading' })
 			const data = yield call(sysUser.addSysUser, payload.data)
       if (data) {
         yield put({type: 'getList'})
-      }
+      } else {
+				yield put({type: 'fail'})
+			}
 		},
 		*update ({payload}, {call, put}) {
 			yield put({ type: 'hideModal' })
@@ -49,13 +51,17 @@ export default {
 			const data = yield call(sysUser.uptSysUser, payload.data)
       if (data) {
         yield put({type: 'getList'})
-      }
+      } else {
+				yield put({type: 'fail'})
+			}
 		},
 		*del ({payload}, {call, put}) {
 			const data = yield call(sysUser.delSysUser, payload)
       if (data) {
         yield put({type: 'getList', payload})
-      }
+      } else {
+				yield put({type: 'fail'})
+			}
 		}
 	},
 	reducers: {

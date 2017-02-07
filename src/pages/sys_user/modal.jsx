@@ -4,7 +4,7 @@ import { valid_required, valid_max, valid_phone, valid_email } from '../../utils
 
 const FormItem = Form.Item
 
-const SysUserModel = ({visible, onCancel, onOk, item, 
+const SysUserModal = ({visible, onCancel, onOk, item, 
 	form: {
     getFieldDecorator,
     validateFields,
@@ -101,4 +101,4 @@ const SysUserModel = ({visible, onCancel, onOk, item,
 	)
 }
 
-export default Form.create()(SysUserModel)
+export default Form.create()(SysUserModal)

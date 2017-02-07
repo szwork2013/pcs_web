@@ -24,14 +24,15 @@ export function formatUserType (origin) {
 	else return '其他'
 }
 
+
 /**
  * format
- * 账户状态码转换
+ * 通用状态码转换
  * @export
  * @param {any} origin
  * @returns
  */
-export function formatSysUserStatus (origin) {
+export function formatStatus (origin) {
 	if (origin === 'aa')	return '启用'
 	else if (origin === 'nn')	return '停用'
 	else return origin
