@@ -13,7 +13,7 @@ import './common.less'
 
 
 const App = ({children, location, dispatch, app}) => {
-	const {login, loading, loginBtnLoading, user, siderFold, darkTheme, isNavbar, menuPopoverVisible} = app
+	const {login, loading, loginBtnLoading, user, siderFold, darkTheme, isNavbar, menuPopoverVisible, userMenus} = app
 	const loginProps = {
 		loading,
 		loginBtnLoading,
@@ -28,6 +28,7 @@ const App = ({children, location, dispatch, app}) => {
     location,
     isNavbar,
     menuPopoverVisible,
+    userMenus,
     switchMenuPopover () {
       dispatch({type: 'app/switchMenuPopver'})
     },
@@ -43,6 +44,7 @@ const App = ({children, location, dispatch, app}) => {
     siderFold,
     darkTheme,
     location,
+    userMenus,
     changeTheme () {
       dispatch({type: 'app/changeTheme'})
     }

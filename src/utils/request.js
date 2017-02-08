@@ -103,7 +103,7 @@ export default function request(url, options) {
 	}
   options = options || {}
 	options.headers = options.headers || {}
-	// options.headers['token'] = window.localStorage.getItem(Token)
+	options.headers['token'] = localStorage.getItem("pcs_token")
 
   return fetch(url, options)
     .then(checkStatus)

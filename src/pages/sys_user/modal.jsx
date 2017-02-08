@@ -4,8 +4,9 @@ import { valid_required, valid_max, valid_phone, valid_email } from '../../utils
 
 const FormItem = Form.Item
 
-const SysUserModal = ({visible, onCancel, onOk, item, 
+const SysUserModal = ({visible, onCancel, onOk, item, roleList,  
 	form: {
+		resetFields,
     getFieldDecorator,
     validateFields,
     getFieldsValue
@@ -21,6 +22,7 @@ const SysUserModal = ({visible, onCancel, onOk, item,
 				status: getFieldsValue()['status'] ? 'aa' : 'nn'
       }
       onOk(data)
+			resetFields()
     })
   }
 
@@ -37,9 +39,18 @@ const SysUserModal = ({visible, onCancel, onOk, item,
 		title: '用户管理',
 		visible,
 		onOk: handleOk,
-		onCancel,
+		onCancel: () => {
+			resetFields()
+			onCancel()
+		},
 		wrapClassName: 'vertical-center-modal'
 	}
+
+	const RoleOptions = roleList.map(item => {
+		return (
+			<Select.Option key={item.id} value={item.id}>{item.roleName}</Select.Option>
+		)
+	})
 
 	return (
 		<Modal {...modalProps}>
@@ -76,6 +87,14 @@ const SysUserModal = ({visible, onCancel, onOk, item,
               <Radio value='1'>男</Radio>
               <Radio value='2'>女</Radio>
             </Radio.Group>)}
+				</FormItem>
+				<FormItem label='所属角色：' {...formItemLayout}>
+					{getFieldDecorator('roleId', {
+            initialValue: item.roleId,
+						rules: [valid_required('所属角色不能为空')]
+          })(<Select placeholder='请选择角色'>
+							{RoleOptions}
+						</Select>)}
 				</FormItem>
 				<FormItem label='用户类别：' {...formItemLayout}>
 					{getFieldDecorator('userType', {

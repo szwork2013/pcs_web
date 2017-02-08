@@ -5,13 +5,14 @@ import * as message from '../utils/message_box'
 export default {
 	namespace: 'sysuser',
 	state: {
-		...comState
+		...comState,
+		roleUserModalVisible: false
 	},
 	subscriptions: {
 		setup ({dispatch, history}) {
 			history.listen(location => {
 				if (location.pathname === '/sysuser') {
-					dispatch({type: 'getList', payload: location.query})
+					dispatch({type: 'getList', payload: {pageIndex: 1, pageSize: 10}})
 				}
 			})
 		}
@@ -27,6 +28,7 @@ export default {
 			}
 		},
 		*getOne ({payload}, {call, put}) {
+			yield put({type: 'common/getRoleList'})
 			yield put({ type: 'common', payload: {currentKey: payload.id}})
 			const data = yield call(sysUser.getOne, {id: payload.id})
 			if (data) {
@@ -71,9 +73,19 @@ export default {
       } else {
 				yield put({type: 'fail'})
 			}
+		},
+		*openModal ({payload}, {call, put}) {
+				yield put({type: 'common/getRoleList'})
+				yield put({type: 'showModal', payload})
 		}
 	},
 	reducers: {
-		...comReducer
+		...comReducer,
+		showRoleUserSetting (state, action) {
+			return {...state, ...action.payload, roleUserModalVisible: true}
+		},
+		hideRoleUserSetting (state, action) {
+			return {...state, ...action.payload, roleUserModalVisible: false}
+		}
 	}
 }

@@ -5,14 +5,15 @@ import { hashHistory } from 'dva/router'
 export default {
 	namespace: 'app',
 	state: {
-		login: cookie.load('user'),
+		login: localStorage.getItem('pcs_login'),
 		loading: false,
-		user: null,
+		user: JSON.parse(localStorage.getItem('pcs_user')),
 		loginBtnLoading: false,
 		menuPopoverVisible: false,
     siderFold: localStorage.getItem('antdAdminSiderFold') === 'true',
     darkTheme: localStorage.getItem('antdAdminDarkTheme') !== 'false',
-    isNavbar: document.body.clientWidth < 769
+    isNavbar: document.body.clientWidth < 769,
+		userMenus: JSON.parse(localStorage.getItem('pcs_menus'))
 	},
 	subscriptions: {
 		setup ({dispatch}) {
@@ -26,9 +27,13 @@ export default {
 			yield put({type: 'showLoginBtnLoading'})
 			const data = yield call(login, payload)
 			if (data) {
-				cookie.save('user', data)
+				cookie.save('user', data, { path: '/' })
+				localStorage.setItem('pcs_menus', JSON.stringify(data.menus))
+				localStorage.setItem('pcs_user', JSON.stringify(data))
+				localStorage.setItem('pcs_login', true)
+				localStorage.setItem('pcs_token', data.token)
 				hashHistory.push({pathname: '/'})
-				yield put({type: 'loginSuccess', payload: {user: data}})
+				yield put({type: 'loginSuccess', payload: {user: data, userMenus: data.menus}})
 			} else {
 				yield put({type: 'loginFail'})
 			}
@@ -47,7 +52,11 @@ export default {
       yield put({type: 'handleSwitchMenuPopver'})
     },
 		*logout ({payload}, {call, put}) {
-			cookie.remove('user')
+			cookie.remove('user', { path: '/' })
+			localStorage.removeItem('pcs_login')
+			localStorage.removeItem('pcs_menus')
+			localStorage.removeItem('pcs_user')
+			localStorage.removeItem('pcs_token')
 			yield put({type: 'logoutSuccess'})
 		},
 		*switchSider ({payload}, {put}) {

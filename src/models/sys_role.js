@@ -16,7 +16,7 @@ export default {
 		setup ({dispatch, history}) {
 			history.listen(location => {
 				if (location.pathname === '/sysrole') {
-					dispatch({type: 'getList', payload: location.query})
+					dispatch({type: 'getList' })
 				}
 			})
 		}

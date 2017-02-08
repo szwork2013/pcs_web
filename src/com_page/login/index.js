@@ -4,7 +4,6 @@ import styles from './index.less'
 import { config } from '../../utils'
 
 const FormItem = Form.Item
-
 const login = ({
 	loginBtnLoading,
 	onOk,

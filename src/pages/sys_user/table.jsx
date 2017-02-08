@@ -49,6 +49,7 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 			title: '操作',
 			dataIndex: 'oper',
 			key: 'oper',
+			width: 220,
 			render (text, row) {
 				/*let del = <div></div>
 				if (row.status !== 'aa') {
@@ -61,6 +62,7 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 						<Popconfirm title = '确认重置该用户密码么?' onConfirm = {() => onResetPwd(row.id)}>
 							<Button type='primary' size='small'>密码重置</Button>
 						</Popconfirm>						
+						{/*<Button type='goest' size='small' onClick={() => onRoleUserSetting(row.id) }>角色设置</Button>*/}
 						<Button type='goest' size='small' onClick={() => onEdit(row.id) }>编辑</Button>
 						{/*{del}*/}
 					</ButtonGroup>

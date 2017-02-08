@@ -14,9 +14,10 @@ const registerModel = (app, model) => {
   }
 }
 
-export default ({ history, app }) => {
+export default ({ history, app, store }) => {
+
 	const requireAuth = (nextState, replace) => {
-		if (!cookie.load('user') && nextState.location.pathname !== '/login') {
+		if (!localStorage.getItem('pcs_login') && nextState.location.pathname !== '/login') {
 			replace({
 				pathname: '/login'
 			})
@@ -37,6 +38,7 @@ export default ({ history, app }) => {
 				{
           path: 'main',
           name: 'main',
+          onEnter: requireAuth,
           getComponent (nextState, cb) {
             require.ensure([], require => {
               cb(null, require('./pages/main'))
@@ -46,6 +48,7 @@ export default ({ history, app }) => {
 				{
           path: 'sysuser',
           name: 'sysuser',
+          onEnter: requireAuth,
           getComponent (nextState, cb) {
             require.ensure([], require => {
 							registerModel(app, require('./models/sys_user'))
@@ -57,10 +60,22 @@ export default ({ history, app }) => {
 				{
           path: 'sysrole',
           name: 'sysrole',
+          onEnter: requireAuth,
           getComponent (nextState, cb) {
             require.ensure([], require => {
 							registerModel(app, require('./models/sys_role'))
               cb(null, require('./pages/sys_role'))
+            })
+          }
+        },
+        {
+          path: 'syslog',
+          name: 'syslog',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/sys_log'))
+              cb(null, require('./pages/sys_log'))
             })
           }
         },

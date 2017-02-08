@@ -5,14 +5,15 @@ import Menus from './menu'
 
 const SubMenu = Menu.SubMenu
 
-const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover}) => {
+const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover, userMenus}) => {
 	let handleClickMenu = e => e.key === 'logout' && logout()
   const menusProps = {
     siderFold: false,
     darkTheme: false,
     isNavbar,
     handleClickNavMenu: switchMenuPopover,
-    location
+    location,
+    userMenus
   }
 
 	return (

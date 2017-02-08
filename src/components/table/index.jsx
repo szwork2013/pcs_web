@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import { Table } from 'antd'
 
-const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onChange, rowKey, showPage = true}) => {
+const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onChange, rowKey, showPage = true, expandedRowRender}) => {
   const pagination = showPage ? {
 		total,
 		pageSize: pageSize || 10,
@@ -15,6 +15,7 @@ const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onCha
 
   return (
     <Table
+      expandedRowRender={expandedRowRender}
       columns={columns}
       dataSource={dataSource}
       loading={loading}

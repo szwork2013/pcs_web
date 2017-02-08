@@ -4,11 +4,12 @@ import { config } from '../../utils'
 import styles from './layout.less'
 import Menus from './menu.js'
 
-const Sider = ({ siderFold, darkTheme, location, changeTheme }) => {
+const Sider = ({ siderFold, darkTheme, location, changeTheme, userMenus }) => {
 	const menusProps = {
     siderFold,
     darkTheme,
-    location
+    location,
+    userMenus
   }
 	return (
 		<div>
