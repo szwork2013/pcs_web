@@ -45,6 +45,16 @@ export default ({ history, app, store }) => {
             })
           }
         },
+        {
+          path: 'profile',
+          name: 'profile',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              cb(null, require('./com_page/profile'))
+            })
+          }
+        },
 				{
           path: 'sysuser',
           name: 'sysuser',

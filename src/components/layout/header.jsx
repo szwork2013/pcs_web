@@ -1,12 +1,19 @@
 import React, {PropTypes} from 'react'
 import { Menu, Icon, Popover } from 'antd'
+import { hashHistory } from 'dva/router'
 import styles from './layout.less'
 import Menus from './menu'
 
 const SubMenu = Menu.SubMenu
 
 const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover, userMenus}) => {
-	let handleClickMenu = e => e.key === 'logout' && logout()
+	let handleClickMenu = e => {
+    if (e.key === 'logout') {
+      logout()
+    } else if (e.key === 'profile') {
+      hashHistory.push({pathname: '/profile'})
+    }
+  }
   const menusProps = {
     siderFold: false,
     darkTheme: false,
@@ -29,10 +36,10 @@ const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisi
         </div>}
 
       <Menu className='header-menu' mode='horizontal' onClick={handleClickMenu}>
-        <SubMenu style={{
-          float: 'right'
-        }} title={< span > <Icon type='user' />
-          {user.userName} < /span>}>
+        <SubMenu style={{float: 'right'}} title={<span><Icon type='user'/>{user.userName}</span>}>
+          <Menu.Item key='profile'>
+            <a>个人资料</a>
+          </Menu.Item>
           <Menu.Item key='logout'>
             <a>注销</a>
           </Menu.Item>
