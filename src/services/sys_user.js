@@ -74,3 +74,7 @@ export async function uptSysUser(params) {
 export async function resetPwdService(params) {
 	return post(`${url}/resetPwd`, params)
 }
+
+export async function changePwdService(params) {
+	return post(`${url}/changePwd`, params)
+}

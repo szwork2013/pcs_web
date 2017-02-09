@@ -10,10 +10,11 @@ import Login from '../../com_page/login'
 import { classnames } from '../../utils'
 import styles from './layout.less'
 import './common.less'
+import ChangePwd from '../../com_page/profile/changePwdModal'
 
 
 const App = ({children, location, dispatch, app}) => {
-	const {login, loading, loginBtnLoading, user, siderFold, darkTheme, isNavbar, menuPopoverVisible, userMenus} = app
+	const {login, loading, loginBtnLoading, user, siderFold, darkTheme, isNavbar, menuPopoverVisible, userMenus, changePwdVisible} = app
 	const loginProps = {
 		loading,
 		loginBtnLoading,
@@ -37,6 +38,9 @@ const App = ({children, location, dispatch, app}) => {
     },
     switchSider () {
       dispatch({type: 'app/switchSider'})
+    },
+    changePwd () {
+      dispatch({type: 'app/common', payload: {changePwdVisible: true}})
     }
   }
 
@@ -47,6 +51,15 @@ const App = ({children, location, dispatch, app}) => {
     userMenus,
     changeTheme () {
       dispatch({type: 'app/changeTheme'})
+    }
+  }
+  const changePwdProps = {
+    visible: changePwdVisible,
+    onCancel () {
+      dispatch({type: 'app/common', payload: {changePwdVisible: false}})
+    },
+    onOk (data) {
+      dispatch({type: 'app/changePwd', payload: {data}})
     }
   }
 
@@ -70,6 +83,7 @@ const App = ({children, location, dispatch, app}) => {
         </div>
 				: <div className={styles.spin}><Spin tip='加载用户信息...' spinning={loading} size='large'><Login {...loginProps} /></Spin></div>
 			}
+      <ChangePwd {...changePwdProps}/>
 		</div>
 	)
 }

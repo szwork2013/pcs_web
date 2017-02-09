@@ -6,12 +6,14 @@ import Menus from './menu'
 
 const SubMenu = Menu.SubMenu
 
-const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover, userMenus}) => {
+const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover, userMenus, changePwd}) => {
 	let handleClickMenu = e => {
     if (e.key === 'logout') {
       logout()
     } else if (e.key === 'profile') {
       hashHistory.push({pathname: '/profile'})
+    } else if (e.key === 'password') {
+      changePwd()
     }
   }
   const menusProps = {
@@ -39,6 +41,9 @@ const Header = ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVisi
         <SubMenu style={{float: 'right'}} title={<span><Icon type='user'/>{user.userName}</span>}>
           <Menu.Item key='profile'>
             <a>个人资料</a>
+          </Menu.Item>
+          <Menu.Item key='password'>
+            <a>密码修改</a>
           </Menu.Item>
           <Menu.Item key='logout'>
             <a>注销</a>

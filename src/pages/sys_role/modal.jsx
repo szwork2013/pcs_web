@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Form, Input, Radio, Select, Checkbox } from 'antd'
-import { valid_required, valid_max, valid_phone, valid_email } from '../../utils/validation.js'
+import { valid_required, valid_max, valid_phone, valid_email } from '../../utils/validation'
 
 const FormItem = Form.Item
 

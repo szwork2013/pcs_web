@@ -67,6 +67,44 @@ export function valid_phone (cb) {
 	}
 }
 
+/**
+ * validation
+ * 密码强度验证
+ * @export
+ * @param {any} cb
+ * @returns
+ */
+export function valid_pwd (cb) {
+	return {
+		validator (rule, value, callback) {
+			callback()
+		}
+	}
+}
+
+/**
+ * validation
+ * 密码确认验证
+ * @export
+ * @param {any} cb
+ * @returns
+ */
+export function valid_confirm_pwd (password, cb) {
+	return {
+		validator (rule, value, callback) {
+			if (!value || value === '') {
+				callback()
+			} else if (password === value) {
+				callback()
+				cb && cb('success')
+			} else {
+				callback('两次输入密码不一致')
+				cb && cb('error')
+			}
+		}
+	}
+}
+
 const checkPhone = (phone) => {
 	if (!(/^1[34578]\d{9}$/.test(phone))) { 
 		return false

@@ -20,8 +20,7 @@ const Profile = props => {
             <h3>性别：{formatSex(user.sex)}</h3>
             <br/>
             <Row type="flex" justify="start">
-              <Button type='primary' style={{marginRight: 16}}>信息修改</Button>
-              <Button type='primary'>密码修改</Button>
+              {/*<Button type='primary' style={{marginRight: 16}}>信息修改</Button>*/}
             </Row>
           </Card>
         </Col>

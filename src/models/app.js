@@ -1,6 +1,7 @@
 import * as cookie from '../utils/cookie'
-import { login } from '../services/sys_user'
+import { login, changePwdService } from '../services/sys_user'
 import { hashHistory } from 'dva/router'
+import { successBox, errorBox } from '../utils/message_box'
 
 export default {
 	namespace: 'app',
@@ -13,7 +14,8 @@ export default {
     siderFold: localStorage.getItem('antdAdminSiderFold') === 'true',
     darkTheme: localStorage.getItem('antdAdminDarkTheme') !== 'false',
     isNavbar: document.body.clientWidth < 769,
-		userMenus: JSON.parse(localStorage.getItem('pcs_menus'))
+		userMenus: JSON.parse(localStorage.getItem('pcs_menus')),
+		changePwdVisible: false
 	},
 	subscriptions: {
 		setup ({dispatch}) {
@@ -61,6 +63,13 @@ export default {
 		},
 		*switchSider ({payload}, {put}) {
 			yield put({type: 'handleSwitchSider'})
+		},
+		*changePwd ({payload}, {call, put}) {
+			const data = yield call(changePwdService, payload.data)
+			if (data) {
+				successBox('密码修改成功')
+				yield put({type: 'common', payload: {changePwdVisible: false}})
+			}
 		}
 	},
 	reducers: {
@@ -89,6 +98,9 @@ export default {
     },
 		handleSwitchMenuPopver (state) {
       return {...state, menuPopoverVisible: !state.menuPopoverVisible}
+    },
+		common (state, action) {
+      return {...state, ...action.payload}
     }
 	}
 }

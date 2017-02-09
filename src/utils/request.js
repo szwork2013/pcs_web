@@ -120,11 +120,15 @@ export default function request(url, options) {
 				console.log(err.message)
 			}
 			switch (err.message) {
-			case '登录失效':
-				hashHistory.push({pathname: '/login'})
+			case '1003':
+				localStorage.removeItem("pcs_login")
+				message.warnBox('登录状态失效，请重新登陆', 3)
 				break
 			case '2001':
 				message.warnBox('用户名密码错误，请重新输入', 3)
+				break
+			case '2002':
+				message.warnBox('原密码错误，请重新输入', 3)
 				break
 			default:
 				message.errorBox('服务器繁忙', 3)
