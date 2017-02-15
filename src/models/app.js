@@ -54,11 +54,12 @@ export default {
       yield put({type: 'handleSwitchMenuPopver'})
     },
 		*logout ({payload}, {call, put}) {
-			cookie.remove('user', { path: '/' })
+			// cookie.remove('user', { path: '/' })
 			localStorage.removeItem('pcs_login')
 			localStorage.removeItem('pcs_menus')
 			localStorage.removeItem('pcs_user')
 			localStorage.removeItem('pcs_token')
+			hashHistory.push({pathname: '/login'})
 			yield put({type: 'logoutSuccess'})
 		},
 		*switchSider ({payload}, {put}) {

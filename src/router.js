@@ -14,17 +14,26 @@ const registerModel = (app, model) => {
   }
 }
 
-export default ({ history, app, store }) => {
+export default ({ history, app }) => {
 
 	const requireAuth = (nextState, replace) => {
-		if (!localStorage.getItem('pcs_login') && nextState.location.pathname !== '/login') {
-			replace({
+		if (!localStorage.getItem('pcs_login')) {
+      replace({
 				pathname: '/login'
 			})
 		}
 	}
 
 	const routes = [
+  {
+      path: 'login',
+      name: 'login',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          cb(null, require('./com_page/login'))
+        })
+      }
+    },
 		{
 			path: '/',
 			onEnter: requireAuth,

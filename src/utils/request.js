@@ -1,6 +1,7 @@
 import fetch from 'dva/fetch'
 import qs from 'qs'
 import * as message from '../utils/message_box'
+import { hashHistory } from 'dva/router'
 
 const parseJSON = response => {
   return response.json();
@@ -122,6 +123,7 @@ export default function request(url, options) {
 			switch (err.message) {
 			case '1003':
 				localStorage.removeItem("pcs_login")
+				hashHistory.push({pathname: '/login'})
 				message.warnBox('登录状态失效，请重新登陆', 3)
 				break
 			case '2001':

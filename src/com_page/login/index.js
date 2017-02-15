@@ -1,10 +1,12 @@
 import React, {PropTypes} from 'react'
 import {Button, Row, Form, Input} from 'antd'
+import { connect } from 'dva'
 import styles from './index.less'
 import { config } from '../../utils'
 
 const FormItem = Form.Item
 const login = ({
+	dispatch,
 	loginBtnLoading,
 	onOk,
 	form: {
@@ -17,7 +19,7 @@ const login = ({
       if (errors) {
         return
       }
-      onOk(values)
+			dispatch({type: 'app/login', payload: values})
     })
 	}
 
@@ -63,4 +65,4 @@ login.propTypes = {
 	onOk: PropTypes.func
 };
 
-export default Form.create()(login)
+export default connect(({app}) => ({app}))(Form.create()(login))
