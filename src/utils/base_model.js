@@ -8,7 +8,8 @@ const comState = {
 	modalType: 'create',
 	modalVisible: false,
 	currentItem: null,
-	currentKey: null
+	currentKey: null,
+	search: null
 }
 // 公用reducer
 const comReducer = {

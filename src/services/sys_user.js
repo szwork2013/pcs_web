@@ -78,3 +78,7 @@ export async function resetPwdService(params) {
 export async function changePwdService(params) {
 	return post(`${url}/changePwd`, params)
 }
+
+export async function logoutService(params) {
+	return post(`${url}/logout`, params)
+}

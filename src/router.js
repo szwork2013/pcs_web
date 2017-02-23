@@ -98,6 +98,28 @@ export default ({ history, app }) => {
             })
           }
         },
+        {
+          path: 'parkcamera',
+          name: 'parkcamera',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_camera'))
+              cb(null, require('./pages/park_camera'))
+            })
+          }
+        },
+        {
+          path: 'parkterminal',
+          name: 'parkterminal',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_terminal'))
+              cb(null, require('./pages/park_terminal'))
+            })
+          }
+        },
 				{
 					path: '*',
 					name: 'error',

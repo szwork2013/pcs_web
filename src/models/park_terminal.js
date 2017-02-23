@@ -1,16 +1,16 @@
 import { comState, comReducer } from '../utils/base_model'
-import * as service from '../services/park_camera'
+import * as service from '../services/park_terminal'
 import { message } from '../utils'
 
 export default {
-	namespace: 'parkcamera',
+	namespace: 'parkterminal',
 	state: {
 		...comState
 	},
 	subscriptions: {
 		setup ({dispatch, history}) {
 			history.listen(location => {
-				if (location.pathname === '/parkcamera') {
+				if (location.pathname === '/parkterminal') {
 					dispatch({type: 'getList', payload: {pageIndex: 1, pageSize: 10}})
 				}
 			})
@@ -53,10 +53,6 @@ export default {
       } else {
 				yield put({type: 'fail'})
 			}
-		},
-		*openModal ({payload}, {call, put}) {
-				yield put({type: 'common/getProducerDict'})
-				yield put({type: 'showModal', payload})
 		}
 	},
 	reducers: {

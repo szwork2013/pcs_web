@@ -16,6 +16,20 @@ export function valid_required (errMsg) {
 
 /**
  * validation
+ * 验证空格
+ * @export
+ * @param {any} errMsg
+ * @returns
+ */
+export function valid_whitespace (errMsg) {
+	return {
+		whitespace: true,
+		message: errMsg || '不能输入空格'
+	}
+}
+
+/**
+ * validation
  * 最大长度验证
  * @export
  * @param {any} max
@@ -69,6 +83,29 @@ export function valid_phone (cb) {
 
 /**
  * validation
+ * IP验证
+ * @export
+ * @param {any} cb
+ * @returns
+ */
+export function valid_ip (cb) {
+	return {
+		validator (rule, value, callback) {
+			if (!value || value === '') {
+				callback()
+			} else if (checkIP(value)) {
+				callback()
+				cb && cb('success')
+			} else {
+				callback('IP格式错误')
+				cb && cb('error')
+			}
+		}
+	}
+}
+
+/**
+ * validation
  * 密码强度验证
  * @export
  * @param {any} cb
@@ -111,4 +148,13 @@ const checkPhone = (phone) => {
 	} else {
 		return true
 	}
+}
+
+const checkIP = (ip) => {
+    var ipRegExp= /([0-9]{1,3}\.{1}){3}[0-9]{1,3}/;
+    if(ipRegExp.exec(ip)){
+        return true;
+    }else{
+        return false;
+    }
 }

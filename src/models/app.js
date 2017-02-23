@@ -1,5 +1,5 @@
 import * as cookie from '../utils/cookie'
-import { login, changePwdService } from '../services/sys_user'
+import { login, changePwdService, logoutService } from '../services/sys_user'
 import { hashHistory } from 'dva/router'
 import { successBox, errorBox } from '../utils/message_box'
 
@@ -55,11 +55,12 @@ export default {
     },
 		*logout ({payload}, {call, put}) {
 			// cookie.remove('user', { path: '/' })
+			yield call(logoutService)	
 			localStorage.removeItem('pcs_login')
 			localStorage.removeItem('pcs_menus')
 			localStorage.removeItem('pcs_user')
-			localStorage.removeItem('pcs_token')
-			hashHistory.push({pathname: '/login'})
+			localStorage.removeItem('pcs_token')			
+			hashHistory.push({pathname: '/login'})		
 			yield put({type: 'logoutSuccess'})
 		},
 		*switchSider ({payload}, {put}) {
