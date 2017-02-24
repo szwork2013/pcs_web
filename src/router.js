@@ -24,8 +24,22 @@ export default ({ history, app }) => {
 		}
 	}
 
+  // const genRouter = (path, modelPath, componentPath) => {
+  //   return {
+  //     path,
+  //     name: path,
+  //     onEnter: requireAuth,
+  //     getComponent (nextState, cb) {
+  //       require.ensure([], require => {
+  //         registerModel(app, require(modelPath))
+  //         cb(null, require(componentPath))
+  //       })
+  //     }
+  //   }
+  // }
+
 	const routes = [
-  {
+    {
       path: 'login',
       name: 'login',
       getComponent (nextState, cb) {
@@ -120,6 +134,18 @@ export default ({ history, app }) => {
             })
           }
         },
+        {
+          path: 'parkarea',
+          name: 'parkarea',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_area'))
+              cb(null, require('./pages/park_area'))
+            })
+          }
+        },
+        // genRouter('parkarea', './models/park_area', './pages/park_area'),
 				{
 					path: '*',
 					name: 'error',
