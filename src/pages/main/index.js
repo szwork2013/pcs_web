@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 
 const Main = props => {
 	return (
-		<div>
-			main
+		<div className='content-inner'>
+			维护中...
 		</div>
 	)
 }

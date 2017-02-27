@@ -3,9 +3,9 @@ import './index.css';
 
 // 1. Initialize
 const app = dva({
-	onError(e){
-    console.log(e)
-  }
+	// onError(e){
+  //   console.log(e)
+  // }
 });
 
 // 2. Plugins

@@ -1,4 +1,4 @@
-import * as cookie from '../utils/cookie'
+// import * as cookie from '../utils/cookie'
 import { login, changePwdService, logoutService } from '../services/sys_user'
 import { hashHistory } from 'dva/router'
 import { successBox, errorBox } from '../utils/message_box'
@@ -29,13 +29,13 @@ export default {
 			yield put({type: 'showLoginBtnLoading'})
 			const data = yield call(login, payload)
 			if (data) {
-				cookie.save('user', data, { path: '/' })
+				// cookie.save('user', data, { path: '/' })
 				localStorage.setItem('pcs_menus', JSON.stringify(data.menus))
 				localStorage.setItem('pcs_user', JSON.stringify(data))
 				localStorage.setItem('pcs_login', true)
 				localStorage.setItem('pcs_token', data.token)
-				hashHistory.push({pathname: '/'})
 				yield put({type: 'loginSuccess', payload: {user: data, userMenus: data.menus}})
+				hashHistory.push({pathname: '/'})
 			} else {
 				yield put({type: 'loginFail'})
 			}
@@ -78,11 +78,11 @@ export default {
 		loginSuccess (state, action) {
       return {...state, ...action.payload, login: true, loginBtnLoading: false}
     },
-		loginFail (state) {
-      return {...state, login: false, loginBtnLoading: false}
+		loginFail (state, action) {
+      return {...state, ...action.payload, login: false, loginBtnLoading: false}
     },
-		logoutSuccess (state) {
-      return {...state, login: false}
+		logoutSuccess (state, action) {
+      return {...state, ...action.payload, login: false}
     },
 		handleChangeTheme (state) {
       localStorage.setItem('antdAdminDarkTheme', !state.darkTheme)

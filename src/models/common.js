@@ -5,7 +5,8 @@ export default {
 	namespace: 'common',
 	state: {
 		roleList: [],
-		producers: []
+		producers: [],
+		authTypes: []
 	},
 	subscriptions: {
 		setup ({dispatch, history}) {
@@ -26,6 +27,14 @@ export default {
 				yield put({type: 'success', payload: {producers: data}})
 			} else {
 				yield put({type: 'fail', payload: {producers: []}})
+			}
+		},
+		*getAuthTypeDict ({payload}, {call, put}) {
+			const data = yield call(service.getDictItemService, {dictCode: '002'})
+			if (data) {
+				yield put({type: 'success', payload: {authTypes: data}})
+			} else {
+				yield put({type: 'fail', payload: {authTypes: []}})
 			}
 		}
 	},

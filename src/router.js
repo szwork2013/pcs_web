@@ -145,6 +145,17 @@ export default ({ history, app }) => {
             })
           }
         },
+        {
+          path: 'parkauth',
+          name: 'parkauth',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_auth'))
+              cb(null, require('./pages/park_auth'))
+            })
+          }
+        },
         // genRouter('parkarea', './models/park_area', './pages/park_area'),
 				{
 					path: '*',

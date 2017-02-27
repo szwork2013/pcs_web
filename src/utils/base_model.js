@@ -90,6 +90,7 @@ function comCRUDModel (namespace, state, service, effects, setup, reducers) {
 		...effects,
 		*getPaging ({payload}, {call, put}) {
 			if (!service.getPagingService) return
+			payload = payload || {pageIndex: 1, pageSize: 10}
 			yield put({type: 'showLoading', payload})
 			const data = yield call(service.getPagingService, {pageIndex: payload.pageIndex, pageSize: payload.pageSize, ...payload.search})
 			if (data) {
