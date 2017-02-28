@@ -70,3 +70,19 @@ export function formatLogType (origin) {
 	else if (origin === 'terminal') return '终端日志'
 	else return origin
 }
+
+/**
+ * format
+ * 授权类别编码转换
+ * @export
+ * @param {any} origin
+ * @returns
+ */
+export function formatAuthType (origin) {
+	if (origin === '001') return '月租卡'
+	else if (origin === '002') return '储值卡'
+	else if (origin === '003') return '临时卡'
+	else if (origin === '004') return '免费卡'
+	else if (origin === '005') return '黑名单'
+	else return origin
+}

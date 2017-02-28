@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import MTable from '../../components/table'
-import { formatStatus } from '../../utils/format'
+import { formatStatus, formatAuthType } from '../../utils/format'
 import { Button, Popconfirm } from 'antd'
 
 const ButtonGroup = Button.Group
@@ -18,14 +18,20 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 			key: 'card_num'
 		},
 		{
-			title: '所属停车场',
-			dataIndex: 'area_name',
-			key: 'area_name'
+			title: '用户名',
+			dataIndex: 'user_name',
+			key: 'user_name'
+		},
+		{
+			title: '手机号',
+			dataIndex: 'phone',
+			key: 'phone'
 		},
 		{
 			title: '授权类别',
-			dataIndex: 'auth_type_name',
-			key: 'auth_type_name'
+			dataIndex: 'auth_type',
+			key: 'auth_type',
+			render: text => formatAuthType(text)
 		},
     {
 			title: '状态',

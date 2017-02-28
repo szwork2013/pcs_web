@@ -8,7 +8,8 @@ const SysRoleModal = ({visible, onCancel, onOk, item,
 	form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue
+    getFieldsValue,
+		resetFields
   }}) => {
 	item = item || {}
 	const handleOk = () => {
@@ -38,6 +39,9 @@ const SysRoleModal = ({visible, onCancel, onOk, item,
 		visible,
 		onOk: handleOk,
 		onCancel,
+		afterClose () {
+			resetFields()
+		},
 		wrapClassName: 'vertical-center-modal'
 	}
 

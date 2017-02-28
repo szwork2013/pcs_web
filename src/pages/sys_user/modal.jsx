@@ -22,7 +22,6 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList,
 				status: getFieldsValue()['status'] ? 'aa' : 'nn'
       }
       onOk(data)
-			resetFields()
     })
   }
 
@@ -39,9 +38,9 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList,
 		title: '用户管理',
 		visible,
 		onOk: handleOk,
-		onCancel: () => {
+		onCancel,
+		afterClose () {
 			resetFields()
-			onCancel()
 		},
 		wrapClassName: 'vertical-center-modal'
 	}

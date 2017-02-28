@@ -22,7 +22,6 @@ const ParkCameraModal = ({visible, onCancel, onOk, item, producers,
 				status: getFieldsValue()['status'] ? 'aa' : 'nn'
       }
       onOk(data)
-			resetFields()
     })
   }
 
@@ -39,9 +38,9 @@ const ParkCameraModal = ({visible, onCancel, onOk, item, producers,
 		title: '摄像机管理',
 		visible,
 		onOk: handleOk,
-		onCancel: () => {
+		onCancel,
+		afterClose () {
 			resetFields()
-			onCancel()
 		},
 		wrapClassName: 'vertical-center-modal'
 	}

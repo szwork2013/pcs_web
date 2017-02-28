@@ -63,12 +63,11 @@ const SysRole = ({dispatch, sysrole}) => {
     }
   }
 
-  const ModalGen = () => <Modal {...modalProps}/>
   return (
     <div className='content-inner'>
       <SearchPanel {...searchProps}/>
       <Table {...tableProps}/>
-      <ModalGen/>
+      <Modal {...modalProps}/>
       <MenuSettingModal {...menuSettingProps}/>
     </div>
   )

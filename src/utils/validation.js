@@ -142,6 +142,35 @@ export function valid_confirm_pwd (password, cb) {
 	}
 }
 
+/**
+ * validation
+ * 身份证验证
+ * @export
+ * @param {any} cb
+ * @returns
+ */
+export function valid_IDCard (cb) {
+	return {
+		validator (rule, value, callback) {
+			if (!value || value === '') {
+				callback()
+			} else if (checkIDCard(value)) {
+				callback()
+				cb && cb('success')
+			} else {
+				callback('身份证格式错误')
+				cb && cb('error')
+			}
+		}
+	}
+}
+
+const checkIDCard = card => {
+	// 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X  
+   var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+   return reg.test(card) 
+}
+
 const checkPhone = (phone) => {
 	if (!(/^1[34578]\d{9}$/.test(phone))) { 
 		return false

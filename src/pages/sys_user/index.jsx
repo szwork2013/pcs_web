@@ -68,7 +68,6 @@ const SysUser = ({dispatch, sysuser, common}) => {
   //     dispatch({type: 'sysuser/saveMenus', payload: {menuIds: checkMenus, roleId: currentKey}})
   //   }
   // }
-  const ModalGen = () => <Modal {...modalProps}/>
 
   return (
     <div className='content-inner'>

@@ -7,10 +7,12 @@ import Search from './search'
 import { myDispatch, defaultTableProps, defaultModalProps } from '../../utils'
 
 const ParkAuth = ({dispatch, parkauth, common}) => {
-	const { pageSize, currentKey, search, batchModalVisible} = parkauth
+	const { pageSize, currentKey, search, batchModalVisible, isTempAuth, isBlackAuth} = parkauth
 	const { authTypes } = common
 	const modalProps = defaultModalProps(parkauth, {
 		authTypes,
+		isTempAuth,
+		isBlackAuth,
 		onOk (data) {
       if (currentKey) {
         data.id = currentKey
@@ -21,7 +23,10 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
     },
     onCancel () {
 			myDispatch(dispatch, 'parkauth/hideModal')
-    }
+    },
+		onAuthChange (data) {
+			myDispatch(dispatch, 'parkauth/common', {isTempAuth: data === '003', isBlackAuth: data === '005' })
+		}
 	})
 
   const tableProps = defaultTableProps(parkauth, {
@@ -42,7 +47,7 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
 			myDispatch(dispatch, 'parkauth/getPaging', {pageIndex: 1, pageSize, search: {...data}})
 		},
 		onAdd () {
-			myDispatch(dispatch, 'parkauth/showModal', {modalType: 'create', currentKey: null})
+			myDispatch(dispatch, 'parkauth/showModal', {modalType: 'create', currentKey: null, isTempAuth: false, isBlackAuth: false})
 		},
 		onBatchAdd () {
 			myDispatch(dispatch, 'parkauth/common', {batchModalVisible: true})

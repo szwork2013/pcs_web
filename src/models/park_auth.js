@@ -2,7 +2,9 @@ import * as service from '../services/park_auth'
 import { comCRUDModel } from '../utils/base_model'
 
 const state = {
-	batchModalVisible: false
+	batchModalVisible: false,
+	isTempAuth: false,
+	isBlackAuth: false
 }
 
 const effects = {
