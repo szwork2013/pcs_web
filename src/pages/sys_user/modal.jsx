@@ -1,10 +1,11 @@
 import React from 'react'
 import { Modal, Form, Input, Radio, Select, Checkbox } from 'antd'
-import { valid_required, valid_max, valid_phone, valid_email } from '../../utils/validation.js'
+import { valid_required, valid_max, valid_email, checkSpecialChar, checkPhone } from '../../utils/validation'
+import { formItemLayout } from '../../utils'
 
 const FormItem = Form.Item
 
-const SysUserModal = ({visible, onCancel, onOk, item, roleList,  
+const SysUserModal = ({visible, onCancel, onOk, item, roleList, loginNameValid, phoneValid, dispatch, currentKey,
 	form: {
 		resetFields,
     getFieldDecorator,
@@ -25,15 +26,6 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList,
     })
   }
 
-	const formItemLayout = {
-		labelCol: {
-			span: 6
-		},
-		wrapperCol: {
-			span: 14
-		}
-	}
-
 	const modalProps = {
 		title: '用户管理',
 		visible,
@@ -41,6 +33,7 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList,
 		onCancel,
 		afterClose () {
 			resetFields()
+			dispatch({type: 'sysuser/common', payload: {loginNameValid: '', phoneValid: ''}})
 		},
 		wrapClassName: 'vertical-center-modal'
 	}
@@ -51,43 +44,79 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList,
 		)
 	})
 
+	const checkLoginName = (rule, value, callback) => {
+		if (value) {
+			if (value.length > 15) {
+				callback('登录名最大长度为15')
+				dispatch({type: 'sysuser/common', payload: {loginNameValid: 'error'}})
+				return
+			}
+			if (checkSpecialChar(value)) {
+				callback('登录名不能包含特殊字符')
+				dispatch({type: 'sysuser/common', payload: {loginNameValid: 'error'}})
+				return
+			}
+			const fieldsValue = getFieldsValue()
+			dispatch({type: 'sysuser/checkLoginName', payload: {loginName: fieldsValue['loginName'], callback, id: currentKey}})
+		} else {
+			callback('登录名不能为空')
+			dispatch({type: 'sysuser/common', payload: {loginNameValid: 'error'}})
+		}
+	}
+
+	const checkPhoneValid = (rule, value, callback) => {
+		if (value) {
+			if (!checkPhone(value)) {
+				callback('手机号格式错误')
+				dispatch({type: 'sysuser/common', payload: {phoneValid: 'error'}})
+				return
+			}
+			const fieldsValue = getFieldsValue()
+			dispatch({type: 'sysuser/checkPhone', payload: {phone: fieldsValue['phone'], callback, id: currentKey}})
+		} else {
+			callback('手机号不能为空')
+			dispatch({type: 'sysuser/common', payload: {phoneValid: 'error'}})
+		}
+	}
+
 	return (
 		<Modal {...modalProps}>
 			<Form horizontal>
-				<FormItem label='姓名：' {...formItemLayout}>
+				<FormItem label='姓名：' {...formItemLayout()}>
 					{getFieldDecorator('userName', {
             initialValue: item.userName,
             rules: [valid_required('姓名不能为空'), valid_max(10, "姓名最大长度为10")]
           })(<Input />)}
 				</FormItem>
-				<FormItem label='登录名：' {...formItemLayout}>
+				<FormItem label='登录名：' {...formItemLayout()} required hasFeedback validateStatus={loginNameValid}>
 					{getFieldDecorator('loginName', {
             initialValue: item.loginName,
-            rules: [valid_required('登录名不能为空'), valid_max(10, "登录名最大长度为10")]
+						validateTrigger: 'onBlur',
+            rules: [{validator: checkLoginName}]
           })(<Input />)}
 				</FormItem>
-				<FormItem label='手机号：' {...formItemLayout}>
+				<FormItem label='手机号：' required hasFeedback validateStatus={phoneValid} {...formItemLayout()}>
 					{getFieldDecorator('phone', {
             initialValue: item.phone,
-            rules: [valid_required('手机号不能为空'), valid_phone()]
+            validateTrigger: 'onBlur',
+            rules: [{validator: checkPhoneValid}]
           })(<Input />)}
 				</FormItem>
-				<FormItem label='邮箱：' {...formItemLayout}>
+				<FormItem label='邮箱：' {...formItemLayout()}>
 					{getFieldDecorator('email', {
             initialValue: item.email,
             rules: [valid_max(25, "邮箱最大长度为25"), valid_email()]
           })(<Input />)}
 				</FormItem>
-				<FormItem label='性别：' {...formItemLayout}>
+				{/*<FormItem label='性别：' {...formItemLayout}>
 					{getFieldDecorator('sex', {
-            initialValue: item.sex,
-            rules: [valid_required('性别不能为空')]
+            initialValue: item.sex
           })(<Radio.Group>
               <Radio value='1'>男</Radio>
               <Radio value='2'>女</Radio>
             </Radio.Group>)}
-				</FormItem>
-				<FormItem label='所属角色：' {...formItemLayout}>
+				</FormItem>*/}
+				<FormItem label='所属角色：' {...formItemLayout()}>
 					{getFieldDecorator('roleId', {
             initialValue: item.roleId,
 						rules: [valid_required('所属角色不能为空')]
@@ -95,7 +124,7 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList,
 							{RoleOptions}
 						</Select>)}
 				</FormItem>
-				<FormItem label='用户类别：' {...formItemLayout}>
+				<FormItem label='用户类别：' {...formItemLayout()}>
 					{getFieldDecorator('userType', {
             initialValue: item.userType || 'web'
           })(<Select placeholder='请选择用户类别'>
@@ -103,12 +132,12 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList,
 							<Select.Option value='terminal'>终端用户</Select.Option>
 						</Select>)}
 				</FormItem>
-				<FormItem label='备注：' {...formItemLayout}>
+				<FormItem label='备注：' {...formItemLayout()}>
 					{getFieldDecorator('brief', {
             initialValue: item.brief
           })(<Input type="textarea" />)}
 				</FormItem>
-				<FormItem label='状态：' {...formItemLayout}>
+				<FormItem label='状态：' {...formItemLayout()}>
 					{getFieldDecorator('status', {
 						valuePropName: 'checked',
             initialValue: item.status !== 'nn'

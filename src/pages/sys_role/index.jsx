@@ -6,7 +6,7 @@ import Modal from './modal'
 import MenuSettingModal from '../sys_role_menu/menu_setting_modal'
 
 const SysRole = ({dispatch, sysrole}) => {
-  const { dataSource, loading, currentItem, modalType, modalVisible, currentKey, menuSettingVisible, menus, checkMenus} = sysrole
+  const { dataSource, loading, currentItem, modalType, modalVisible, currentKey, menuSettingVisible, menus, checkMenus, roleNameValid} = sysrole
   const searchProps = {
     placeholder: '角色名',
     onSearch (data) {
@@ -18,9 +18,12 @@ const SysRole = ({dispatch, sysrole}) => {
   }
 
   const modalProps = {
+    dispatch,
     item: modalType === 'create' ? {} : currentItem,
     type: modalType,
     visible: modalVisible,
+    roleNameValid,
+    currentKey,
     onOk (data) {
       if (currentKey) {
         data.id = currentKey

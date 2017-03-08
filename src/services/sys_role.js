@@ -21,3 +21,7 @@ export async function uptService(params) {
 export async function saveRoleMenuService(params) {
 	return post(`${url}/saveRoleMenu`, params)
 }
+
+export async function checkRoleNameService(params) {
+	return get(`${url}/checkRoleName`, params)
+}

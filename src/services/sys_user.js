@@ -82,3 +82,11 @@ export async function changePwdService(params) {
 export async function logoutService(params) {
 	return post(`${url}/logout`, params)
 }
+
+export async function checkLoginNameService(params) {
+	return get(`${url}/checkLoginName`, params)
+}
+
+export async function checkPhoneService(params) {
+	return get(`${url}/checkPhone`, params)
+}

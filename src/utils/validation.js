@@ -171,7 +171,7 @@ const checkIDCard = card => {
    return reg.test(card) 
 }
 
-const checkPhone = (phone) => {
+export function checkPhone (phone) {
 	if (!(/^1[34578]\d{9}$/.test(phone))) { 
 		return false
 	} else {
@@ -186,4 +186,10 @@ const checkIP = (ip) => {
     }else{
         return false;
     }
+}
+
+//验证是否包含特殊字符（true为包含）
+export function checkSpecialChar (s) {
+	var containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)  (\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)  (\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)  (\<)(\>)(\?)(\)]+/)
+	return (containSpecial.test(s))
 }

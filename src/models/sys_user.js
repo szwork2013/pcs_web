@@ -6,7 +6,9 @@ export default {
 	namespace: 'sysuser',
 	state: {
 		...comState,
-		roleUserModalVisible: false
+		roleUserModalVisible: false,
+		loginNameValid: '',
+		phoneValid: ''
 	},
 	subscriptions: {
 		setup ({dispatch, history}) {
@@ -28,11 +30,10 @@ export default {
 			}
 		},
 		*getOne ({payload}, {call, put}) {
-			yield put({type: 'common/getRoleList'})
-			yield put({ type: 'common', payload: {currentKey: payload.id}})
+			yield put({ type: 'showModal', payload: {currentItem: null, currentKey: payload.id, modalType: 'edit'}})
 			const data = yield call(sysUser.getOne, {id: payload.id})
 			if (data) {
-				yield put({type: 'showModal', payload: {currentItem: data, modalType: 'edit'}})
+				yield put({type: 'success', payload: {currentItem: data}})
 			} else {
 				yield put({type: 'fail', payload: {currentItem: null}})
 			}
@@ -74,9 +75,31 @@ export default {
 				yield put({type: 'fail'})
 			}
 		},
-		*openModal ({payload}, {call, put}) {
-				yield put({type: 'common/getRoleList'})
-				yield put({type: 'showModal', payload})
+		// *openModal ({payload}, {call, put}) {
+		// 		yield put({type: 'common/getRoleList'})
+		// 		yield put({type: 'showModal', payload})
+		// },
+		*checkLoginName ({payload}, {call, put}) {
+			yield put({type: 'common', payload: {loginNameValid: 'validating'}})
+			const data = yield call(sysUser.checkLoginNameService, payload)
+			if (data === 'success') {
+				yield	put({type: 'success', payload: {loginNameValid: 'success'}})
+				payload.callback()
+			} else {
+				payload.callback('登录名不能重复')
+				yield put({type: 'fail', payload: {loginNameValid: 'error'}})
+			}
+		},
+		*checkPhone ({payload}, {call, put}) {
+			yield put({type: 'common', payload: {phoneValid: 'validating'}})
+			const data = yield call(sysUser.checkPhoneService, payload)
+			if (data === 'success') {
+				yield	put({type: 'success', payload: {phoneValid: 'success'}})
+				payload.callback()
+			} else {
+				payload.callback('手机号不能重复')
+				yield put({type: 'fail', payload: {phoneValid: 'error'}})
+			}
 		}
 	},
 	reducers: {

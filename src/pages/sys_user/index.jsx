@@ -6,7 +6,7 @@ import Modal from './modal'
 // import RoleUserSettingModal from '../sys_role_user/role_user_setting'
 
 const SysUser = ({dispatch, sysuser, common}) => {
-  const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey} = sysuser
+  const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey, loginNameValid, phoneValid} = sysuser
   const { roleList } = common
 
   const searchProps = {
@@ -15,7 +15,8 @@ const SysUser = ({dispatch, sysuser, common}) => {
       dispatch({type: 'sysuser/getList', payload: {pageIndex: 1, pageSize, key: data.keyword}})
     },
     onAdd () {
-      dispatch({type: 'sysuser/openModal', payload: {modalType: 'create', currentKey: null}})
+      dispatch({type: 'sysuser/showModal', payload: {modalType: 'create', currentKey: null}})
+      dispatch({type: 'common/getRoleList'})
     }
   }
 
@@ -24,6 +25,10 @@ const SysUser = ({dispatch, sysuser, common}) => {
     type: modalType,
     visible: modalVisible,
     roleList,
+    loginNameValid,
+    phoneValid,
+    dispatch,
+    currentKey,
     onOk (data) {
       if (currentKey) {
         data.id = currentKey
@@ -50,7 +55,8 @@ const SysUser = ({dispatch, sysuser, common}) => {
       dispatch({type: 'sysuser/del', payload: {id}})
     },
     onEdit (id) {
-      dispatch({type: 'sysuser/getOne', payload: {id, modalType: 'edit'}})
+      dispatch({type: 'sysuser/getOne', payload: {id}})
+      dispatch({type: 'common/getRoleList'})
     },
     onResetPwd (id) {
       dispatch({type: 'sysuser/resetPwd', payload: {id}})

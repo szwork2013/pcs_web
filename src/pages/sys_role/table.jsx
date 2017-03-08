@@ -30,11 +30,15 @@ const Table = ({loading, dataSource, onStatusChange, onEdit, onMenuSetting}) => 
 			render (text, row) {
 				return (
 					<ButtonGroup>
+						<Button type='primary' size='small' onClick={() => onMenuSetting(row) }>菜单设置</Button>
+						<Button type='goest' size='small' onClick={() => onEdit(row) }>编辑</Button>
+					</ButtonGroup>
+					/*<ButtonGroup>
 						{row.status === 'aa' ? <div><Button type='primary' size='small' onClick={() => onMenuSetting(row) }>菜单设置</Button>
 								<Button type='goest' size='small' onClick={() => onStatusChange(row.id, 'nn') }>停用</Button></div>
 							: <div><Button type='primary' size='small' onClick={() => onStatusChange(row.id, 'aa') }>启用</Button>
 								<Button type='goest' size='small' onClick={() => onEdit(row) }>编辑</Button></div>}
-					</ButtonGroup>
+					</ButtonGroup>*/
 				)
 			}
 		}
