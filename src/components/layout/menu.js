@@ -4,6 +4,7 @@ import { Link } from 'dva/router'
 // import { menu } from '../../utils'
 
 const Menus = ({ siderFold, darkTheme, location, isNavbar, handleClickNavMenu, userMenus }) => {
+  userMenus = userMenus || []
   const topMenus = userMenus.map(item => item.key)
   const getMenus = (menuArray, siderFold, parentPath) => {
     parentPath = parentPath || '/'
