@@ -19,7 +19,7 @@ const ParkAreaModal = ({item, form: {
 		}
 	}
 	return (
-		<Form horizontal style={{marginTop: 12}}>
+		<Form style={{marginTop: 12}}>
 			<FormItem label='上级停车场：' {...formItemLayout}>
 				{getFieldDecorator('pid', {
 					initialValue: item.pid

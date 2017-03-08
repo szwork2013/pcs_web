@@ -81,7 +81,7 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList, loginNameValid, 
 
 	return (
 		<Modal {...modalProps}>
-			<Form horizontal>
+			<Form>
 				<FormItem label='姓名：' {...formItemLayout()}>
 					{getFieldDecorator('userName', {
             initialValue: item.userName,

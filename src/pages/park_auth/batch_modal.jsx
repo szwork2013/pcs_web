@@ -51,7 +51,7 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers,
 	return (
 		<Modal {...modalProps}>
 			<Alert showIcon message="批量模式只针对临时卡授权" type="warning" />
-			<Form horizontal>
+			<Form>
 				<Row>
 					<Col {...colProps}>
 						<FormItem label='卡内编码：' {...formItemLayout(6,18)}>

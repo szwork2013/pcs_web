@@ -49,7 +49,7 @@ const ParkCameraModal = ({visible, onCancel, onOk, item, producers,
 
 	return (
 		<Modal {...modalProps}>
-			<Form horizontal>
+			<Form>
 				<FormItem label='IP：' {...formItemLayout}>
 					{getFieldDecorator('ip', {
             initialValue: item.ip,

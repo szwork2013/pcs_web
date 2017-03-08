@@ -18,7 +18,7 @@ const MSearch = ({onSearch, onAdd, onBatchAdd, authTypes, form: {
 	)
 
 	return (
-		<Form inline style={{marginBottom: 12}}>
+		<Form layout='inline' style={{marginBottom: 12}}>
 			<FormItem>
 					{getFieldDecorator('key')(<Input placeholder='车牌号、卡号'/>)}
 			</FormItem>

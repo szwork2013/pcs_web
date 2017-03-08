@@ -165,6 +165,37 @@ export function valid_IDCard (cb) {
 	}
 }
 
+/**
+ * validation
+ * 车牌号验证
+ * @export
+ * @param {any} cb
+ * @returns
+ */
+export function valid_PlateNum (cb) {
+	return {
+		validator (rule, value, callback) {
+			if (!value || value === '') {
+				callback()
+			} else if (checkPlateNum(value)) {
+				callback()
+				cb && cb('success')
+			} else {
+				callback('车牌号格式错误')
+				cb && cb('error')
+			}
+		}
+	}
+}
+
+export function checkPlateNum (plateNum) {
+	if (!(/^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/.test(plateNum))) { 
+		return false
+	} else {
+		return true
+	}
+}
+
 const checkIDCard = card => {
 	// 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X  
    var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  

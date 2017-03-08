@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Modal, Form, Input, Select, Checkbox, Card } from 'antd'
-import { valid_required, valid_phone, valid_IDCard, valid_max } from '../../utils/validation.js'
+import { valid_required, valid_phone, valid_max, valid_PlateNum } from '../../utils/validation.js'
 import { formItemLayout } from '../../utils'
 import styles from './index.less'
 
@@ -48,9 +48,10 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 		md: 12,
 		lg: 12
 	}
+
 	return (
 		<Modal {...modalProps}>
-			<Form horizontal>
+			<Form>
 				<Card title='卡类信息' style={{marginBottom: 12}} bodyStyle={{padding: 8}}>
 					<Row>
 						<Col {...colProps}>
@@ -75,7 +76,7 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 							<FormItem label='车牌号：' {...formItemLayout(6,18)}>
 								{getFieldDecorator('plate_num', {
 									initialValue: item.plate_num,
-									rules: [valid_required('车牌号不能为空'), valid_max(10)]
+									rules: [valid_required('车牌号不能为空'), valid_PlateNum(), valid_max(10)]
 								})(<Input />)}
 							</FormItem>
 						</Col>
@@ -136,10 +137,10 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 						</FormItem>
 					</Col>
 					<Col {...colProps}>
-						<FormItem label='身份证：' {...formItemLayout(6,18)}>
-							{getFieldDecorator('id_card', {
-								initialValue: item.id_card,
-								rules: [valid_IDCard()]
+						<FormItem label='行驶证号' {...formItemLayout(6,18)}>
+							{getFieldDecorator('driving_num', {
+								initialValue: item.driving_num,
+								rules: [valid_required('行驶证号不能为空')]
 							})(<Input />)}
 						</FormItem>
 					</Col>

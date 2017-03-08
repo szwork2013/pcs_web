@@ -61,7 +61,7 @@ const SysRoleModal = ({dispatch, visible, onCancel, onOk, item, roleNameValid, c
 
 	return (
 		<Modal {...modalProps}>
-			<Form horizontal>
+			<Form>
 				<FormItem label='角色名：' {...formItemLayout()} required hasFeedback validateStatus={roleNameValid}>
 					{getFieldDecorator('roleName', {
             initialValue: item.roleName,
