@@ -1,10 +1,12 @@
 import React from 'react'
-import { Row, Col, Modal, Form, Input, Select, Checkbox, Card } from 'antd'
+import { Row, Col, Modal, Form, Input, Select, Checkbox, Card, DatePicker } from 'antd'
+import moment from 'moment'
 import { valid_required, valid_phone, valid_max, valid_PlateNum } from '../../utils/validation.js'
 import { formItemLayout } from '../../utils'
 import styles from './index.less'
 
 const FormItem = Form.Item
+const { RangePicker } = DatePicker
 
 const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isTempAuth, onAuthChange, isBlackAuth,
 	form: {
@@ -20,10 +22,15 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
       if (errors) {
         return
       }
+			const fieldsValue = getFieldsValue()
+			const rangeDateValue = fieldsValue['rangeDate']
       const data = {
-        ...getFieldsValue(),
+        ...fieldsValue,
+				start_time: rangeDateValue[0] ? rangeDateValue[0].startOf('day').format() : undefined,
+				end_time: rangeDateValue[1] ? rangeDateValue[1].endOf('day').format() : undefined,
 				status: getFieldsValue()['status'] ? 'aa' : 'nn'
       }
+
       onOk(data)
     })
   }
@@ -42,11 +49,9 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 	}
 
 	// const ProducerOptions = producers.map(item => (<Select.Option key={item.id} value={item.itemCode}>{item.itemName}</Select.Option>))
-	const colProps = {
-		xs: 24,
-		sm: 12,
-		md: 12,
-		lg: 12
+	const colProps = {xs: 24, sm: 12, md: 12, lg: 12}
+	const disabledDate = (current) => {
+		return current && current.valueOf() < moment().startOf('day')
 	}
 
 	return (
@@ -73,14 +78,6 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 					</Row>
 					<Row>
 						<Col {...colProps}>
-							<FormItem label='车牌号：' {...formItemLayout(6,18)}>
-								{getFieldDecorator('plate_num', {
-									initialValue: item.plate_num,
-									rules: [valid_required('车牌号不能为空'), valid_PlateNum(), valid_max(10)]
-								})(<Input />)}
-							</FormItem>
-						</Col>
-						<Col {...colProps}>
 							<FormItem label='授权类别：' {...formItemLayout(6,18)}>
 								{getFieldDecorator('auth_type', {
 									initialValue: item.auth_type,
@@ -91,6 +88,26 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 									</Select>)}
 							</FormItem>
 						</Col>
+						{
+							isTempAuth ? '' : <Col {...colProps}>
+								<FormItem label='授权效期：' {...formItemLayout(6,18)}>
+									{getFieldDecorator('rangeDate', {
+										initialValue: (item.start_time && item.end_time) ? [moment(item.start_time), moment(item.end_time)]: null,
+										rules: [valid_required('授权效期不能为空')]
+									})(<RangePicker style={{width: '100%'}} format='YYYY-MM-DD' disabledDate={disabledDate}/>)}
+								</FormItem>
+							</Col>
+						}
+						{
+							isTempAuth ? '' : <Col {...colProps}>
+								<FormItem label='车牌号：' {...formItemLayout(6,18)}>
+									{getFieldDecorator('plate_num', {
+										initialValue: item.plate_num,
+										rules: [valid_required('车牌号不能为空'), valid_PlateNum(), valid_max(10)]
+									})(<Input />)}
+								</FormItem>
+							</Col>
+						}
 						{
 							isBlackAuth ? '' : <Col {...colProps}>
 								<FormItem label='计费规则：' {...formItemLayout(6,18)}>

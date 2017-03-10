@@ -37,7 +37,7 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
 			myDispatch(dispatch, 'parkauth/remove', {id})
     },
     onEdit (data) {
-			myDispatch(dispatch, 'parkauth/showModal', {currentKey:data.id, currentItem: data, modalType: 'edit'})
+			myDispatch(dispatch, 'parkauth/showModal', {currentKey:data.id, currentItem: data, modalType: 'edit', isTempAuth: data.auth_type === '003', isBlackAuth: data.auth_type === '005'})
     }
 	})
 

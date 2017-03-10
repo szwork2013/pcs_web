@@ -1,3 +1,9 @@
+// 推荐在入口文件全局设置 locale
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn')
+// moment().local();
+
 import dva from 'dva';
 import './index.css';
 

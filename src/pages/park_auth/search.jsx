@@ -33,7 +33,7 @@ const MSearch = ({onSearch, onAdd, onBatchAdd, authTypes, form: {
 			</FormItem>
 			<FormItem style={{float: 'right'}}>
 				<Button size='large' type='goest' onClick={() => onAdd()} style={{marginRight: 12}}>添加</Button>
-				<Button size='large' type='goest' onClick={() => onBatchAdd()}>批量添加</Button>
+				{/*<Button size='large' type='goest' onClick={() => onBatchAdd()}>批量添加</Button>*/}
 			</FormItem>
 		</Form>
 	)
