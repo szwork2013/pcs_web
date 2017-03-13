@@ -6,24 +6,44 @@ import { formItemLayout } from '../../utils'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
-const ChannelModal = ({item, parkAreas, form: {
+const ChannelModal = ({parkchannel, parkAreas, parkTerminals, parkCameras, onSave, form: {
 		resetFields,
     getFieldDecorator,
     validateFields,
     getFieldsValue
 }}) => {
-	item = item || {}
-	parkAreas = parkAreas || []
+	const { modalType } = parkchannel
+	const item = modalType === 'create' ? {} : parkchannel.currentItem
 
 	const ParkAreaOptions = parkAreas.map((item, key) => (
 		<Select.Option key={key} value={item.id}>{item.area_name}</Select.Option>
 	))
 
+	const ParkTerminalOptions = parkTerminals.map((item, key) => (
+		<Select.Option key={key} value={item.id}>{item.ip}</Select.Option>
+	))
+
+	const ParkCameraOptions = parkCameras.map((item, key) => (
+		<Select.Option key={key} value={item.id}>{item.ip}</Select.Option>
+	))
+
+	const handleOk = () => {
+    validateFields((errors) => {
+      if (errors) {
+        return
+      }
+      const data = {
+        ...getFieldsValue()
+      }
+      onSave(data)
+    })
+  }
+
 	return (
 		<Form style={{marginTop: 12}}>
 			<FormItem label='上级停车场：' {...formItemLayout(6, 6)}>
-				{getFieldDecorator('pid', {
-					initialValue: item.pid
+				{getFieldDecorator('area_id', {
+					initialValue: item.area_id
 				})(
 					<Select disabled>
 						<Select.Option value='root'>根节点</Select.Option>
@@ -32,31 +52,31 @@ const ChannelModal = ({item, parkAreas, form: {
 				)}
 			</FormItem>
 			<FormItem label='通道名称：' {...formItemLayout(6, 6)}>
-				{getFieldDecorator('pid', {
-					initialValue: item.pid
+				{getFieldDecorator('name', {
+					initialValue: item.name
 				})(<Input />)}
 			</FormItem>
 			<FormItem label='所属终端：' {...formItemLayout(6, 6)}>
-				{getFieldDecorator('pid', {
-					initialValue: item.pid
+				{getFieldDecorator('terminal_id', {
+					initialValue: item.terminal_id
 				})(
 					<Select>
-
+						{ParkTerminalOptions}
 					</Select>
 				)}
 			</FormItem>
 			<FormItem label='管理摄像机：' {...formItemLayout(6, 6)}>
-				{getFieldDecorator('pid', {
-					initialValue: item.pid
+				{getFieldDecorator('cameras', {
+					initialValue: item.cameras
 				})(
-					<Select>
-
+					<Select multiple>
+						{ParkCameraOptions}
 					</Select>
 				)}
 			</FormItem>
 			<FormItem label='通道类型：' {...formItemLayout(6, 6)}>
-				{getFieldDecorator('pid', {
-					initialValue: item.pid
+				{getFieldDecorator('type', {
+					initialValue: item.type || 'in'
 				})(
 					<RadioGroup>
 						<RadioButton value="in">入口</RadioButton>
@@ -71,7 +91,7 @@ const ChannelModal = ({item, parkAreas, form: {
 				})(<Checkbox />)}
 			</FormItem>
 			<FormItem wrapperCol={{offset: 6, span: 6}}>
-				<Button type='primary'>保存</Button>
+				<Button type='primary' onClick={handleOk}>保存</Button>
 			</FormItem>
 		</Form>
 	)

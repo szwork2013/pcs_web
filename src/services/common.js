@@ -11,3 +11,15 @@ export async function getDictItemService(params) {
 export async function getParkAreaService(params) {
 	return get("common/getParkArea", params)
 }
+
+export async function getParkTerminalService(params) {
+	return get("common/getParkTerminal", params)
+}
+
+export async function getParkChannelService(params) {
+	return get("common/getParkChannel", params)
+}
+
+export async function getParkCameraService(params) {
+	return get("common/getParkCamera", params)
+}

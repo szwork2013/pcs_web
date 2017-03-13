@@ -7,14 +7,22 @@ import ParkAreaModal from './park_area_modal'
 import ChannelModal from './channel_modal'
 import { myDispatch } from '../../utils'
 
-const ParkArea = ({dispatch, common, parkarea}) => {
+const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
 	const { areaTree, selectTree, type } = parkarea 
-	const { parkAreas } = common
+	const { parkAreas, parkTerminals, parkCameras } = common
 	const treeProps = {
 		areas: areaTree,
 		onAreaSelect (data) {
 			myDispatch(dispatch, 'parkarea/common', {selectTree: data})
+			if (!data) {
+				return
+			}
 			myDispatch(dispatch, 'common/getParkArea')
+			if (data.type === 'channel') {
+				myDispatch(dispatch, 'common/getParkTerminal')
+				myDispatch(dispatch, 'common/getParkCamera')
+				myDispatch(dispatch, 'parkchannel/getOne', {id: data.key, modalType: 'edit'})
+			}			
 		}
 	}
 	const topPanelProps = {
@@ -24,7 +32,10 @@ const ParkArea = ({dispatch, common, parkarea}) => {
 		parkAreas
 	}
 	const channelModalProps = {
-		parkAreas
+		parkAreas,
+		parkchannel,
+		parkTerminals,
+		parkCameras
 	}
 	return (
 		<div className='content-inner'>
@@ -44,4 +55,4 @@ ParkArea.propTypes = {
 	
 }
 
-export default connect(({common, parkarea}) => ({common, parkarea}))(ParkArea)
+export default connect(({common, parkchannel, parkarea}) => ({common, parkchannel, parkarea}))(ParkArea)

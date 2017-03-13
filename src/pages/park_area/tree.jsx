@@ -28,7 +28,7 @@ const MTree = ({areas, onAreaSelect}) => {
 		defaultExpandAll: true,
 		onSelect (keys) {
 			if (!keys || keys.length === 0) {
-				onAreaSelect({})
+				onAreaSelect()
 			} else {
 				let temp = keys[0].split('-')
 				onAreaSelect({key: temp[0], type: temp[1], title: temp[2]})
