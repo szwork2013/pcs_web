@@ -22,7 +22,7 @@ const ParkAreaModal = ({item, form: {
 		<Form style={{marginTop: 12}}>
 			<FormItem label='上级停车场：' {...formItemLayout}>
 				{getFieldDecorator('pid', {
-					initialValue: item.pid
+					initialValue: ''
 				})(<Input />)}
 			</FormItem>
 			<FormItem label='停车场名称：' {...formItemLayout}>

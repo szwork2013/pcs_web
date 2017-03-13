@@ -3,7 +3,8 @@ import { comCRUDModel } from '../utils/base_model'
 
 const state = {
 	areaTree: [],
-	selectTree: {}
+	selectTree: {},
+	type: ''
 }
 
 const effects = {

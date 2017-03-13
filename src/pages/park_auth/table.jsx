@@ -5,7 +5,7 @@ import { Button, Popconfirm } from 'antd'
 
 const ButtonGroup = Button.Group
 
-const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, onDel, onEdit}) => {
+const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, onDel, onEdit, onRecharge}) => {
   const columns = [
     {
 			title: '车牌号',
@@ -46,13 +46,18 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 			width: 220,
 			render (text, row) {
 				if (row.status === 'aa') {
-					return (<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>)
+					return (
+						<ButtonGroup>
+							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
+							<Button type='ghost' size='small' onClick={() => onRecharge(row) }>续费</Button>
+						</ButtonGroup>
+						)
 				} else {
 					return (
 						<ButtonGroup>
 							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
 							<Popconfirm title='确认删除该授权？' onConfirm={() => {onDel(row.id)}}><Button type='ghost' size='small'>删除</Button></Popconfirm>
-							</ButtonGroup>
+						</ButtonGroup>
 					)
 				}
 			}

@@ -2,11 +2,10 @@ import React from 'react'
 import { Row, Col, Modal, Form, Input, Alert } from 'antd'
 import { valid_required } from '../../utils/validation.js'
 import { formItemLayout } from '../../utils'
-import styles from './index.less'
 
 const FormItem = Form.Item
 
-const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers,
+const ParkAuthModal = ({visible, onCancel, onOk, item,
 	form: {
 		resetFields,
     getFieldDecorator,
@@ -14,22 +13,17 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers,
     getFieldsValue
   }}) => {
 	item = item || {}
-	authTypes = authTypes || []
 	const handleOk = () => {
     validateFields((errors) => {
       if (errors) {
         return
       }
       const data = {
-        ...getFieldsValue(),
-				status: getFieldsValue()['status'] ? 'aa' : 'nn'
+        ...getFieldsValue()
       }
       onOk(data)
     })
   }
-	const AuthTypeOptions = authTypes.map((item, key) => (
-		<Select.Option key={key} value={item.itemCode}>{item.itemName}</Select.Option>)
-	)
 	const modalProps = {
 		title: '批量授权管理',
 		visible,
@@ -41,7 +35,6 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers,
 		}
 	}
 
-	// const ProducerOptions = producers.map(item => (<Select.Option key={item.id} value={item.itemCode}>{item.itemName}</Select.Option>))
 	const colProps = {
 		xs: 24,
 		sm: 12,

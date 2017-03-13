@@ -6,7 +6,8 @@ export default {
 	state: {
 		roleList: [],
 		producers: [],
-		authTypes: []
+		authTypes: [],
+		parkAreas: []
 	},
 	subscriptions: {
 		setup ({dispatch, history}) {
@@ -35,6 +36,14 @@ export default {
 				yield put({type: 'success', payload: {authTypes: data}})
 			} else {
 				yield put({type: 'fail', payload: {authTypes: []}})
+			}
+		},
+		*getParkArea ({payload}, {call, put}) {
+			const data = yield call(service.getParkAreaService)
+			if (data) {
+				yield put({type: 'success', payload: {parkAreas: data}})
+			} else {
+				yield put({type: 'fail', payload: {parkAreas: []}})
 			}
 		}
 	},

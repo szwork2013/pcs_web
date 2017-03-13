@@ -3,8 +3,10 @@ import { comCRUDModel } from '../utils/base_model'
 
 const state = {
 	batchModalVisible: false,
+	chargeModalVisible: false,
 	isTempAuth: false,
-	isBlackAuth: false
+	isBlackAuth: false,
+	auth_type: ''
 }
 
 const effects = {

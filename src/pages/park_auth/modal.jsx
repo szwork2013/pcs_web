@@ -108,15 +108,6 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 								</FormItem>
 							</Col>
 						}
-						{
-							isBlackAuth ? '' : <Col {...colProps}>
-								<FormItem label='计费规则：' {...formItemLayout(6,18)}>
-									{getFieldDecorator('charge_id', {
-										initialValue: item.charge_id
-									})(<Select />)}
-								</FormItem>
-							</Col>
-						}
 						<Col {...colProps}>
 							<FormItem label='备注：' {...formItemLayout(6,18)}>
 								{getFieldDecorator('brief', {

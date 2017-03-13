@@ -3,11 +3,12 @@ import Table from './table'
 import { connect } from 'dva'
 import Modal from './modal'
 import BatchModal from './batch_modal'
+import AuthChargeModal from './auth_charge_modal'
 import Search from './search'
 import { myDispatch, defaultTableProps, defaultModalProps } from '../../utils'
 
 const ParkAuth = ({dispatch, parkauth, common}) => {
-	const { pageSize, currentKey, search, batchModalVisible, isTempAuth, isBlackAuth} = parkauth
+	const { pageSize, currentKey, search, batchModalVisible, isTempAuth, isBlackAuth, chargeModalVisible, auth_type} = parkauth
 	const { authTypes } = common
 	const modalProps = defaultModalProps(parkauth, {
 		authTypes,
@@ -38,7 +39,10 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
     },
     onEdit (data) {
 			myDispatch(dispatch, 'parkauth/showModal', {currentKey:data.id, currentItem: data, modalType: 'edit', isTempAuth: data.auth_type === '003', isBlackAuth: data.auth_type === '005'})
-    }
+    },
+		onRecharge (data) {
+			myDispatch(dispatch, 'parkauth/common', {chargeModalVisible: true, auth_type: data.auth_type})
+		}
 	})
 
 	const searchProps = {
@@ -61,12 +65,21 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
     }
 	}
 
+	const authChargeProps = {
+		visible: chargeModalVisible,
+		auth_type,
+		onCancel () {
+			myDispatch(dispatch, 'parkauth/common', {chargeModalVisible: false})
+    }
+	}
+
 	return (
 		<div className='content-inner'>
 			<Search {...searchProps}/>
 			<Table {...tableProps}/>
       <Modal {...modalProps}/>
 			<BatchModal {...batchModalProps}/>
+			<AuthChargeModal {...authChargeProps}/>
 		</div>
 	)
 }

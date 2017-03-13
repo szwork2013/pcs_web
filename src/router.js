@@ -141,6 +141,7 @@ export default ({ history, app }) => {
           getComponent (nextState, cb) {
             require.ensure([], require => {
 							registerModel(app, require('./models/park_area'))
+              registerModel(app, require('./models/park_channel'))
               cb(null, require('./pages/park_area'))
             })
           }

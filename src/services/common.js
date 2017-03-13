@@ -7,3 +7,7 @@ export async function getRoleService(params) {
 export async function getDictItemService(params) {
 	return get("common/getDictItem", params)
 }
+
+export async function getParkAreaService(params) {
+	return get("common/getParkArea", params)
+}
