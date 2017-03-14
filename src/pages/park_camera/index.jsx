@@ -5,7 +5,7 @@ import SearchPanel from '../../components/search_panel'
 import Modal from './modal'
 
 const ParkCamera = ({dispatch, parkcamera, common}) => {
-  const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey, search} = parkcamera
+  const { total, ipValid, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey, search} = parkcamera
 	const { producers } = common
 
   const searchProps = {
@@ -23,6 +23,8 @@ const ParkCamera = ({dispatch, parkcamera, common}) => {
     type: modalType,
     visible: modalVisible,
 		producers,
+    ipValid,
+    dispatch,
     onOk (data) {
       if (currentKey) {
         data.id = currentKey

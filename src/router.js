@@ -157,6 +157,17 @@ export default ({ history, app }) => {
             })
           }
         },
+        {
+          path: 'dict',
+          name: 'dict',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/dict'))
+              cb(null, require('./pages/dict'))
+            })
+          }
+        },
         // genRouter('parkarea', './models/park_area', './pages/park_area'),
 				{
 					path: '*',

@@ -5,7 +5,8 @@ import { message } from '../utils'
 export default {
 	namespace: 'parkcamera',
 	state: {
-		...comState
+		...comState,
+		ipValid: ''
 	},
 	subscriptions: {
 		setup ({dispatch, history}) {
@@ -57,6 +58,17 @@ export default {
 		*openModal ({payload}, {call, put}) {
 				yield put({type: 'common/getProducerDict'})
 				yield put({type: 'showModal', payload})
+		},
+		*checkCameraIp ({payload}, {call, put}) {
+			yield put({type: 'common', payload: {ipValid: 'validating'}})
+			const data = yield call(service.checkCameraIp, payload)
+			if (data === 'success') {
+				yield	put({type: 'success', payload: {ipValid: 'success'}})
+				payload.callback()
+			} else {
+				payload.callback('IP不能重复')
+				yield put({type: 'fail', payload: {ipValid: 'error'}})
+			}
 		}
 	},
 	reducers: {

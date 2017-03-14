@@ -6,6 +6,10 @@ export async function getPagingService(params) {
 	return get(url, params)
 }
 
+export async function checkTerminalIp(params) {
+	return get(`${url}/checkTerminalIp`, params)
+}
+
 export async function addService(params) {
 	return post(url, params)
 }

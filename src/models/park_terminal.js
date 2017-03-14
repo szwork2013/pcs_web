@@ -5,7 +5,8 @@ import { message } from '../utils'
 export default {
 	namespace: 'parkterminal',
 	state: {
-		...comState
+		...comState,
+		ipValid: ''
 	},
 	subscriptions: {
 		setup ({dispatch, history}) {
@@ -52,6 +53,17 @@ export default {
         yield put({type: 'getList', payload: {pageIndex: 1, pageSize: 10}})
       } else {
 				yield put({type: 'fail'})
+			}
+		},
+		*checkTerminalIp ({payload}, {call, put}) {
+			yield put({type: 'common', payload: {ipValid: 'validating'}})
+			const data = yield call(service.checkTerminalIp, payload)
+			if (data === 'success') {
+				yield	put({type: 'success', payload: {ipValid: 'success'}})
+				payload.callback()
+			} else {
+				payload.callback('IP不能重复')
+				yield put({type: 'fail', payload: {ipValid: 'error'}})
 			}
 		}
 	},

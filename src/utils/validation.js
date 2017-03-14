@@ -210,7 +210,7 @@ export function checkPhone (phone) {
 	}
 }
 
-const checkIP = (ip) => {
+export function checkIP (ip) {
     var ipRegExp= /([0-9]{1,3}\.{1}){3}[0-9]{1,3}/;
     if(ipRegExp.exec(ip)){
         return true;

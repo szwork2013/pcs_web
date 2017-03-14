@@ -5,7 +5,7 @@ import SearchPanel from '../../components/search_panel'
 import Modal from './modal'
 
 const ParkTerminal = ({dispatch, parkterminal}) => {
-	const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey, search} = parkterminal
+	const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey, search, ipValid} = parkterminal
 
   const searchProps = {
     placeholder: 'IP',
@@ -21,6 +21,8 @@ const ParkTerminal = ({dispatch, parkterminal}) => {
     item: modalType === 'create' ? {} : currentItem,
     type: modalType,
     visible: modalVisible,
+    ipValid,
+    dispatch,
     onOk (data) {
       if (currentKey) {
         data.id = currentKey
