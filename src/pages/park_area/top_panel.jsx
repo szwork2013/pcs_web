@@ -2,15 +2,11 @@ import React, {PropTypes} from 'react'
 import { Dropdown, Menu, Alert } from 'antd'
 import styles from './index.less'
 
-const TopPanel = ({selectTree}) => {
+const TopPanel = ({selectTree, onOp}) => {
 	selectTree = selectTree || {}
 
-	function handleButtonClick(e) {
-
-	}
-
 	function handleMenuClick(e) {
-
+		onOp(e.key)
 	}
 
 	const menu = (
@@ -22,7 +18,7 @@ const TopPanel = ({selectTree}) => {
 	)
 	return (
 		<div>
-			<Dropdown.Button type='primary' overlay={menu} className={styles.topBtn}>
+			<Dropdown.Button type='primary' overlay={menu} className={styles.topBtn} onClick={() => onOp('add_area')}>
 				添加停车场
 			</Dropdown.Button>
 			<Alert message={`已选择：${selectTree.title || ''}`} type="success" />

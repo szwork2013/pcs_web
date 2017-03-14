@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import { Tree } from 'antd'
 
 const TreeNode = Tree.TreeNode
-const MTree = ({areas, onAreaSelect}) => {
+const MTree = ({areas, selectedKeys, onAreaSelect}) => {
 	const Nodes = areas.map(item => {
 		let type = item.type === 'area' ? '停车场' : '通道'
 		if (!item.children) {
@@ -26,12 +26,12 @@ const MTree = ({areas, onAreaSelect}) => {
 
 	const treeProps = {
 		defaultExpandAll: true,
+		selectedKeys,
 		onSelect (keys) {
 			if (!keys || keys.length === 0) {
-				onAreaSelect()
+				return
 			} else {
-				let temp = keys[0].split('-')
-				onAreaSelect({key: temp[0], type: temp[1], title: temp[2]})
+				onAreaSelect(keys)
 			}
 		}
 	}

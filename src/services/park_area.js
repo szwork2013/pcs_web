@@ -6,6 +6,10 @@ export async function getTreeService(params) {
 	return get(`${url}/tree`, params)
 }
 
+export async function getOneService(params) {
+	return get(`${url}/one`, params)
+}
+
 export async function addService(params) {
 	return post(url, params)
 }

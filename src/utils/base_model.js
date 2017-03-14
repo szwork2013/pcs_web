@@ -87,7 +87,6 @@ function comModel (namespace, state, effects, setup, reducers) {
  */
 function comCRUDModel (namespace, state, service, effects, setup, reducers) {
 	let crudEffects = {
-		...effects,
 		*getPaging ({payload}, {call, put}) {
 			if (!service.getPagingService) return
 			payload = payload || {pageIndex: 1, pageSize: 10}
@@ -129,7 +128,8 @@ function comCRUDModel (namespace, state, service, effects, setup, reducers) {
       } else {
 				yield put({type: 'fail'})
 			}
-		}
+		},
+		...effects,
 	}
 	return comModel(namespace, state, crudEffects, setup, reducers)
 }
