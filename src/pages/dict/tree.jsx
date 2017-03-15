@@ -2,11 +2,11 @@ import React, {PropTypes} from 'react'
 import { Tree } from 'antd'
 
 const TreeNode = Tree.TreeNode
-const MTree = ({dictIndexTree, selectedKeys, onAreaSelect}) => {
+const MTree = ({dictIndexTree, selectedKeys, onDictSelect}) => {
 	const Nodes = dictIndexTree.map(item => {
 		if (!item.children) {
 			return (
-				<TreeNode title={`${item.title}`} key={`${item.key}`}/>
+				<TreeNode title={`${item.title}`} disabled key={`${item.key}`}/>
 			)
 		}
 		const ChildNodes = item.children.map(child => {
@@ -15,7 +15,7 @@ const MTree = ({dictIndexTree, selectedKeys, onAreaSelect}) => {
 			)
 		})
 		return (
-			<TreeNode title={`${item.title}`} key={`${item.key}`}>
+			<TreeNode title={`${item.title}`} disabled key={`${item.key}`}>
 				{ChildNodes}
 			</TreeNode>
 		)
@@ -23,11 +23,12 @@ const MTree = ({dictIndexTree, selectedKeys, onAreaSelect}) => {
 
 	const treeProps = {
 		defaultExpandAll: true,
+		selectedKeys,
 		onSelect (keys) {
 			if (!keys || keys.length === 0) {
 				return
 			} else {
-				onAreaSelect(keys)
+				onDictSelect(keys[0])
 			}
 		}
 	}
