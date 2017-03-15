@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import { Button } from 'antd'
 
-const Top = () => {
+const Top = ({onAdd}) => {
   return (
-    <Button type='primary' style={{marginBottom: 8}}>添加字典项</Button>
+    <Button type='primary' style={{marginBottom: 8}} onClick={onAdd}>添加字典项</Button>
   )
 }
 

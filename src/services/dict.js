@@ -10,6 +10,10 @@ export async function getItemService(params) {
 	return get(url, params)
 }
 
+export async function checkItemNameService(params) {
+	return get(url + '/checkItemName', params)
+}
+
 export async function addItemService(params) {
 	return post(url, params)
 }
