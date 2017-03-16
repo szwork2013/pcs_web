@@ -46,7 +46,7 @@ console.log(item);
 				return
 			}
 			const fieldsValue = getFieldsValue()
-			dispatch({type: 'dict/checkItemName', payload: {itemName: fieldsValue['itemName'], callback, dictCode: search.dictCode}})
+			dispatch({type: 'dict/checkItemName', payload: {itemName: fieldsValue['itemName'], callback, dictCode: search.dictCode, id: item.id}})
 		} else {
 			callback('字典项不能为空')
 			dispatch({type: 'dict/common', payload: {itemNameValid: 'error'}})

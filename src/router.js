@@ -168,6 +168,17 @@ export default ({ history, app }) => {
             })
           }
         },
+        {
+          path: 'parkauthsetting',
+          name: 'parkauthsetting',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_auth_setting'))
+              cb(null, require('./pages/park_auth_setting'))
+            })
+          }
+        },
         // genRouter('parkarea', './models/park_area', './pages/park_area'),
 				{
 					path: '*',

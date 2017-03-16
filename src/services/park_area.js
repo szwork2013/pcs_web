@@ -6,6 +6,10 @@ export async function getTreeService(params) {
 	return get(`${url}/tree`, params)
 }
 
+export async function getAreaAuthTreeService(params) {
+	return get(`${url}/auth_tree`, params)
+}
+
 export async function getOneService(params) {
 	return get(`${url}/one`, params)
 }
