@@ -1,5 +1,5 @@
 import * as service from '../services/park_auth_setting'
-import { getAreaAuthTreeService } from '../services/park_area'
+import { getChannelAuthTreeService } from '../services/park_channel'
 import { comModel } from '../utils/base_model'
 import { successBox } from '../utils/message_box'
 
@@ -11,12 +11,21 @@ const state = {
 
 const effects = {
 	*getAreaAuthTree ({payload}, {call, put}) {
-			const data = yield call(getAreaAuthTreeService)
-			if (data) {
-				yield put({type: 'success', payload: {areaAuthTree: data}})
-			} else {
-				yield put({type: 'fail', payload: {areaAuthTree: []}})
-			}
+		const data = yield call(getChannelAuthTreeService)
+		if (data) {
+			yield put({type: 'success', payload: {areaAuthTree: data}})
+		} else {
+			yield put({type: 'fail', payload: {areaAuthTree: []}})
+		}
+	},
+	*get ({payload}, {call, put}) {
+		yield put({ type: 'common', payload})
+		const data = yield call(service.getService, payload.search)
+		if (data) {
+			yield put({type: 'success', payload: {dataSource: data}})
+		} else {
+			yield put({type: 'fail', payload: {dataSource: []}})
+		}
 	}
 }
 

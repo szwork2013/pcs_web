@@ -6,12 +6,12 @@ const MTree = ({areaAuthTree, selectedKeys, onAuthSel}) => {
   const genTreeNodes = data => data.map(item => {
     if (item.children) {
       return (
-        <TreeNode title={`${item.title}`} disabled={item.type === 'area'} key={`${item.key}`}>
+        <TreeNode title={`${item.title}`} disabled={item.type === 'channel'} key={`${item.key}`}>
           {genTreeNodes(item.children)}
         </TreeNode>
       )
     }
-		return (<TreeNode title={`${item.title}`} disabled={item.type === 'area'} key={`${item.key}`}/>)
+		return (<TreeNode title={`${item.title}`} disabled={item.type === 'channel'} key={`${item.key}`}/>)
   })
   const treeProps = {
 		defaultExpandAll: true,
