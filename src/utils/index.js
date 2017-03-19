@@ -1,6 +1,8 @@
 import config from './config'
 import classnames from 'classnames'
 // import menu from './menu'
+import * as validation from './validation'
+import message_box from './message_box'
 
 const myDispatch = (dispatch, type, payload) => {
   dispatch({type: type, payload})
@@ -45,5 +47,7 @@ module.exports = {
   myDispatch,
   formItemLayout,
   defaultTableProps,
-  defaultModalProps
+  defaultModalProps,
+  validation,
+  message_box
 }

@@ -124,7 +124,7 @@ export default function request(url, options) {
 			case '1003':
 				localStorage.removeItem("pcs_login")
 				hashHistory.push({pathname: '/login'})
-				message.warnBox('登录状态失效，请重新登陆', 3)
+				// message.warnBox('登录状态失效，请重新登陆', 3)
 				break
 			case '2001':
 				message.warnBox('用户名密码错误，请重新输入', 3)
