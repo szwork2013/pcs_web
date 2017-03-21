@@ -5,7 +5,7 @@ import MTree from './tree'
 import Top from './top'
 import Table from './table'
 import Modal from './modal'
-import { myDispatch, defaultModalProps } from '../../utils'
+import { myDispatch, defaultModalProps, message_box } from '../../utils'
 
 const Dict = ({dispatch, dict}) => {
   const { dictIndexTree, selectedKeys, dictItems, loading, search, itemNameValid } = dict
@@ -13,7 +13,8 @@ const Dict = ({dispatch, dict}) => {
 		dictIndexTree,
 		selectedKeys,
 		onDictSelect (key) {
-			myDispatch(dispatch, 'dict/getDictItem', {search: {dictCode: key}, selectedKeys: [key]})
+			let temp = key.split('-')
+			myDispatch(dispatch, 'dict/getDictItem', {search: {dictCode: temp[0], isSys: temp[1]}, selectedKeys: [key]})
 		}
 	}
 	const tableProps = {
@@ -34,7 +35,7 @@ const Dict = ({dispatch, dict}) => {
 			myDispatch(dispatch, 'dict/hideModal')
 		},
 		onOk (data) {
-			data.dictCode = selectedKeys[0]
+			data.dictCode = search.dictCode
 			if (data.id) {
         dispatch({type: 'dict/update', payload: {data, search}})
       } else {
@@ -44,6 +45,14 @@ const Dict = ({dispatch, dict}) => {
 	})
 	const topProps = {
 		onAdd () {
+			if (!search || !search.isSys) {
+				message_box.warnBox('请选择需要操作的数据', 3)
+				return
+			}
+			if (search.isSys === 'y') {
+				message_box.warnBox('该字典为系统字典，不能添加', 3)
+				return
+			}
 			dispatch({type: 'dict/showModal', payload: {modalType: 'create'}})
 		}
 	}

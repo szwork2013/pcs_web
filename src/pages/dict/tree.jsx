@@ -3,7 +3,7 @@ import { Tree } from 'antd'
 
 const TreeNode = Tree.TreeNode
 const MTree = ({dictIndexTree, selectedKeys, onDictSelect}) => {
-	const Nodes = dictIndexTree.map(item => {
+	/*const Nodes = dictIndexTree.map(item => {
 		if (!item.children) {
 			return (
 				<TreeNode title={`${item.title}`} disabled key={`${item.key}`}/>
@@ -19,7 +19,22 @@ const MTree = ({dictIndexTree, selectedKeys, onDictSelect}) => {
 				{ChildNodes}
 			</TreeNode>
 		)
-	})
+	})*/
+	const genTreeNodes = data => data.map(item => {
+		let temp = item.key.split('-')
+		let isSys = true
+		if (temp.length === 2) {
+			isSys = temp[1] === 'y'
+		}
+    if (item.children) {
+      return (
+        <TreeNode title={`${item.title}${isSys ? '' : '(可添加)'}`} disabled={item.type === 'type'} key={`${item.key}`}>
+          {genTreeNodes(item.children)}
+        </TreeNode>
+      )
+    }
+		return (<TreeNode title={`${item.title}${isSys ? '' : '(可添加)'}`} disabled={item.type === 'type'} key={`${item.key}`}/>)
+  })
 
 	const treeProps = {
 		defaultExpandAll: true,
@@ -35,7 +50,7 @@ const MTree = ({dictIndexTree, selectedKeys, onDictSelect}) => {
 
 	return (
 		<div>
-			{ dictIndexTree.length === 0 ? <span>暂无数据</span> : <Tree {...treeProps}>{Nodes}</Tree> }			
+			{ dictIndexTree.length === 0 ? <span>暂无数据</span> : <Tree {...treeProps}>{genTreeNodes(dictIndexTree)}</Tree> }			
 		</div>
 	)
 }

@@ -37,7 +37,7 @@ const MModal = ({dispatch, visible, itemNameValid, onCancel, search, onOk, item,
 		},
 		wrapClassName: 'vertical-center-modal'
 	}
-console.log(item);
+
 	const checkItemName = (rule, value, callback) => {
 		if (value) {
 			if (value.length > 20) {
