@@ -28,7 +28,7 @@ const AuthChargeModal = ({visible, onCancel, onOk, item,
   }
 
 	const modalProps = {
-		title: '续费管理',
+		title: '续费/期管理',
 		visible,
 		onOk: handleOk,
 		onCancel,
@@ -63,14 +63,25 @@ const AuthChargeModal = ({visible, onCancel, onOk, item,
 							})(<DatePicker style={{width: '100%'}} />)}
 						</FormItem>
 					</Col>
-					<Col {...colProps}>
-						<FormItem label='金额：' {...formItemLayout(8,16)}>
-							{getFieldDecorator('card_num', {
-								initialValue: item.card_num,
-								rules: [valid_required('结束时间')]
-							})(<InputNumber formatter={value => `￥ ${value}`} min={0} max={10000} step={1.00} style={{width: '100%'}} />)}
-						</FormItem>
-					</Col>
+					{
+						item.auth_type === '001' ? 
+						<Col {...colProps}>
+							<FormItem label='续费至：' {...formItemLayout(8,16)}>
+								{getFieldDecorator('card_num', {
+									initialValue: item.card_num,
+									rules: [valid_required('结束时间')]
+								})(<DatePicker style={{width: '100%'}} format='YYYY-MM-DD'/>)}
+							</FormItem>
+						</Col> :
+						<Col {...colProps}>
+							<FormItem label='续费：' {...formItemLayout(8,16)}>
+								{getFieldDecorator('amt', {
+									initialValue: item.amt,
+									rules: [valid_required('结束时间')]
+								})(<InputNumber formatter={value => `￥ ${value}`} min={0} max={10000} step={1.00} style={{width: '100%'}} />)}
+							</FormItem>
+						</Col>
+					}
 				</Row>			
 			</Form>
 		</Modal>

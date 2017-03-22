@@ -35,7 +35,7 @@ const MModal = ({item, recognitionTypes, matchTypes, selectTree, loading, segmen
         playPlateNum: filedsValue['playPlateNum'] ? 'y' : 'n',
         reInOrOut: filedsValue['reInOrOut'] ? 'y' : 'n',
         specialPass: filedsValue['specialPass'] ? 'y' : 'n',
-        notifyNum: filedsValue['notifyNum'].toString()
+        notifyNum: filedsValue['notifyNum'] ? filedsValue['notifyNum'].toString() : undefined
       }
       onOk(data)
     })

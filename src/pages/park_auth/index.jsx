@@ -14,6 +14,7 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
 		authTypes,
 		isTempAuth,
 		isBlackAuth,
+		auth_type,
 		onOk (data) {
       if (currentKey) {
         data.id = currentKey
@@ -26,7 +27,7 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
 			myDispatch(dispatch, 'parkauth/hideModal')
     },
 		onAuthChange (data) {
-			myDispatch(dispatch, 'parkauth/common', {isTempAuth: data === '003', isBlackAuth: data === '005' })
+			myDispatch(dispatch, 'parkauth/common', {isTempAuth: data === '003', isBlackAuth: data === '005', auth_type: data})
 		}
 	})
 
@@ -51,7 +52,7 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
 			myDispatch(dispatch, 'parkauth/getPaging', {pageIndex: 1, pageSize, search: {...data}})
 		},
 		onAdd () {
-			myDispatch(dispatch, 'parkauth/showModal', {modalType: 'create', currentKey: null, isTempAuth: false, isBlackAuth: false})
+			myDispatch(dispatch, 'parkauth/showModal', {modalType: 'create', currentKey: null, isTempAuth: false, isBlackAuth: false, auth_type: ''})
 		},
 		onBatchAdd () {
 			myDispatch(dispatch, 'parkauth/common', {batchModalVisible: true})

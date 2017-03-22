@@ -49,7 +49,9 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 					return (
 						<ButtonGroup>
 							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
-							<Button type='ghost' size='small' onClick={() => onRecharge(row) }>续费</Button>
+							{
+								row.auth_type === '001' || row.auth_type === '002' ? <Button type='ghost' size='small' onClick={() => onRecharge(row) }>{row.auth_type === '001' ? '续期' : '续费'}</Button> : ''
+							}
 						</ButtonGroup>
 						)
 				} else {

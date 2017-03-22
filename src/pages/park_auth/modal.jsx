@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Modal, Form, Input, Select, Checkbox, Card, DatePicker } from 'antd'
+import { Row, Col, Modal, Form, Input, Select, Checkbox, Card, DatePicker, InputNumber } from 'antd'
 import moment from 'moment'
 import { valid_required, valid_phone, valid_max, valid_PlateNum } from '../../utils/validation.js'
 import { formItemLayout } from '../../utils'
@@ -8,7 +8,7 @@ import styles from './index.less'
 const FormItem = Form.Item
 const { RangePicker } = DatePicker
 
-const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isTempAuth, onAuthChange, isBlackAuth,
+const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isTempAuth, onAuthChange, isBlackAuth, auth_type,
 	form: {
 		resetFields,
     getFieldDecorator,
@@ -28,7 +28,8 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
         ...fieldsValue,
 				start_time: rangeDateValue[0] ? rangeDateValue[0].startOf('day').format() : undefined,
 				end_time: rangeDateValue[1] ? rangeDateValue[1].endOf('day').format() : undefined,
-				status: getFieldsValue()['status'] ? 'aa' : 'nn'
+				status: getFieldsValue()['status'] ? 'aa' : 'nn',
+				amt: fieldsValue['amt'] ? fieldsValue['amt'] + '' : '0'
       }
 
       onOk(data)
@@ -90,11 +91,31 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 						</Col>
 						{
 							isTempAuth ? '' : <Col {...colProps}>
-								<FormItem label='授权效期：' {...formItemLayout(6,18)}>
+								<FormItem label='卡类效期' {...formItemLayout(6,18)}>
 									{getFieldDecorator('rangeDate', {
 										initialValue: (item.start_time && item.end_time) ? [moment(item.start_time), moment(item.end_time)]: null,
-										rules: [valid_required('授权效期不能为空')]
+										rules: [valid_required('卡类效期不能为空')]
 									})(<RangePicker style={{width: '100%'}} format='YYYY-MM-DD' disabledDate={disabledDate}/>)}
+								</FormItem>
+							</Col>
+						}
+						{
+							auth_type !== '001' ? '' : <Col {...colProps}>
+								<FormItem label='授权至' {...formItemLayout(6,18)}>
+									{getFieldDecorator('valid_time', {
+										initialValue: item.valid_time ? moment(item.valid_time): null,
+										rules: [valid_required('授权至不能为空')]
+									})(<DatePicker style={{width: '100%'}} format='YYYY-MM-DD'/>)}
+								</FormItem>
+							</Col>
+						}
+						{
+							auth_type !== '002' ? '' : <Col {...colProps}>
+								<FormItem label='充值金额' {...formItemLayout(6,18)}>
+									{getFieldDecorator('amt', {
+										initialValue: item.amt,
+										rules: [valid_required('充值金额不能为空')]
+									})(<InputNumber style={{width: '100%'}} min={1} max={99999}/>)}
 								</FormItem>
 							</Col>
 						}
