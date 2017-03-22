@@ -2,11 +2,13 @@ import * as service from '../services/park_auth_setting'
 import { getChannelAuthTreeService } from '../services/park_channel'
 import { comModel } from '../utils/base_model'
 import { successBox } from '../utils/message_box'
+import _ from 'lodash'
 
 const state = {
 	areaAuthTree: [],
 	selectTree: {},
-	selectedKeys: []
+	selectedKeys: [],
+	segments: []
 }
 
 const effects = {
@@ -19,12 +21,37 @@ const effects = {
 		}
 	},
 	*get ({payload}, {call, put}) {
-		yield put({ type: 'common', payload})
-		const data = yield call(service.getService, payload.search)
+		yield put({type: 'showLoading'})
+		yield put({ type: 'common', payload: {...payload, currentItem: {}, segments: []}})
+		const data = yield call(service.getSettingAndSegmentService, payload.selectTree)
 		if (data) {
-			yield put({type: 'success', payload: {dataSource: data}})
+			let currentItem = {}
+			_.forEach(data.setting, value => {
+				currentItem[value.key] = value.value
+			})
+			yield put({type: 'success', payload: {currentItem, segments: data.segment}})
 		} else {
-			yield put({type: 'fail', payload: {dataSource: []}})
+			yield put({type: 'fail', payload: {currentItem: {}, segments: []}})
+		}
+	},
+	*addOrUpt ({payload}, {call, put}) {
+		yield put({type: 'showLoading'})
+		let settings = []
+		_.mapKeys(payload.currentItem, (value, key) => {
+			settings.push({key, value})
+		})
+		let segments = payload.segments
+		const data = yield call(service.addOrUptService, {
+			channel_id: payload.channel_id,
+			auth_type: payload.auth_type,
+			settings,
+			segments
+		})
+		if (data) {
+			successBox('保存成功', 3)
+			yield put({type: 'success'})
+		} else {
+			yield put({type: 'fail'})
 		}
 	}
 }

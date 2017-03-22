@@ -2,18 +2,17 @@ import React from 'react'
 import { Button } from 'antd'
 import MTable from '../../components/table'
 
-const ButtonGroup = Button.Group
-const Table = ({dataSource, loading}) => {
+const Table = ({dataSource, loading, onDel}) => {
 	const columns = [
     {
 			title: '开始时间',
-			dataIndex: 'itemCode',
-			key: 'itemCode'
+			dataIndex: 'begin',
+			key: 'begin'
 		},
 		{
 			title: '结束时间',
-			dataIndex: 'itemName',
-			key: 'itemName'
+			dataIndex: 'end',
+			key: 'end'
 		},
 		{
 			title: '操作',
@@ -21,13 +20,7 @@ const Table = ({dataSource, loading}) => {
 			key: 'oper',
 			width: 220,
 			render (text, row) {
-				return (
-					<ButtonGroup>
-						<Button type='primary' size='small' onClick={() => onEdit(row) }>全时段</Button>
-						<Button type='primary' size='small' onClick={() => onEdit(row) }>禁止通行</Button>
-						<Button type='primary' size='small' onClick={() => onEdit(row) }>删除</Button>
-					</ButtonGroup>
-				)
+				return (<Button type='danger' size='small' onClick={() => onDel(row) }>删除</Button>)
 			}
 		}
   ]
@@ -36,8 +29,10 @@ const Table = ({dataSource, loading}) => {
     columns,
     loading,
     showPage: false,
-    // dataSource,
-    rowKey: record => record.id
+    dataSource,
+    rowKey: record =>{
+			return record.begin + record.end
+		}
   }
 
   return (

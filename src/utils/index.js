@@ -3,6 +3,7 @@ import classnames from 'classnames'
 // import menu from './menu'
 import * as validation from './validation'
 import * as message_box from './message_box'
+import * as format from './format'
 
 const myDispatch = (dispatch, type, payload) => {
   dispatch({type: type, payload})
@@ -49,5 +50,6 @@ module.exports = {
   defaultTableProps,
   defaultModalProps,
   validation,
-  message_box
+  message_box,
+  format
 }

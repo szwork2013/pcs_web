@@ -2,8 +2,8 @@ import { get, post, remove, put } from '../utils/request'
 
 const url = 'parkauthsetting'
 
-export async function getService(params) {
-	return get(url, params)
+export async function getSettingAndSegmentService(params) {
+	return get(`${url}/settingandsegment`, params)
 }
 
 export async function addOrUptService(params) {
