@@ -1,10 +1,11 @@
 import React from 'react'
-import { Row, Col, Modal, Form, Input, Alert } from 'antd'
+import { Row, Col, Modal, Form, Input, Alert, DatePicker } from 'antd'
 import { valid_required } from '../../utils/validation.js'
 import { formItemLayout } from '../../utils'
+import moment from 'moment'
 
 const FormItem = Form.Item
-
+const RangePicker = DatePicker.RangePicker
 const ParkAuthModal = ({visible, onCancel, onOk, item,
 	form: {
 		resetFields,
@@ -35,11 +36,9 @@ const ParkAuthModal = ({visible, onCancel, onOk, item,
 		}
 	}
 
-	const colProps = {
-		xs: 24,
-		sm: 12,
-		md: 12,
-		lg: 12
+	const colProps = {xs: 24,	sm: 12,	md: 12,	lg: 12}
+	const disabledDate = (current) => {
+		return current && current.valueOf() < moment().startOf('day')
 	}
 	return (
 		<Modal {...modalProps}>
@@ -60,6 +59,14 @@ const ParkAuthModal = ({visible, onCancel, onOk, item,
 								initialValue: item.card_num,
 								rules: [valid_required('卡号不能为空')]
 							})(<Input />)}
+						</FormItem>
+					</Col>
+					<Col {...colProps}>
+						<FormItem label='卡类效期' {...formItemLayout(6,18)}>
+							{getFieldDecorator('rangeDate', {
+								initialValue: (item.start_time && item.end_time) ? [moment(item.start_time), moment(item.end_time)]: [moment(), moment().add(1, 'years')],
+								rules: [valid_required('卡类效期不能为空')]
+							})(<RangePicker style={{width: '100%'}} format='YYYY-MM-DD' disabledDate={disabledDate}/>)}
 						</FormItem>
 					</Col>
 				</Row>			

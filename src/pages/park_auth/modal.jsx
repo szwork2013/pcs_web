@@ -93,7 +93,7 @@ const ParkAuthModal = ({authTypes, visible, onCancel, onOk, item, producers, isT
 							isTempAuth ? '' : <Col {...colProps}>
 								<FormItem label='卡类效期' {...formItemLayout(6,18)}>
 									{getFieldDecorator('rangeDate', {
-										initialValue: (item.start_time && item.end_time) ? [moment(item.start_time), moment(item.end_time)]: null,
+										initialValue: (item.start_time && item.end_time) ? [moment(item.start_time), moment(item.end_time)]: [moment(), moment().add(1, 'years')],
 										rules: [valid_required('卡类效期不能为空')]
 									})(<RangePicker style={{width: '100%'}} format='YYYY-MM-DD' disabledDate={disabledDate}/>)}
 								</FormItem>

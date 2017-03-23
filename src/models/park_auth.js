@@ -22,4 +22,13 @@ const setup = (dispatch, history) => {
 	})
 }
 
-export default comCRUDModel('parkauth', state, service, effects, setup)
+const reducers = {
+	success (state, action) {
+		return {...state, ...action.payload, loading: false, chargeModalVisible: false}
+	},
+	fail (state, action) {
+		return {...state, ...action.payload, loading: false, chargeModalVisible: false}
+	},
+}
+
+export default comCRUDModel('parkauth', state, service, effects, setup, reducers)

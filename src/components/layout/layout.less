@@ -24,6 +24,7 @@
       :global {
         .ant-menu-root {
           width: 100%;
+          overflow: visible;
 
           & > .ant-menu-item {
             padding: 0;
@@ -68,7 +69,7 @@
     height: 100vh;
     transition: @transition-ease-out;
     box-shadow: @shadow-1;
-    z-index: 1994;
+    z-index: 520;
     color: #999;
 
     &.light {
@@ -140,12 +141,42 @@
         color: #999;
       }
 
+      .ant-menu-root {
+        height: ~"calc(100vh - 144px)";
+        overflow-x: hidden;
+
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+        }
+
+        &:hover {
+          &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        &.ant-menu-vertical {
+          .ant-menu-sub {
+            height: 0;
+            opacity: 0;
+            transition: none;
+          }
+
+          .ant-menu-submenu-active {
+            .ant-menu-sub {
+              height: auto;
+              opacity: 1;
+            }
+          }
+        }
+      }
+
       .ant-menu {
         transition: @transition-ease-out;
 
         .ant-menu-item,
         .ant-menu-submenu-title {
-          overflow: auto;
+          overflow: hidden;
           white-space: normal;
         }
       }
@@ -275,7 +306,7 @@
 
 .popovermenu {
   width: 280px;
-  left: 12px!important;
+  margin-left: 6px;
 
   :global .ant-popover-inner-content {
     padding: 0;

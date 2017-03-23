@@ -8,7 +8,7 @@ import Search from './search'
 import { myDispatch, defaultTableProps, defaultModalProps } from '../../utils'
 
 const ParkAuth = ({dispatch, parkauth, common}) => {
-	const { pageSize, currentKey, search, batchModalVisible, isTempAuth, isBlackAuth, chargeModalVisible, auth_type} = parkauth
+	const { pageSize, currentKey, search, batchModalVisible, isTempAuth, isBlackAuth, chargeModalVisible, auth_type, currentItem} = parkauth
 	const { authTypes } = common
 	const modalProps = defaultModalProps(parkauth, {
 		authTypes,
@@ -39,10 +39,10 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
 			myDispatch(dispatch, 'parkauth/remove', {id})
     },
     onEdit (data) {
-			myDispatch(dispatch, 'parkauth/showModal', {currentKey:data.id, currentItem: data, modalType: 'edit', isTempAuth: data.auth_type === '003', isBlackAuth: data.auth_type === '005'})
+			myDispatch(dispatch, 'parkauth/showModal', {currentKey:data.id, currentItem: data, modalType: 'edit', isTempAuth: data.auth_type === '003', isBlackAuth: data.auth_type === '005', auth_type: data.auth_type})
     },
 		onRecharge (data) {
-			myDispatch(dispatch, 'parkauth/common', {chargeModalVisible: true, auth_type: data.auth_type})
+			myDispatch(dispatch, 'parkauth/common', {chargeModalVisible: true, auth_type: data.auth_type, currentItem: data})
 		}
 	})
 
@@ -69,9 +69,13 @@ const ParkAuth = ({dispatch, parkauth, common}) => {
 	const authChargeProps = {
 		visible: chargeModalVisible,
 		auth_type,
+		item: currentItem,
 		onCancel () {
 			myDispatch(dispatch, 'parkauth/common', {chargeModalVisible: false})
-    }
+    },
+		onOk (data) {
+			myDispatch(dispatch, 'parkauth/update', {data})
+		}
 	}
 
 	return (
