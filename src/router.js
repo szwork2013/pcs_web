@@ -112,51 +112,51 @@ export default ({ history, app }) => {
             })
           }
         },
-        // {
-        //   path: 'parkcamera',
-        //   name: 'parkcamera',
-        //   onEnter: requireAuth,
-        //   getComponent (nextState, cb) {
-        //     require.ensure([], require => {
-				// 			registerModel(app, require('./models/park_camera'))
-        //       cb(null, require('./pages/park_camera'))
-        //     })
-        //   }
-        // },
-        // {
-        //   path: 'parkterminal',
-        //   name: 'parkterminal',
-        //   onEnter: requireAuth,
-        //   getComponent (nextState, cb) {
-        //     require.ensure([], require => {
-				// 			registerModel(app, require('./models/park_terminal'))
-        //       cb(null, require('./pages/park_terminal'))
-        //     })
-        //   }
-        // },
-        // {
-        //   path: 'parkarea',
-        //   name: 'parkarea',
-        //   onEnter: requireAuth,
-        //   getComponent (nextState, cb) {
-        //     require.ensure([], require => {
-				// 			registerModel(app, require('./models/park_area'))
-        //       registerModel(app, require('./models/park_channel'))
-        //       cb(null, require('./pages/park_area'))
-        //     })
-        //   }
-        // },
-        // {
-        //   path: 'parkauth',
-        //   name: 'parkauth',
-        //   onEnter: requireAuth,
-        //   getComponent (nextState, cb) {
-        //     require.ensure([], require => {
-				// 			registerModel(app, require('./models/park_auth'))
-        //       cb(null, require('./pages/park_auth'))
-        //     })
-        //   }
-        // },
+        {
+          path: 'parkcamera',
+          name: 'parkcamera',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_camera'))
+              cb(null, require('./pages/park_camera'))
+            })
+          }
+        },
+        {
+          path: 'parkterminal',
+          name: 'parkterminal',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_terminal'))
+              cb(null, require('./pages/park_terminal'))
+            })
+          }
+        },
+        {
+          path: 'parkarea',
+          name: 'parkarea',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_area'))
+              registerModel(app, require('./models/park_channel'))
+              cb(null, require('./pages/park_area'))
+            })
+          }
+        },
+        {
+          path: 'parkauth',
+          name: 'parkauth',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_auth'))
+              cb(null, require('./pages/park_auth'))
+            })
+          }
+        },
         {
           path: 'dict',
           name: 'dict',
@@ -168,17 +168,17 @@ export default ({ history, app }) => {
             })
           }
         },
-        // {
-        //   path: 'parkauthsetting',
-        //   name: 'parkauthsetting',
-        //   onEnter: requireAuth,
-        //   getComponent (nextState, cb) {
-        //     require.ensure([], require => {
-				// 			registerModel(app, require('./models/park_auth_setting'))
-        //       cb(null, require('./pages/park_auth_setting'))
-        //     })
-        //   }
-        // },
+        {
+          path: 'parkauthsetting',
+          name: 'parkauthsetting',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/park_auth_setting'))
+              cb(null, require('./pages/park_auth_setting'))
+            })
+          }
+        },
         {
           path: 'parkgatelog',
           name: 'parkgatelog',
