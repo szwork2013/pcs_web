@@ -23,3 +23,7 @@ export async function getParkChannelService(params) {
 export async function getParkCameraService(params) {
 	return get("common/getParkCamera", params)
 }
+
+export async function getParkAreaTreeService(params) {
+	return get(`parkarea/areaTree`, params)
+}

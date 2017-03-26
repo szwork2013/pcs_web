@@ -190,6 +190,17 @@ export default ({ history, app }) => {
             })
           }
         },
+        {
+          path: 'chargerule',
+          name: 'chargerule',
+          onEnter: requireAuth,
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+							registerModel(app, require('./models/charge_rule'))
+              cb(null, require('./pages/charge_rule'))
+            })
+          }
+        },
         // genRouter('parkarea', './models/park_area', './pages/park_area'),
 				{
 					path: '*',

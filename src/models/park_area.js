@@ -12,7 +12,7 @@ const state = {
 
 const effects = {
 	*getTree ({payload}, {call, put}) {
-			const data = yield call(service.getTreeService)
+			const data = yield call(service.getAreaChannelTreeService)
 			if (data) {
 				yield put({type: 'success', payload: {areaTree: data}})
 			} else {

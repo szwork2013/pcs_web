@@ -1,25 +1,11 @@
+import * as service from '../services/park_area'
+import { comModel } from '../utils/base_model'
+import { successBox } from '../utils/message_box'
 
-export default {
+const state = {}
 
-  namespace: 'example',
+const effects = {}
 
-  state: {},
+const setup = (dispatch, history) => {}
 
-  subscriptions: {
-    setup({ dispatch, history }) {  // eslint-disable-line
-    },
-  },
-
-  effects: {
-    *fetch({ payload }, { call, put }) {  // eslint-disable-line
-      yield put({ type: 'save' });
-    },
-  },
-
-  reducers: {
-    save(state, action) {
-      return { ...state, ...action.payload };
-    },
-  },
-
-};
+export default comModel('test', state, effects, setup)

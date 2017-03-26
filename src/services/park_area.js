@@ -2,8 +2,8 @@ import { get, post, remove, put } from '../utils/request'
 
 const url = 'parkarea'
 
-export async function getTreeService(params) {
-	return get(`${url}/tree`, params)
+export async function getAreaChannelTreeService(params) {
+	return get(`${url}/areaChannelTree`, params)
 }
 
 export async function getOneService(params) {
