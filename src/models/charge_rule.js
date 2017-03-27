@@ -4,7 +4,9 @@ import { successBox, errorBox } from '../utils/message_box'
 
 const state = {
 	selectKeys: [],
-	selectTree: null
+	selectTree: null,
+	rule_type: '',
+	detailDataSource: []
 }
 
 const effects = {

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Modal, Form, Input, Checkbox, Row, Col, InputNumber, Button } from 'antd'
-import { formItemLayout } from '../../utils'
+import { Modal, Form, Input, Checkbox, Row, Col, InputNumber, Button, Select } from 'antd'
+import { formItemLayout, myDispatch } from '../../utils'
 import DetailTable from './detail_table'
 
 const FormItem = Form.Item
-const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type,
+const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ruleTypes, loading, dataSource,
 	form: {
 		resetFields,
     getFieldDecorator,
@@ -12,6 +12,7 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type,
     getFieldsValue
 }}) => {
 	item = item || {}
+	ruleTypes = ruleTypes || []
 	const handleOk = () => {
     validateFields((errors) => {
       if (errors) {
@@ -29,73 +30,85 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type,
 		visible,
 		onOk: handleOk,
 		onCancel,
-		width: 750,
+		width: 850,
 		height: 600,
 		afterClose () {
 			resetFields()
-			dispatch({type: 'parkterminal/common', payload: {ipValid: ''}})
-		}
+			dispatch({type: 'chargerule/common', payload: {ipValid: ''}})
+		},
+		wrapClassName: 'vertical-center-modal'
+	}
+	const ruleTypeChange = value => {
+		myDispatch(dispatch, 'chargerule/common', {rule_type: value})
+	}
+	const tableProps = {
+		loading,
+		dataSource,
+		rule_type
 	}
 	const colProps = {xs: 24,	sm: 12,	md: 12,	lg: 12}
   return (
-    <Modal {...modalProps} style={{top: 20}}>
+    <Modal {...modalProps} style={rule_type === '003' || rule_type === '004' ? {top: 20} : {}}>
 			<Form>
 				<Row>
 					<Col {...colProps}>
 						<FormItem label='授权类别' {...formItemLayout(7, 17)}>
-							{getFieldDecorator('ip', {
-								initialValue: item.ip
+							{getFieldDecorator('auth_type', {
+								initialValue: item.auth_type
 							})(<Input />)}
 						</FormItem>
 					</Col>
 					<Col {...colProps}>
 						<FormItem label='车型' {...formItemLayout(7, 17)}>
-							{getFieldDecorator('ip', {
-								initialValue: item.ip
-							})(<Input />)}
+							{getFieldDecorator('car_type', {
+								initialValue: item.car_type
+							})(<Select>
+								</Select>)}
 						</FormItem>
 					</Col>
 					<Col {...colProps}>
 						<FormItem label='计费类型' {...formItemLayout(7, 17)}>
-							{getFieldDecorator('ip', {
-								initialValue: item.ip
-							})(<Input />)}
+							{getFieldDecorator('rule_type', {
+								initialValue: item.rule_type,
+								onChange: ruleTypeChange
+							})(<Select placeholder='请选择计费类型'>
+								{ruleTypes.map(item => (
+									<Select.Option key={item.id} value={item.itemCode}>{item.itemName}</Select.Option>
+								))}
+								</Select>)}
 						</FormItem>
 					</Col>
 					<Col {...colProps}>
 						<FormItem label='免费时长' {...formItemLayout(7, 17)}>
-							{getFieldDecorator('ip', {
-								initialValue: item.ip
+							{getFieldDecorator('free_time', {
+								initialValue: item.free_time
 							})(<Input />)}
 						</FormItem>
 					</Col>
 					{
-						rule_type === undefined ?
+						rule_type === '001' || rule_type === '002' ?
 						<Col {...colProps}>
 							<FormItem label='收费金额' {...formItemLayout(7, 17)}>
-								{getFieldDecorator('status', {
-									valuePropName: 'checked',
-									initialValue: item.status !== 'nn'
+								{getFieldDecorator('start_amt', {
+									initialValue: item.start_amt
 								})(<InputNumber style={{width: '70%'}} />)}
-								<span className="ant-form-text">元/{rule_type === undefined ? '天' : '元'}</span>
+								<span className="ant-form-text">元/{rule_type === '001' ? '次' : '天'}</span>
 							</FormItem>
 						</Col> : ''
 					}
 					{
-						rule_type === undefined ?
+						rule_type === '003' || rule_type === '004' ?
 						<Col {...colProps}>
 							<FormItem label='起步价' {...formItemLayout(7, 17)}>
 								<Col span={12}>
-									{getFieldDecorator('status', {
-										valuePropName: 'checked',
-										initialValue: item.status !== 'nn'
+									{getFieldDecorator('start_time', {
+										initialValue: item.start_time
 									})(<InputNumber style={{width: '65%'}}/>)}
 									<span className="ant-form-text">分钟</span>
 								</Col>
 								<Col span={12}>
-									{getFieldDecorator('status', {
-										valuePropName: 'checked',
-										initialValue: item.status !== 'nn'
+									{getFieldDecorator('start_amt', {
+										initialValue: item.start_amt
 									})(<InputNumber style={{width: '70%'}}/>)}
 									<span className="ant-form-text">角</span>
 								</Col>
@@ -103,54 +116,38 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type,
 						</Col> : ''
 					}
 					{
-						rule_type === undefined ?
-						<Col {...colProps}>
-							<FormItem label='收费金额' {...formItemLayout(7, 17)}>
-								{getFieldDecorator('status', {
-									valuePropName: 'checked',
-									initialValue: item.status !== 'nn'
-								})(<InputNumber style={{width: '70%'}} />)}
-								<span className="ant-form-text">元/{rule_type === undefined ? '天' : '元'}</span>
-							</FormItem>
-						</Col> : ''
-					}
-					{
-						rule_type === undefined ?
+						rule_type === '003' || rule_type === '004' ?
 						<Col {...colProps}>
 							<FormItem label='单日收费上限' {...formItemLayout(7, 17)}>
-								{getFieldDecorator('status', {
-									valuePropName: 'checked',
-									initialValue: item.status !== 'nn'
+								{getFieldDecorator('day_max', {
+									initialValue: item.day_max
 								})(<InputNumber style={{width: '100%'}} />)}
 							</FormItem>
 						</Col> : ''
 					}
 					{
-						rule_type === undefined ?
+						rule_type === '003' || rule_type === '004' ?
 						<Col {...colProps}>
 							<FormItem label='24小时收费上限' {...formItemLayout(7, 17)}>
-								{getFieldDecorator('status', {
-									valuePropName: 'checked',
-									initialValue: item.status !== 'nn'
+								{getFieldDecorator('twenty_four_max', {
+									initialValue: item.twenty_four_max
 								})(<InputNumber style={{width: '100%'}} />)}
 							</FormItem>
 						</Col> : ''
 					}
 					{
-						rule_type === undefined ?
+						rule_type === '003' ?
 						<Col {...colProps}>
 							<FormItem label='超出设置时长' {...formItemLayout(7, 17)}>
 								<Col span={12}>
-									{getFieldDecorator('status', {
-										valuePropName: 'checked',
-										initialValue: item.status !== 'nn'
+									{getFieldDecorator('over_time', {
+										initialValue: item.over_time
 									})(<InputNumber style={{width: '65%'}}/>)}
 									<span className="ant-form-text">分钟</span>
 								</Col>
 								<Col span={12}>
-									{getFieldDecorator('status', {
-										valuePropName: 'checked',
-										initialValue: item.status !== 'nn'
+									{getFieldDecorator('over_amt', {
+										initialValue: item.over_amt
 									})(<InputNumber style={{width: '70%'}}/>)}
 									<span className="ant-form-text">角</span>
 								</Col>
@@ -166,12 +163,18 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type,
 						</FormItem>
 					</Col>
 				</Row>	
-				<FormItem>
-					<Button type='primary'>添加明细</Button>
-				</FormItem>
-				<FormItem>
-					<DetailTable/>
-				</FormItem>	
+				{
+					rule_type === '003' || rule_type === '004' ?
+					<FormItem>
+						<Button type='primary'>添加明细</Button>
+					</FormItem> : ''
+				}
+				{
+					rule_type === '003' || rule_type === '004' ?
+					<FormItem>
+						<DetailTable {...tableProps}/>
+					</FormItem> : ''
+				}
 			</Form>
 		</Modal>
   )

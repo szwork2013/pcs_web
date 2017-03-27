@@ -11,10 +11,19 @@ const state = {
 	parkCameras: [],
 	recognitionTypes: [],
 	matchTypes: [],
-	parkAreaTree: []
+	parkAreaTree: [],
+	ruleTypes: []
 }
 
 const effects = {
+	*getRuleTypeDict ({payload}, {call, put}) {
+		const data = yield call(service.getDictItemService, {dictCode: '006'})
+		if (data) {
+			yield put({type: 'success', payload: {ruleTypes: data}})
+		} else {
+			yield put({type: 'fail', payload: {ruleTypes: []}})
+		}
+	},
 	*getParkAreaTree ({payload}, {call, put}) {
 		const data = yield call(service.getParkAreaTreeService)
 		if (data) {
