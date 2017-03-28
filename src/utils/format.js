@@ -79,10 +79,26 @@ export function formatLogType (origin) {
  * @returns
  */
 export function formatAuthType (origin) {
-	if (origin === '001') return '月租卡'
-	else if (origin === '002') return '储值卡'
-	else if (origin === '003') return '临时卡'
-	else if (origin === '004') return '免费卡'
+	if (origin === '001') return '月租'
+	else if (origin === '002') return '储值'
+	else if (origin === '003') return '临时'
+	else if (origin === '004') return '免费'
 	else if (origin === '005') return '黑名单'
+	else return origin
+}
+
+
+/**
+ * format
+ * 计费类别编码转换
+ * @export
+ * @param {any} origin
+ * @returns
+ */
+export function formaRuleType (origin) {
+	if (origin === '001') return '按次计费'
+	else if (origin === '002') return '按天计费'
+	else if (origin === '003') return '按时长计费'
+	else if (origin === '004') return '按时段计费'
 	else return origin
 }

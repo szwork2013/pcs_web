@@ -20,9 +20,9 @@ const effects = {
 		}
 	},
 	*getOne ({payload}, {call, put}) {
-		const data = yield call(service.getService, {id: payload.id, area_id: payload.selectTree})
+		const data = yield call(service.getOneService, {id: payload.id})
 		if (data) {
-			yield put({type: 'showModal', payload: {currentItem: data}})
+			yield put({type: 'showModal', payload: {currentItem: data, modalType: 'edit', rule_type: data.rule_type}})
 		} else {
 			yield put({type: 'fail', payload: {currentItem: {}}})
 		}

@@ -4,7 +4,7 @@ import { formItemLayout, myDispatch, validation } from '../../utils'
 import DetailTable from './detail_table'
 
 const FormItem = Form.Item
-const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ruleTypes, loading, dataSource, carTypes,
+const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ruleTypes, loading, dataSource, carTypes, area_id,
 	form: {
 		resetFields,
     getFieldDecorator,
@@ -21,7 +21,8 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ru
       const data = {
         ...getFieldsValue(),
 				status: getFieldsValue()['status'] ? 'aa' : 'nn',
-				id: item.id
+				id: item.id,
+				area_id
       }
       onOk(data)
     })

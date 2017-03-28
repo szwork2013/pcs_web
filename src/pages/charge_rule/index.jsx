@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Row, Col } from 'antd'
+import { Row, Col, Button } from 'antd'
 import MTree from '../../components/tree'
 import MTable from './table'
 import MModal from './modal'
-import { defaultTableProps, myDispatch, defaultModalProps } from '../../utils'
+import { defaultTableProps, myDispatch, defaultModalProps, message_box } from '../../utils'
 
 const Main = ({dispatch, chargerule, common}) => {
-  const {selectKeys, selectTree, rule_type, loading, detailDataSource} = chargerule
+  const {selectKeys, selectTree, rule_type, loading, detailDataSource, currentItem} = chargerule
   const {parkAreaTree, ruleTypes, carTypes} = common
   const treeProps = {
     trees: parkAreaTree,
@@ -27,7 +27,7 @@ const Main = ({dispatch, chargerule, common}) => {
     onEdit (id) {
       myDispatch(dispatch, 'common/getCarTypeDict')
       myDispatch(dispatch, 'common/getRuleTypeDict')
-      myDispatch(dispatch, 'chargerule/getOne', {id, selectTree})
+      myDispatch(dispatch, 'chargerule/getOne', {id})
     }
   })
   const modalProps = defaultModalProps(chargerule, {
@@ -36,6 +36,7 @@ const Main = ({dispatch, chargerule, common}) => {
     ruleTypes,
     carTypes,
     loading,
+    area_id: selectTree,
     dataSource: detailDataSource,
     onCancel () {
       myDispatch(dispatch, 'chargerule/hideModal')
@@ -48,8 +49,20 @@ const Main = ({dispatch, chargerule, common}) => {
       }
     }
   })
+  const btnAdd = () => {
+    if (!selectTree) {
+      message_box.warnBox('请选择需要添加规则的停车场', 3)
+      return
+    }
+    myDispatch(dispatch, 'common/getCarTypeDict')
+    myDispatch(dispatch, 'common/getRuleTypeDict')
+    myDispatch(dispatch, 'chargerule/showModal', {modalType: 'create'})
+  }
   return (
     <div className='content-inner'>
+      <Row>
+        <Button type='primary' style={{marginBottom: 8}} onClick={btnAdd}>添加规则</Button>
+      </Row>
       <Row>
         <Col span={4}><MTree {...treeProps}/></Col>
         <Col span={20}><MTable {...tableProps}/></Col>
