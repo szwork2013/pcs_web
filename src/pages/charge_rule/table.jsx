@@ -37,7 +37,7 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 				if (row.status === 'aa') {
 					return (
 						<ButtonGroup>
-							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
+							<Button type='primary' size='small' onClick={() => onEdit(row.id) }>编辑</Button>
 							{
 								row.auth_type === '001' || row.auth_type === '002' ? <Button type='ghost' size='small' onClick={() => onRecharge(row) }>{row.auth_type === '001' ? '续期' : '续费'}</Button> : ''
 							}
@@ -46,7 +46,7 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 				} else {
 					return (
 						<ButtonGroup>
-							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
+							<Button type='primary' size='small' onClick={() => onEdit(row.id) }>编辑</Button>
 							<Popconfirm title='确认删除该计费规则？' onConfirm={() => {onDel(row.id)}}><Button type='ghost' size='small'>删除</Button></Popconfirm>
 						</ButtonGroup>
 					)

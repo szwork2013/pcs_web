@@ -12,10 +12,19 @@ const state = {
 	recognitionTypes: [],
 	matchTypes: [],
 	parkAreaTree: [],
-	ruleTypes: []
+	ruleTypes: [],
+	carTypes: []
 }
 
 const effects = {
+	*getCarTypeDict ({payload}, {call, put}) {
+		const data = yield call(service.getDictItemService, {dictCode: '003'})
+		if (data) {
+			yield put({type: 'success', payload: {carTypes: data}})
+		} else {
+			yield put({type: 'fail', payload: {carTypes: []}})
+		}
+	},
 	*getRuleTypeDict ({payload}, {call, put}) {
 		const data = yield call(service.getDictItemService, {dictCode: '006'})
 		if (data) {

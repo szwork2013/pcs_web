@@ -20,11 +20,31 @@ const effects = {
 		}
 	},
 	*getOne ({payload}, {call, put}) {
-		const data = yield call(service.getService, payload)
+		const data = yield call(service.getService, {id: payload.id, area_id: payload.selectTree})
 		if (data) {
-			yield put({type: 'showModal', payload: {dataSource: data}})
+			yield put({type: 'showModal', payload: {currentItem: data}})
 		} else {
-			yield put({type: 'fail', payload: {dataSource: []}})
+			yield put({type: 'fail', payload: {currentItem: {}}})
+		}
+	},
+	*create ({payload}, {call, put}) {
+		yield put({ type: 'hideModal'})
+		yield put({ type: 'showLoading' })
+		const data = yield call(service.addService, payload.data)
+		if (data) {
+			yield put({type: 'get'})
+		} else {
+			yield put({type: 'fail'})
+		}
+	},
+	*update ({payload}, {call, put}) {
+		yield put({ type: 'hideModal' })
+		yield put({ type: 'showLoading' })
+		const data = yield call(service.uptService, payload.data)
+		if (data) {
+			yield put({type: 'get'})
+		} else {
+			yield put({type: 'fail'})
 		}
 	},
 	*remove ({payload}, {call, put}) {

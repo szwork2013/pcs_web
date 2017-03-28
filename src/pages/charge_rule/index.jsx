@@ -8,7 +8,7 @@ import { defaultTableProps, myDispatch, defaultModalProps } from '../../utils'
 
 const Main = ({dispatch, chargerule, common}) => {
   const {selectKeys, selectTree, rule_type, loading, detailDataSource} = chargerule
-  const {parkAreaTree, ruleTypes} = common
+  const {parkAreaTree, ruleTypes, carTypes} = common
   const treeProps = {
     trees: parkAreaTree,
     selectKeys,
@@ -25,6 +25,7 @@ const Main = ({dispatch, chargerule, common}) => {
       myDispatch(dispatch, 'chargerule/remove', {id, selectTree})
     },
     onEdit (id) {
+      myDispatch(dispatch, 'common/getCarTypeDict')
       myDispatch(dispatch, 'common/getRuleTypeDict')
       myDispatch(dispatch, 'chargerule/getOne', {id, selectTree})
     }
@@ -33,10 +34,18 @@ const Main = ({dispatch, chargerule, common}) => {
     dispatch,
     rule_type,
     ruleTypes,
+    carTypes,
     loading,
     dataSource: detailDataSource,
     onCancel () {
       myDispatch(dispatch, 'chargerule/hideModal')
+    },
+    onOk (data) {
+      if (data.id) {
+        myDispatch(dispatch, 'chargerule/update', {data})
+      } else {
+        myDispatch(dispatch, 'chargerule/create', {data})
+      }
     }
   })
   return (
