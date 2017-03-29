@@ -6,7 +6,10 @@ const state = {
 	selectKeys: [],
 	selectTree: null,
 	rule_type: '',
-	detailDataSource: []
+	detailDataSource: [],
+	detalModalVisible: false,
+	detailItem: null,
+	detalModalType: 'create'
 }
 
 const effects = {

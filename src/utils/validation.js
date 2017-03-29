@@ -9,7 +9,7 @@
 export function valid_required (errMsg) {
 	return {
 		required: true,
-		message: errMsg || '不能为空'
+		message: errMsg || '必填项不能为空'
 	}
 }
 

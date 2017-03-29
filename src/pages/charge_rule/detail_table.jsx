@@ -6,14 +6,13 @@ import { Button, Popconfirm } from 'antd'
 const ButtonGroup = Button.Group
 
 const Table = ({loading, rule_type, dataSource, onDel, onEdit, onRecharge}) => {
-  console.log(dataSource);
   let columns = []
   if (rule_type === '003') {
     columns = [
       {
         title: '时长（分钟）',
-        dataIndex: 'begin',
-        key: 'begin'
+        dataIndex: 'end',
+        key: 'end'
       },
       {
         title: '收费金额（角）',

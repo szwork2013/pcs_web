@@ -2,9 +2,10 @@ import React from 'react'
 import { Modal, Form, Input, Checkbox, Row, Col, InputNumber, Button, Select } from 'antd'
 import { formItemLayout, myDispatch, validation } from '../../utils'
 import DetailTable from './detail_table'
+import DetailModal from './detail_modal'
 
 const FormItem = Form.Item
-const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ruleTypes, loading, dataSource, carTypes, area_id,
+const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visible, onCancel, onOk, item, rule_type, ruleTypes, loading, dataSource, carTypes, area_id,
 	form: {
 		resetFields,
     getFieldDecorator,
@@ -46,7 +47,30 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ru
 	const tableProps = {
 		loading,
 		dataSource,
-		rule_type
+		rule_type,
+		onDel () {
+
+		},
+		onEdit () {
+			
+		}
+	}
+	const detailModalProps = {
+		dispatch,
+		visible: detalModalVisible,
+		rule_type,
+		item: detalModalType === 'create' ? {} : detailItem,
+		onCancel () {
+			myDispatch(dispatch, 'chargerule/common', {detalModalVisible: false})
+		},
+		onOk (data) {
+			dataSource = dataSource || []
+			dataSource.push(data)
+			myDispatch(dispatch, 'chargerule/common', {detalModalVisible: false, detailDataSource: dataSource})
+		}
+	}
+	const addDetail = () => {
+		myDispatch(dispatch, 'chargerule/common', {detalModalVisible: true, detalModalType: 'create'})
 	}
 	const colProps = {xs: 24,	sm: 12,	md: 12,	lg: 12}
   return (
@@ -175,7 +199,7 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ru
 				{
 					rule_type === '003' || rule_type === '004' ?
 					<FormItem>
-						<Button type='primary'>添加明细</Button>
+						<Button type='primary' onClick={addDetail}>添加明细</Button>
 					</FormItem> : ''
 				}
 				{
@@ -185,6 +209,7 @@ const MModal = ({dispatch, visible, ipValid, onCancel, onOk, item, rule_type, ru
 					</FormItem> : ''
 				}
 			</Form>
+			<DetailModal {...detailModalProps}/>
 		</Modal>
   )
 }

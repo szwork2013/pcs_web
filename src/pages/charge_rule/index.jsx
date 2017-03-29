@@ -7,7 +7,7 @@ import MModal from './modal'
 import { defaultTableProps, myDispatch, defaultModalProps, message_box } from '../../utils'
 
 const Main = ({dispatch, chargerule, common}) => {
-  const {selectKeys, selectTree, rule_type, loading, detailDataSource, currentItem} = chargerule
+  const {selectKeys, detalModalType, detailItem, selectTree, rule_type, loading, detailDataSource, currentItem, detalModalVisible} = chargerule
   const {parkAreaTree, ruleTypes, carTypes} = common
   const treeProps = {
     trees: parkAreaTree,
@@ -36,6 +36,9 @@ const Main = ({dispatch, chargerule, common}) => {
     ruleTypes,
     carTypes,
     loading,
+    detailItem,
+    detalModalType,
+    detalModalVisible,
     area_id: selectTree,
     dataSource: detailDataSource,
     onCancel () {
