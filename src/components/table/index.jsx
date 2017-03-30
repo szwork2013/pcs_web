@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import { Table } from 'antd'
+// import AnimTableBody from '../anim_table_body'
 
 const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onChange, rowKey, showPage = true, expandedRowRender}) => {
   const pagination = showPage ? {
@@ -13,6 +14,11 @@ const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onCha
 		}
 	} : false
 
+  // const getBodyWrapperProps = {
+  //   page: pageIndex
+  // }
+
+  // const getBodyWrapper = body => { return <AnimTableBody {...getBodyWrapperProps} body={body} /> }
   return (
     <Table
       expandedRowRender={expandedRowRender}
@@ -23,7 +29,9 @@ const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onCha
       pagination={pagination}
       scroll={{ x: 768 }}
       size='small'
-      bordered={true}/>
+      bordered={true}
+      /*getBodyWrapper={getBodyWrapper}*/
+      />
   )
 }
 
