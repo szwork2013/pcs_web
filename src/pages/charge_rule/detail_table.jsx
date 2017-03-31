@@ -53,25 +53,15 @@ const Table = ({loading, rule_type, dataSource, onDel, onEdit, onRecharge}) => {
 			title: '操作',
 			dataIndex: 'oper',
 			key: 'oper',
-			width: 220,
-			render (text, row) {
-				if (row.status === 'aa') {
-					return (
-						<ButtonGroup>
-							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
-							{
-								row.auth_type === '001' || row.auth_type === '002' ? <Button type='ghost' size='small' onClick={() => onRecharge(row) }>{row.auth_type === '001' ? '续期' : '续费'}</Button> : ''
-							}
-						</ButtonGroup>
-						)
-				} else {
-					return (
-						<ButtonGroup>
-							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
-							<Popconfirm title='确认删除该计费规则？' onConfirm={() => {onDel(row.id)}}><Button type='ghost' size='small'>删除</Button></Popconfirm>
-						</ButtonGroup>
-					)
-				}
+			width: 120,
+			render (text, row, index) {
+        row.key = index
+        return (
+          <ButtonGroup>
+            <Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
+            <Popconfirm title='确认删除该明细规则？' onConfirm={() => {onDel(row)}}><Button type='ghost' size='small'>删除</Button></Popconfirm>
+          </ButtonGroup>
+        )
 			}
 		})
 
@@ -80,7 +70,7 @@ const Table = ({loading, rule_type, dataSource, onDel, onEdit, onRecharge}) => {
     loading,
     dataSource,
 		showPage: false,
-    rowKey: record => record.id
+    rowKey: (record, index) => index
   }
 
   return (

@@ -23,11 +23,12 @@ const effects = {
 		}
 	},
 	*getOne ({payload}, {call, put}) {
+		yield put({type: 'showModal', payload: {modalType: 'edit'}})
 		const data = yield call(service.getOneService, {id: payload.id})
 		if (data) {
-			yield put({type: 'showModal', payload: {currentItem: data, modalType: 'edit', rule_type: data.rule_type}})
+			yield put({type: 'success', payload: {detailDataSource: data.details, currentItem: data.main, rule_type: data.main.rule_type}})
 		} else {
-			yield put({type: 'fail', payload: {currentItem: {}}})
+			yield put({type: 'fail', payload: {currentItem: {}, detailDataSource: []}})
 		}
 	},
 	*create ({payload}, {call, put}) {

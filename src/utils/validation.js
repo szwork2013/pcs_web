@@ -81,6 +81,22 @@ export function valid_phone (cb) {
 	}
 }
 
+export function valid_number (cb) {
+	return {
+		validator (rule, value, callback) {
+			if (!value || value === '') {
+				callback()
+			} else if (/^(0|[1-9]\d*)$/.test(value)) {
+				callback()
+				cb && cb('success')
+			} else {
+				callback('此项必须为正整数')
+				cb && cb('error')
+			}
+		}
+	}
+}
+
 /**
  * validation
  * IP验证

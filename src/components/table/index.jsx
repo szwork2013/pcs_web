@@ -17,7 +17,6 @@ const DTable = ({columns, total, pageIndex, loading, pageSize, dataSource, onCha
   // const getBodyWrapperProps = {
   //   page: pageIndex
   // }
-
   // const getBodyWrapper = body => { return <AnimTableBody {...getBodyWrapperProps} body={body} /> }
   return (
     <Table

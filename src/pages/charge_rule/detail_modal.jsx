@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Form, Input } from 'antd'
-import { validation, formItemLayout } from '../../utils'
+import { validation, formItemLayout, format } from '../../utils'
 
 const FormItem = Form.Item
 
@@ -9,7 +9,8 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
 		resetFields,
     getFieldDecorator,
     validateFields,
-    getFieldsValue
+    getFieldsValue,
+    setFieldsValue
   }}) => {
 	item = item || {}
 	const handleOk = () => {
@@ -18,7 +19,11 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
         return
       }
       const data = {
-        ...getFieldsValue()
+        ...getFieldsValue(),
+        unit_time: format.toInt(getFieldsValue()['unit_time']),
+        unit_amt: format.toInt(getFieldsValue()['unit_amt']),
+        unit_max: format.toInt(getFieldsValue()['unit_max']),
+        key: item.key
       }
       onOk(data)
     })
@@ -34,7 +39,13 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
 		},
 		wrapClassName: 'vertical-center-modal'
 	}
-
+  const onEndChange = e => {
+    const { value } = e.target;
+    const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
+    if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
+      setFieldsValue({end: value})
+    }
+  }
 	return (
 		<Modal {...modalProps}>
 			<Form>
@@ -43,8 +54,9 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
           <FormItem label='时长' {...formItemLayout()}>
             {getFieldDecorator('end', {
               initialValue: item.end,
+              onChange: onEndChange,
               rules: [validation.valid_required()]
-            })(<Input addonAfter='分钟'/>)}
+            })(<Input type='number' addonAfter='分钟'/>)}
           </FormItem> : ''
         }
         {
@@ -53,7 +65,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_amt', {
               initialValue: item.unit_amt,
               rules: [validation.valid_required()]
-            })(<Input addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
           </FormItem> : ''
         }
 				{
@@ -80,7 +92,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_time', {
               initialValue: item.unit_time,
               rules: [validation.valid_required()]
-            })(<Input addonAfter='分钟'/>)}
+            })(<Input type='number' addonAfter='分钟'/>)}
           </FormItem> : ''
         }
         {
@@ -89,7 +101,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_amt', {
               initialValue: item.unit_amt,
               rules: [validation.valid_required()]
-            })(<Input addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
           </FormItem> : ''
         }
         {
@@ -98,7 +110,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_max', {
               initialValue: item.unit_max,
               rules: [validation.valid_required()]
-            })(<Input addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
           </FormItem> : ''
         }
 			</Form>

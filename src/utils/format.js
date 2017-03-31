@@ -95,10 +95,23 @@ export function formatAuthType (origin) {
  * @param {any} origin
  * @returns
  */
-export function formaRuleType (origin) {
+export function formatRuleType (origin) {
 	if (origin === '001') return '按次计费'
 	else if (origin === '002') return '按天计费'
 	else if (origin === '003') return '按时长计费'
 	else if (origin === '004') return '按时段计费'
 	else return origin
+}
+
+
+/**
+ * format
+ * 转换成int
+ * @export
+ * @param {any} origin
+ * @param {any} defaultVlu
+ * @returns
+ */
+export function toInt(origin, defaultVlu = 0) {
+	return isNaN(origin) ? defaultVlu : parseInt(origin)
 }

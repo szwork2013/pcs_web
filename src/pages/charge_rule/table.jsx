@@ -22,7 +22,7 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 			title: '计费类型',
 			dataIndex: 'rule_type',
 			key: 'rule_type',
-			render: text => format.formaRuleType(text)
+			render: text => format.formatRuleType(text)
 		},
     {
 			title: '状态',

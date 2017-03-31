@@ -3,6 +3,7 @@ import { Modal, Form, Input, Checkbox, Row, Col, InputNumber, Button, Select } f
 import { formItemLayout, myDispatch, validation } from '../../utils'
 import DetailTable from './detail_table'
 import DetailModal from './detail_modal'
+import _ from 'lodash'
 
 const FormItem = Form.Item
 const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visible, onCancel, onOk, item, rule_type, ruleTypes, loading, dataSource, carTypes, area_id,
@@ -20,10 +21,13 @@ const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visibl
         return
       }
       const data = {
-        ...getFieldsValue(),
-				status: getFieldsValue()['status'] ? 'aa' : 'nn',
-				id: item.id,
-				area_id
+        main: {
+					...getFieldsValue(),
+					status: getFieldsValue()['status'] ? 'aa' : 'nn',
+					id: item.id,
+					area_id,
+				},
+				details: dataSource
       }
       onOk(data)
     })
@@ -37,22 +41,26 @@ const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visibl
 		maskClosable: false,
 		afterClose () {
 			resetFields()
-			dispatch({type: 'chargerule/common', payload: {ipValid: ''}})
+			dispatch({type: 'chargerule/common', payload: {rule_type: ''}})
 		},
-		...rule_type === '003' || rule_type === '004' ? {} : {wrapClassName: 'vertical-center-modal'}
+		wrapClassName: 'vertical-center-modal'
+		// ...rule_type === '003' || rule_type === '004' ? {} : {wrapClassName: 'vertical-center-modal'}
 	}
 	const ruleTypeChange = value => {
-		myDispatch(dispatch, 'chargerule/common', {rule_type: value})
+		myDispatch(dispatch, 'chargerule/common', {rule_type: value, detailDataSource: []})
 	}
 	const tableProps = {
 		loading,
 		dataSource,
 		rule_type,
-		onDel () {
-
+		onDel (data) {
+			_.remove(dataSource, item => {
+				return item === data
+			})
+			myDispatch(dispatch, 'chargerule/common', {detailDataSource: dataSource})
 		},
-		onEdit () {
-			
+		onEdit (data) {
+			myDispatch(dispatch, 'chargerule/common', {detalModalVisible: true, detalModalType: 'edit', detailItem: data})
 		}
 	}
 	const detailModalProps = {
@@ -64,19 +72,39 @@ const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visibl
 			myDispatch(dispatch, 'chargerule/common', {detalModalVisible: false})
 		},
 		onOk (data) {
-			dataSource = dataSource || []
-			dataSource.push(data)
-			myDispatch(dispatch, 'chargerule/common', {detalModalVisible: false, detailDataSource: dataSource})
+			if (detalModalType === 'create') {
+				dataSource = dataSource || []
+				dataSource.push(data)
+				myDispatch(dispatch, 'chargerule/common', {detalModalVisible: false, detailDataSource: dataSource})
+			} else {
+				dataSource[data.key] = {
+					...data,
+					key: undefined
+				}
+				myDispatch(dispatch, 'chargerule/common', {detalModalVisible: false, detailDataSource: dataSource})
+			}
 		}
 	}
 	const addDetail = () => {
 		myDispatch(dispatch, 'chargerule/common', {detalModalVisible: true, detalModalType: 'create'})
 	}
 	const colProps = {xs: 24,	sm: 12,	md: 12,	lg: 12}
+	// style={rule_type === '003' || rule_type === '004' ? {top: 20} : {}}
   return (
-    <Modal {...modalProps} style={rule_type === '003' || rule_type === '004' ? {top: 20} : {}}>
+    <Modal {...modalProps}>
 			<Form>
 				<Row>
+					<Col {...colProps}>
+						<FormItem label='计费类型' {...formItemLayout(7, 17)}>
+							{getFieldDecorator('rule_type', {
+								initialValue: item.rule_type,
+								onChange: ruleTypeChange,
+								rules: [validation.valid_required('计费类型不能为空')]
+							})(<Select placeholder='请选择计费类型'>
+									{ruleTypes.map(item => (<Select.Option key={item.id} value={item.itemCode}>{item.itemName}</Select.Option>))}
+								</Select>)}
+						</FormItem>
+					</Col>
 					<Col {...colProps}>
 						<FormItem label='授权类别' {...formItemLayout(7, 17)}>
 							{getFieldDecorator('auth_type', {
@@ -99,22 +127,11 @@ const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visibl
 						</FormItem>
 					</Col>
 					<Col {...colProps}>
-						<FormItem label='计费类型' {...formItemLayout(7, 17)}>
-							{getFieldDecorator('rule_type', {
-								initialValue: item.rule_type,
-								onChange: ruleTypeChange,
-								rules: [validation.valid_required('计费类型不能为空')]
-							})(<Select placeholder='请选择计费类型'>
-									{ruleTypes.map(item => (<Select.Option key={item.id} value={item.itemCode}>{item.itemName}</Select.Option>))}
-								</Select>)}
-						</FormItem>
-					</Col>
-					<Col {...colProps}>
 						<FormItem label='免费时长' {...formItemLayout(7, 17)}>
 							{getFieldDecorator('free_time', {
 								initialValue: item.free_time,
-								rules: [validation.valid_required('免费时长不能为空')]
-							})(<InputNumber style={{width: '100%'}} />)}
+								rules: [validation.valid_required('免费时长不能为空'), validation.valid_number()]
+							})(<Input type='number' addonAfter='分钟' />)}
 						</FormItem>
 					</Col>
 					{
@@ -123,27 +140,30 @@ const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visibl
 							<FormItem label='收费金额' {...formItemLayout(7, 17)}>
 								{getFieldDecorator('start_amt', {
 									initialValue: item.start_amt,
-									rules: [validation.valid_required('收费金额不能为空')]
-								})(<InputNumber style={{width: '80%'}} />)}
-								<span className="ant-form-text">元/{rule_type === '001' ? '次' : '天'}</span>
+									rules: [validation.valid_required('收费金额不能为空'), validation.valid_number()]
+								})(<Input type='number' addonAfter={rule_type === '001' ? '元/次' : '元/天'} />)}
 							</FormItem>
 						</Col> : ''
 					}
 					{
 						rule_type === '003' || rule_type === '004' ?
 						<Col {...colProps}>
-							<FormItem label='起步价' {...formItemLayout(7, 17)}>
+							<FormItem label='起步价' required {...formItemLayout(7, 17)}>
 								<Col span={12}>
-									{getFieldDecorator('start_time', {
-										initialValue: item.start_time
-									})(<InputNumber style={{width: '65%'}}/>)}
-									<span className="ant-form-text">分钟</span>
+									<FormItem>
+										{getFieldDecorator('start_time', {
+											initialValue: item.start_time,
+											rules: [validation.valid_required('起步价时间不能为空'), validation.valid_number()]
+										})(<Input type='number' addonAfter='分钟'/>)}
+									</FormItem>
 								</Col>
 								<Col span={12}>
-									{getFieldDecorator('start_amt', {
-										initialValue: item.start_amt
-									})(<InputNumber style={{width: '70%'}}/>)}
-									<span className="ant-form-text">角</span>
+									<FormItem>
+										{getFieldDecorator('start_amt', {
+											initialValue: item.start_amt,
+											rules: [validation.valid_required('起步价金额不能为空'), validation.valid_number()]
+										})(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+									</FormItem>
 								</Col>
 							</FormItem>
 						</Col> : ''
@@ -153,8 +173,9 @@ const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visibl
 						<Col {...colProps}>
 							<FormItem label='单日收费上限' {...formItemLayout(7, 17)}>
 								{getFieldDecorator('day_max', {
-									initialValue: item.day_max
-								})(<InputNumber style={{width: '100%'}} />)}
+									initialValue: item.day_max,
+									rules: [validation.valid_required('单日收费上限不能为空'), validation.valid_number()]
+								})(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;' />)}
 							</FormItem>
 						</Col> : ''
 					}
@@ -163,26 +184,31 @@ const MModal = ({dispatch, detailItem, detalModalType, detalModalVisible, visibl
 						<Col {...colProps}>
 							<FormItem label='24小时收费上限' {...formItemLayout(7, 17)}>
 								{getFieldDecorator('twenty_four_max', {
-									initialValue: item.twenty_four_max
-								})(<InputNumber style={{width: '100%'}} />)}
+									initialValue: item.twenty_four_max,
+									rules: [validation.valid_required('24小时收费上限不能为空'), validation.valid_number()]
+								})(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;' />)}
 							</FormItem>
 						</Col> : ''
 					}
 					{
 						rule_type === '003' ?
 						<Col {...colProps}>
-							<FormItem label='超出设置时长' {...formItemLayout(7, 17)}>
+							<FormItem label='超出设置时长' required {...formItemLayout(7, 17)}>
 								<Col span={12}>
-									{getFieldDecorator('over_time', {
-										initialValue: item.over_time
-									})(<InputNumber style={{width: '65%'}}/>)}
-									<span className="ant-form-text">分钟</span>
+									<FormItem>
+										{getFieldDecorator('over_time', {
+											initialValue: item.over_time,
+											rules: [validation.valid_required('超出设置时长不能为空'), validation.valid_number()]
+										})(<Input type='number' addonAfter='分钟'/>)}
+									</FormItem>
 								</Col>
 								<Col span={12}>
-									{getFieldDecorator('over_amt', {
-										initialValue: item.over_amt
-									})(<InputNumber style={{width: '70%'}}/>)}
-									<span className="ant-form-text">角</span>
+									<FormItem>
+										{getFieldDecorator('over_amt', {
+											initialValue: item.over_amt,
+											rules: [validation.valid_required('超出设置时长金额不能为空'), validation.valid_number()]
+										})(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+									</FormItem>
 								</Col>
 							</FormItem>
 						</Col> : ''

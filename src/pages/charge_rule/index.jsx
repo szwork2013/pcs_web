@@ -45,7 +45,7 @@ const Main = ({dispatch, chargerule, common}) => {
       myDispatch(dispatch, 'chargerule/hideModal')
     },
     onOk (data) {
-      if (data.id) {
+      if (data.main.id) {
         myDispatch(dispatch, 'chargerule/update', {data})
       } else {
         myDispatch(dispatch, 'chargerule/create', {data})
