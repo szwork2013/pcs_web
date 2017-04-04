@@ -9,7 +9,7 @@ import { myDispatch } from '../../utils'
 import { warnBox } from '../../utils/message_box'
 
 const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
-	const { areaTree, selectTree, type, selectedKeys } = parkarea 
+	const { areaTree, selectTree, type, selectedKeys, isChannelReset, isAreaReset } = parkarea 
 	const { parkAreas, parkTerminals, parkCameras } = common
 	const treeProps = {
 		areas: areaTree,
@@ -22,8 +22,10 @@ const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
 				// myDispatch(dispatch, 'common/getParkTerminal')
 				// myDispatch(dispatch, 'common/getParkCamera')
 				myDispatch(dispatch, 'parkchannel/getOne', {id: temp[0], modalType: 'edit'})
+				myDispatch(dispatch, 'parkarea/common', {isChannelReset: true})
 			} else {
 				myDispatch(dispatch, 'parkarea/getOne', {id: temp[0], modalType: 'edit'})
+				myDispatch(dispatch, 'parkarea/common', {isAreaReset: true})
 			}
 		}
 	}
@@ -34,6 +36,7 @@ const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
 			switch(type) {
 				case 'add_channel': {
 					myDispatch(dispatch, 'parkchannel/common', {modalType: 'create'})
+					myDispatch(dispatch, 'parkarea/common', {modalType: 'init'})
 					// myDispatch(dispatch, 'common/getParkTerminal')
 					// myDispatch(dispatch, 'common/getParkCamera')
 				}break
@@ -60,12 +63,16 @@ const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
 	const parkAreaModalProps = {
 		parkAreas,
 		parkarea,
+		isAreaReset,
 		onSave (data) {
 			if (data.id) {
 				myDispatch(dispatch, 'parkarea/edit', {data})
 			} else {
 				myDispatch(dispatch, 'parkarea/add', {data})
 			}
+		},
+		onReset () {
+			myDispatch(dispatch, 'parkarea/common', {isAreaReset: false})
 		}
 	}
 	const channelModalProps = {
@@ -73,24 +80,28 @@ const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
 		parkchannel,
 		parkTerminals,
 		parkCameras,
+		isChannelReset,
 		onSave (data) {
 			if (data.id) {
 				myDispatch(dispatch, 'parkchannel/edit', {data})
 			} else {
 				myDispatch(dispatch, 'parkchannel/add', {data})
 			}
+		},
+		onReset () {
+			myDispatch(dispatch, 'parkarea/common', {isChannelReset: false})
 		}
 	}
-	const GenChannelModal = () => <ChannelModal {...channelModalProps}/>
-	const GenParkAreaModal = () => <ParkAreaModal {...parkAreaModalProps}/>
+	// const GenChannelModal = () => <ChannelModal {...channelModalProps}/>
+	// const GenParkAreaModal = () => <ParkAreaModal {...parkAreaModalProps}/>
 	return (
 		<div className='content-inner'>
 			<Row><TopPanel {...topPanelProps}/></Row>
 			<Row>
 				<Col span={4}><MTree {...treeProps}/></Col>
 				<Col span={18}>
-					{selectTree && selectTree.type === 'area' || parkarea.modalType === 'create' ? <GenParkAreaModal/> : ''}
-					{selectTree && selectTree.type === 'channel' || parkchannel.modalType === 'create' ? <GenChannelModal/> : ''}
+					{selectTree && selectTree.type === 'area' && parkarea.modalType !== 'init' || parkarea.modalType === 'create' ? <ParkAreaModal {...parkAreaModalProps}/> : ''}
+					{selectTree && selectTree.type === 'channel' && parkchannel.modalType !== 'init' || parkchannel.modalType === 'create' ? <ChannelModal {...channelModalProps}/> : ''}
 				</Col>
 			</Row>
 		</div>

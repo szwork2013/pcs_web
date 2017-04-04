@@ -46,7 +46,7 @@ const effects = {
 			}
 		},
 		*remove ({payload}, {call, put}) {
-			const data = yield call(service.delItemService, payload)
+			const data = yield call(service.delItemService, {id: payload.id})
       if (data) {
         yield put({type: 'getDictItem', payload})
       } else {

@@ -16,6 +16,7 @@ const MTree = ({areaAuthTree, selectedKeys, onAuthSel}) => {
   const treeProps = {
 		defaultExpandAll: true,
 		selectedKeys,
+    showLine: true,
 		onSelect (keys) {
 			if (!keys || keys.length === 0) {
 				return

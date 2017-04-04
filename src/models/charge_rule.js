@@ -9,7 +9,8 @@ const state = {
 	detailDataSource: [],
 	detalModalVisible: false,
 	detailItem: null,
-	detalModalType: 'create'
+	detalModalType: 'create',
+	modalLoading: false
 }
 
 const effects = {
@@ -23,12 +24,12 @@ const effects = {
 		}
 	},
 	*getOne ({payload}, {call, put}) {
-		yield put({type: 'showModal', payload: {modalType: 'edit'}})
+		yield put({type: 'showModal', payload: {modalType: 'edit', modalLoading: true}})
 		const data = yield call(service.getOneService, {id: payload.id})
 		if (data) {
-			yield put({type: 'success', payload: {detailDataSource: data.details, currentItem: data.main, rule_type: data.main.rule_type}})
+			yield put({type: 'success', payload: {modalLoading: false, detailDataSource: data.details, currentItem: data.main, rule_type: data.main.rule_type}})
 		} else {
-			yield put({type: 'fail', payload: {currentItem: {}, detailDataSource: []}})
+			yield put({type: 'fail', payload: {currentItem: {}, detailDataSource: [], modalLoading: false}})
 		}
 	},
 	*create ({payload}, {call, put}) {

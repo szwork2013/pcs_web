@@ -6,12 +6,19 @@ import { formItemLayout } from '../../utils'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
-const ChannelModal = ({parkchannel, parkAreas, parkTerminals, parkCameras, onSave, form: {
+const ChannelModal = ({parkchannel, parkAreas, isChannelReset, onReset, parkTerminals, parkCameras, onSave, form: {
 		resetFields,
     getFieldDecorator,
     validateFields,
     getFieldsValue
 }}) => {
+	const reset = () => {
+    resetFields()
+    onReset()
+  }
+  if (isChannelReset) {
+    reset()
+  }
 	const { modalType } = parkchannel
 	const item = modalType !== 'edit' ? {} : parkchannel.currentItem
 
@@ -63,7 +70,7 @@ const ChannelModal = ({parkchannel, parkAreas, parkTerminals, parkCameras, onSav
 						initialValue: item.cameras || [],
 						rules: [valid_required('管理摄像机不能为空')]
 					})(
-						<Select multiple>
+						<Select mode='multiple'>
 							{parkCameras.map((item, key) => (<Select.Option key={key} value={item.id}>{item.ip}</Select.Option>))}
 						</Select>
 					)}

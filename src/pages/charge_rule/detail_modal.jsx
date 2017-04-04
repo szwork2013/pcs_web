@@ -1,9 +1,9 @@
 import React from 'react'
-import { Modal, Form, Input } from 'antd'
+import { Modal, Form, Input, TimePicker } from 'antd'
 import { validation, formItemLayout, format } from '../../utils'
+import moment from 'moment'
 
 const FormItem = Form.Item
-
 const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
 	form: {
 		resetFields,
@@ -18,11 +18,14 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
       if (errors) {
         return
       }
+      let fields = getFieldsValue()
       const data = {
-        ...getFieldsValue(),
-        unit_time: format.toInt(getFieldsValue()['unit_time']),
-        unit_amt: format.toInt(getFieldsValue()['unit_amt']),
-        unit_max: format.toInt(getFieldsValue()['unit_max']),
+        ...fields,
+        unit_time: format.toInt(fields['unit_time']),
+        unit_amt: format.toInt(fields['unit_amt']),
+        unit_max: format.toInt(fields['unit_max']),
+        begin: fields['begin'] ? fields['begin'].format('HH:mm') : undefined,
+        end: rule_type === '003' ? fields['end'] : (fields['end'] ? fields['end'].format('HH:mm') : undefined),
         key: item.key
       }
       onOk(data)
@@ -56,7 +59,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
               initialValue: item.end,
               onChange: onEndChange,
               rules: [validation.valid_required()]
-            })(<Input type='number' addonAfter='分钟'/>)}
+            })(<Input type='number' addonAfter='分钟' autoComplete='off'/>)}
           </FormItem> : ''
         }
         {
@@ -65,25 +68,25 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_amt', {
               initialValue: item.unit_amt,
               rules: [validation.valid_required()]
-            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;' autoComplete='off'/>)}
           </FormItem> : ''
         }
 				{
           rule_type === '004' ?
           <FormItem label='开始时间' {...formItemLayout()}>
             {getFieldDecorator('begin', {
-              initialValue: item.begin,
+              initialValue: moment(item.begin),
               rules: [validation.valid_required()]
-            })(<Input />)}
+            })(<TimePicker format='HH:mm' style={{width: '100%'}}/>)}
           </FormItem> : ''
         }
         {
           rule_type === '004' ?
           <FormItem label='结束时间' {...formItemLayout()}>
             {getFieldDecorator('end', {
-              initialValue: item.end,
+              initialValue: moment(item.end),
               rules: [validation.valid_required()]
-            })(<Input />)}
+            })(<TimePicker format='HH:mm' style={{width: '100%'}}/>)}
           </FormItem> : ''
         }
         {
@@ -92,7 +95,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_time', {
               initialValue: item.unit_time,
               rules: [validation.valid_required()]
-            })(<Input type='number' addonAfter='分钟'/>)}
+            })(<Input type='number' addonAfter='分钟' autoComplete='off'/>)}
           </FormItem> : ''
         }
         {
@@ -101,7 +104,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_amt', {
               initialValue: item.unit_amt,
               rules: [validation.valid_required()]
-            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;' autoComplete='off'/>)}
           </FormItem> : ''
         }
         {
@@ -110,7 +113,7 @@ const DetailModal = ({dispatch, visible, onCancel, onOk, item, rule_type,
             {getFieldDecorator('unit_max', {
               initialValue: item.unit_max,
               rules: [validation.valid_required()]
-            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;'/>)}
+            })(<Input type='number' addonAfter='角&nbsp;&nbsp;&nbsp;' autoComplete='off'/>)}
           </FormItem> : ''
         }
 			</Form>

@@ -8,7 +8,8 @@ const state = {
 	areaAuthTree: [],
 	selectTree: {},
 	selectedKeys: [],
-	segments: []
+	segments: [],
+	isReset: false
 }
 
 const effects = {

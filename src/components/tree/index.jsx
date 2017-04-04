@@ -18,7 +18,8 @@ const MTree = ({trees, selectKeys, onSelect}) => {
 	const treeProps = {
 		defaultExpandAll: true,
 		selectedKeys: selectKeys,
-		onSelect
+		onSelect,
+		showLine: true
 	}
 
 	return (

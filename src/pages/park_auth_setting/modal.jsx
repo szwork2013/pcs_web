@@ -5,7 +5,7 @@ import MTable from './table'
 
 const FormItem = Form.Item
 const InputGroup = Input.Group
-const MModal = ({item, recognitionTypes, matchTypes, selectTree, loading, segments, onAddSegment, onEditSegment, onDelSegment, onOk, form: {
+const MModal = ({item, isReset, onReset, recognitionTypes, matchTypes, selectTree, loading, segments, onAddSegment, onEditSegment, onDelSegment, onOk, form: {
 		resetFields,
     getFieldDecorator,
     validateFields,
@@ -18,7 +18,15 @@ const MModal = ({item, recognitionTypes, matchTypes, selectTree, loading, segmen
   const colCheckBoxProps = {xs: 12, sm: 8, md: 8, lg: 8}
   const tableProps = {
     dataSource: segments,
-    onDel: onDelSegment
+    onDel: onDelSegment,
+    loading: false
+  }
+  const reset = () => {
+    resetFields()
+    onReset()
+  }
+  if (isReset) {
+    reset()
   }
   const handleOk = () => {
     validateFields((errors) => {

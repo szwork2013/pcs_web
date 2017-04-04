@@ -6,13 +6,13 @@ import Modal from './modal'
 // import RoleUserSettingModal from '../sys_role_user/role_user_setting'
 
 const SysUser = ({dispatch, sysuser, common}) => {
-  const { total, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey, loginNameValid, phoneValid} = sysuser
+  const { total, search, pageIndex, pageSize, dataSource, loading, currentItem, modalType, modalVisible, currentKey, loginNameValid, phoneValid} = sysuser
   const { roleList } = common
 
   const searchProps = {
     placeholder: '姓名、登录名或手机号',
     onSearch (data) {
-      dispatch({type: 'sysuser/getList', payload: {pageIndex: 1, pageSize, key: data.keyword}})
+      dispatch({type: 'sysuser/getList', payload: {pageIndex: 1, pageSize, search: {key: data.keyword}}})
     },
     onAdd () {
       dispatch({type: 'sysuser/showModal', payload: {modalType: 'create', currentKey: null}})
@@ -49,7 +49,7 @@ const SysUser = ({dispatch, sysuser, common}) => {
     pageIndex,
     pageSize,
     onPageChange (page) {
-      dispatch({type: 'sysuser/getList', payload: {pageIndex: page, pageSize}})
+      dispatch({type: 'sysuser/getList', payload: {pageIndex: page, pageSize, search}})
     },
     onDel (id) {
       dispatch({type: 'sysuser/del', payload: {id}})

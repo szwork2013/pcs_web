@@ -117,8 +117,8 @@ const SysUserModal = ({visible, onCancel, onOk, item, roleList, loginNameValid, 
             </Radio.Group>)}
 				</FormItem>*/}
 				<FormItem label='所属角色：' {...formItemLayout()}>
-					{getFieldDecorator('roleId', {
-            initialValue: item.roleId,
+					{getFieldDecorator('role_id', {
+            initialValue: item.role_id,
 						rules: [valid_required('所属角色不能为空')]
           })(<Select placeholder='请选择角色'>
 							{RoleOptions}

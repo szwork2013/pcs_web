@@ -7,7 +7,9 @@ const state = {
 	selectTree: {},
 	type: '',
 	selectedKeys: [],
-	modalType: 'init'
+	modalType: 'init',
+  isAreaReset: false,
+  isChannelReset: false
 }
 
 const effects = {
@@ -33,7 +35,7 @@ const effects = {
     if (data) {
       successBox("保存成功", 3)
       yield put({type: 'getTree'})
-      yield put({type: 'common', payload: {selectTree: {}, selectedKeys: [], modalType: 'init'}})
+      yield put({type: 'common', payload: {modalType: 'init'}})
     }
   },
   *edit ({payload}, {call, put}) {
@@ -41,7 +43,7 @@ const effects = {
     if (data) {
       successBox("保存成功", 3)
       yield put({type: 'getTree'})
-      yield put({type: 'common', payload: {selectTree: {}, selectedKeys: []}})
+      yield put({type: 'common'})
     }
   },
 	*remove ({payload}, {call, put}) {
@@ -57,7 +59,7 @@ const effects = {
 const setup = (dispatch, history) => {
 	history.listen(location => {
 		if (location.pathname === '/parkarea') {
-			dispatch({type: 'getTree'})
+			dispatch({type: 'getTree', payload: {modalType: 'init'}})
 			dispatch({type: 'common/getParkTerminal'})
 			dispatch({type: 'common/getParkCamera'})
 		}

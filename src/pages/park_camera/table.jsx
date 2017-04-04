@@ -34,13 +34,18 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 			key: 'oper',
 			width: 220,
 			render (text, row) {
-				return (
-					<ButtonGroup>
-						{row.status === 'aa' ? <Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
-							: <div><Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
-							<Popconfirm title='确认删除该摄像机？' onConfirm={() => {onDel(row.id)}}><Button type='ghost' size='small'>删除</Button></Popconfirm></div>}
-					</ButtonGroup>
-				)
+				if (row.status === 'aa') {
+					return (<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>)
+				} else {
+					return (
+						<ButtonGroup>
+							<Button type='primary' size='small' onClick={() => onEdit(row) }>编辑</Button>
+							<Popconfirm title='确认删除该摄像机？' onConfirm={() => {onDel(row.id)}}>
+								<Button type='ghost' size='small'>删除</Button>
+							</Popconfirm>
+						</ButtonGroup>
+					)
+				}
 			}
 		}
   ]

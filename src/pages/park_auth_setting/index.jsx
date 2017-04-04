@@ -8,7 +8,7 @@ import AddSegmentModal from './add_segment_modal'
 import { myDispatch, defaultModalProps } from '../../utils'
 
 const Main = ({dispatch, common, parkauthsetting}) => {
-  const { areaAuthTree, selectedKeys, selectTree, currentItem, segments, loading } = parkauthsetting
+  const { areaAuthTree, isReset, selectedKeys, selectTree, currentItem, segments, loading } = parkauthsetting
 	const { recognitionTypes, matchTypes } = common
   const treeProps = {
 		areaAuthTree,
@@ -18,6 +18,7 @@ const Main = ({dispatch, common, parkauthsetting}) => {
 			myDispatch(dispatch, 'common/getMatchTypeDict')
 			myDispatch(dispatch, 'common/getRecognitionTypeDict')
 			myDispatch(dispatch, 'parkauthsetting/get', {selectTree: {channel_id: temp[0], auth_type: temp[1]}, selectedKeys: [key]})
+			myDispatch(dispatch, 'parkauthsetting/common', {isReset: true})
 		}
 	}
 	const modalProps = {
@@ -27,6 +28,7 @@ const Main = ({dispatch, common, parkauthsetting}) => {
 		item: currentItem,
 		segments,
 		loading,
+		isReset,
 		onAddSegment () {
 			myDispatch(dispatch, 'parkauthsetting/showModal')
 		},
@@ -47,6 +49,9 @@ const Main = ({dispatch, common, parkauthsetting}) => {
 		},
 		onOk (data) {			
 			myDispatch(dispatch, 'parkauthsetting/addOrUpt', {segments, currentItem: data, ...selectTree})
+		},
+		onReset () {
+			myDispatch(dispatch, 'parkauthsetting/common', {isReset: false})
 		}
 	}
 	const addModalProps = defaultModalProps(parkauthsetting, {
@@ -58,7 +63,7 @@ const Main = ({dispatch, common, parkauthsetting}) => {
 			myDispatch(dispatch, 'parkauthsetting/hideModal', {segments})
 		}
 	})
-	const GenModal = () => <MModal {...modalProps}/>
+	// const GenModal = () => <MModal {...modalProps}/>
   return (
     <div className='content-inner'>
 			<Row>
@@ -66,9 +71,7 @@ const Main = ({dispatch, common, parkauthsetting}) => {
 					<MTree {...treeProps}/>			
 				</Col>
 				<Col span={14}>
-					{
-						selectTree && selectTree.channel_id ? <GenModal /> : ''
-					}					
+					{selectTree && selectTree.channel_id ? <MModal {...modalProps}/> : ''}					
 				</Col>
 			</Row>
 			<AddSegmentModal {...addModalProps}/>

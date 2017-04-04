@@ -1,7 +1,7 @@
 import { comState, comReducer } from '../utils/base_model'
 import * as service from '../services/sys_role'
 import { getMenuTreeService } from '../services/sys_menu'
-import { message } from '../utils'
+import { message_box } from '../utils'
 import _ from 'lodash'
 
 export default {
@@ -72,10 +72,11 @@ export default {
 			}
 		},
 		*saveMenus ({payload}, {call, put}) {
-			yield put({ type: 'hideMenuSetting'})
 			const data = yield call(service.saveRoleMenuService, payload)
 			if (data) {
-        yield put({type: 'success'})
+				message_box.successBox('设置成功')
+        yield put({type: 'hideMenuSetting'})
+				yield put({type: 'success'})
       } else {
 				yield put({type: 'fail'})
 			}

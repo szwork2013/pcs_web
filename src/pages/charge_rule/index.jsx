@@ -7,13 +7,14 @@ import MModal from './modal'
 import { defaultTableProps, myDispatch, defaultModalProps, message_box } from '../../utils'
 
 const Main = ({dispatch, chargerule, common}) => {
-  const {selectKeys, detalModalType, detailItem, selectTree, rule_type, loading, detailDataSource, currentItem, detalModalVisible} = chargerule
+  const {selectKeys, modalLoading, detalModalType, detailItem, selectTree, rule_type, loading, detailDataSource, currentItem, detalModalVisible} = chargerule
   const {parkAreaTree, ruleTypes, carTypes} = common
   const treeProps = {
     trees: parkAreaTree,
     selectKeys,
     onSelect (keys) {
       if (!keys || keys.length ===0) {
+        myDispatch(dispatch, 'chargerule/get', {area_id: selectTree})
         return
       }
       myDispatch(dispatch, 'chargerule/common', {selectTree: keys[0], selectKeys: keys})
@@ -41,6 +42,7 @@ const Main = ({dispatch, chargerule, common}) => {
     detalModalVisible,
     area_id: selectTree,
     dataSource: detailDataSource,
+    modalLoading,
     onCancel () {
       myDispatch(dispatch, 'chargerule/hideModal')
     },

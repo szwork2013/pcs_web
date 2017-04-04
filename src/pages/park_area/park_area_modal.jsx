@@ -4,12 +4,20 @@ import { valid_required } from '../../utils/validation'
 import { formItemLayout } from '../../utils'
 
 const FormItem = Form.Item
-const ParkAreaModal = ({parkarea, parkAreas, onSave, form: {
+const ParkAreaModal = ({parkarea, parkAreas, onReset, isAreaReset, onSave, form: {
 		resetFields,
     getFieldDecorator,
     validateFields,
     getFieldsValue
 }}) => {
+	const reset = () => {
+    resetFields()
+    onReset()
+  }
+  if (isAreaReset) {
+    reset()
+  }
+
 	const { modalType } = parkarea
 	const item = modalType !== 'edit' ? {} : parkarea.currentItem
 	const handleOk = () => {

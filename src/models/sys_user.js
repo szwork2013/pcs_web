@@ -22,7 +22,7 @@ export default {
 	effects: {
 		*getList ({payload}, {call, put}) {
 			yield put({type: 'showLoading', payload})
-			const data = yield call(sysUser.getSysUsers, payload)
+			const data = yield call(sysUser.getSysUsers, {pageIndex: payload.pageIndex, pageSize: payload.pageSize, ...payload.search})
 			if (data) {
 				yield put({type: 'success', payload: {dataSource: data.data, total: data.total}})
 			} else {
@@ -43,7 +43,7 @@ export default {
       yield put({ type: 'showLoading' })
 			const data = yield call(sysUser.addSysUser, payload.data)
       if (data) {
-        yield put({type: 'getList'})
+        yield put({type: 'getList', payload: {pageIndex: 1, pageSize: 10}})
       } else {
 				yield put({type: 'fail'})
 			}
@@ -53,7 +53,7 @@ export default {
       yield put({ type: 'showLoading' })
 			const data = yield call(sysUser.uptSysUser, payload.data)
       if (data) {
-        yield put({type: 'getList'})
+        yield put({type: 'getList', payload: {pageIndex: 1, pageSize: 10}})
       } else {
 				yield put({type: 'fail'})
 			}
@@ -61,7 +61,7 @@ export default {
 		*del ({payload}, {call, put}) {
 			const data = yield call(sysUser.delSysUser, payload)
       if (data) {
-        yield put({type: 'getList', payload})
+        yield put({type: 'getList', payload: {pageIndex: 1, pageSize: 10, ...payload}})
       } else {
 				yield put({type: 'fail'})
 			}
