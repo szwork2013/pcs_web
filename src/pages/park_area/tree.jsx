@@ -20,11 +20,7 @@ const MTree = ({areas, selectedKeys, onAreaSelect}) => {
 		selectedKeys,
 		showLine: true,
 		onSelect (keys) {
-			if (!keys || keys.length === 0) {
-				return
-			} else {
-				onAreaSelect(keys)
-			}
+			onAreaSelect(keys)
 		}
 	}
 

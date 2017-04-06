@@ -36,7 +36,7 @@ const ParkAreaModal = ({parkarea, parkAreas, onReset, isAreaReset, onSave, form:
 	return (
 		<Card title={modalType === 'create' ? '新增停车场' : '编辑停车场'}>
 			<Form style={{marginTop: 12}}>
-				<FormItem label='上级停车场：' {...formItemLayout(6, 6)}>
+				<FormItem label='上级停车场' {...formItemLayout(6, 6)}>
 					{getFieldDecorator('pid', {
 						initialValue: item.pid,
 						rules: [valid_required('上级停车场不能为空')]
@@ -47,29 +47,29 @@ const ParkAreaModal = ({parkarea, parkAreas, onReset, isAreaReset, onSave, form:
 						</Select>
 					)}
 				</FormItem>
-				<FormItem label='停车场名称：' {...formItemLayout(6, 6)}>
+				<FormItem label='停车场名称' {...formItemLayout(6, 6)}>
 					{getFieldDecorator('area_name', {
 						initialValue: item.area_name,
 						rules: [valid_required('停车场名称不能为空')]
 					})(<Input />)}
 				</FormItem>
-				<FormItem label='总车位：' {...formItemLayout(6, 6)}>
+				<FormItem label='总车位' {...formItemLayout(6, 6)}>
 					{getFieldDecorator('total_lot_num', {
 						initialValue: item.total_lot_num,
 						rules: [valid_required('总车位不能为空')]
 					})(<InputNumber style={{width: '100%'}}/>)}
 				</FormItem>
-				<FormItem label='剩余车位：' {...formItemLayout(6, 6)}>
+				<FormItem label='剩余车位' {...formItemLayout(6, 6)}>
 					{getFieldDecorator('free_lot_num', {
 						initialValue: item.free_lot_num,
 						rules: [valid_required('剩余车位不能为空')]
 					})(<InputNumber style={{width: '100%'}}/>)}
 				</FormItem>
-				<FormItem label='状态：' {...formItemLayout(6, 6)}>
+				<FormItem wrapperCol={{offset: 6, span: 6}}>
 					{getFieldDecorator('status', {
 						valuePropName: 'checked',
 						initialValue: item.status !== 'nn'
-					})(<Checkbox />)}
+					})(<Checkbox>状态</Checkbox>)}
 				</FormItem>
 				<FormItem wrapperCol={{offset: 6, span: 6}}>
 					<Button type='primary' onClick={handleOk}>保存</Button>

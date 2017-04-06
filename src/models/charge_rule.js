@@ -37,7 +37,7 @@ const effects = {
 		yield put({ type: 'showLoading' })
 		const data = yield call(service.addService, payload.data)
 		if (data) {
-			yield put({type: 'get'})
+			yield put({type: 'get', payload: {area_id: payload.selectTree}})
 		} else {
 			yield put({type: 'fail'})
 		}
@@ -47,7 +47,7 @@ const effects = {
 		yield put({ type: 'showLoading' })
 		const data = yield call(service.uptService, payload.data)
 		if (data) {
-			yield put({type: 'get'})
+			yield put({type: 'get', payload: {area_id: payload.selectTree}})
 		} else {
 			yield put({type: 'fail'})
 		}

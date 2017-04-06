@@ -27,10 +27,15 @@ const ChannelModal = ({parkchannel, parkAreas, isChannelReset, onReset, parkTerm
       if (errors) {
         return
       }
+			const fields = getFieldsValue()
       const data = {
-        ...getFieldsValue(),
-				status: getFieldsValue()['status'] ? 'aa' : 'nn',
-				id: item.id
+        channel: {
+					...fields,
+					status: fields['status'] ? 'aa' : 'nn',
+					id: item.id,
+					cameras: undefined
+				},
+				cameras: fields['cameras']
       }
       onSave(data)
     })

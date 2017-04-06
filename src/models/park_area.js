@@ -22,12 +22,12 @@ const effects = {
 			}
 	},
 	*getOne ({payload}, {call, put}) {
-    yield put({type: 'success', payload: {currentItem: {}}})
+    yield put({type: 'success', payload: {...payload, currentItem: {}}})
     const data = yield call(service.getOneService, {id: payload.id})
     if (data) {
-      yield put({type: 'success', payload: {...payload, currentItem: data}})
+      yield put({type: 'success', payload: {currentItem: data}})
     } else {
-      yield put({type: 'fail', payload: {...payload, currentItem: {}}})
+      yield put({type: 'fail', payload: {currentItem: {}}})
     }
   },
 	*add ({payload}, {call, put}) {

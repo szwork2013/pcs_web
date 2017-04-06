@@ -15,8 +15,8 @@ const Table = ({loading, pageIndex, pageSize, total, dataSource, onPageChange, o
 		},
 		{
 			title: '车型',
-			dataIndex: 'car_type',
-			key: 'car_type'
+			dataIndex: 'car_type_name',
+			key: 'car_type_name'
 		},
 		{
 			title: '计费类型',

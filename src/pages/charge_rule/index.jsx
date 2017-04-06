@@ -48,9 +48,9 @@ const Main = ({dispatch, chargerule, common}) => {
     },
     onOk (data) {
       if (data.main.id) {
-        myDispatch(dispatch, 'chargerule/update', {data})
+        myDispatch(dispatch, 'chargerule/update', {data, selectTree})
       } else {
-        myDispatch(dispatch, 'chargerule/create', {data})
+        myDispatch(dispatch, 'chargerule/create', {data, selectTree})
       }
     }
   })

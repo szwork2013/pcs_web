@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import { connect } from 'dva'
-import { Row, Col } from 'antd'
+import { Row, Col, Modal } from 'antd'
 import MTree from './tree'
 import TopPanel from './top_panel'
 import ParkAreaModal from './park_area_modal'
@@ -15,6 +15,22 @@ const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
 		areas: areaTree,
 		selectedKeys,
 		onAreaSelect (keys) {
+			if (!keys || keys.length === 0) {
+				myDispatch(dispatch, 'common/getParkArea')
+				if (selectTree.type === 'channel') {
+					// myDispatch(dispatch, 'common/getParkTerminal')
+					// myDispatch(dispatch, 'common/getParkCamera')
+					myDispatch(dispatch, 'parkchannel/getOne', {id: selectTree.key, modalType: 'edit'})
+					myDispatch(dispatch, 'parkarea/common', {isChannelReset: true})
+					myDispatch(dispatch, 'parkarea/common', {modalType: 'init'})
+				} else {
+					myDispatch(dispatch, 'parkarea/getOne', {id: selectTree.key, modalType: 'edit'})
+					myDispatch(dispatch, 'parkarea/common', {isAreaReset: true})
+					myDispatch(dispatch, 'parkchannel/common', {modalType: 'init'})
+				}
+				return
+			}
+
 			let temp = keys[0].split('-')
 			myDispatch(dispatch, 'parkarea/common', {selectTree: {key: temp[0], type: temp[1], title: temp[2]}, selectedKeys: keys})
 			myDispatch(dispatch, 'common/getParkArea')
@@ -37,25 +53,36 @@ const ParkArea = ({dispatch, common, parkchannel, parkarea}) => {
 				case 'add_channel': {
 					myDispatch(dispatch, 'parkchannel/common', {modalType: 'create'})
 					myDispatch(dispatch, 'parkarea/common', {modalType: 'init'})
-					// myDispatch(dispatch, 'common/getParkTerminal')
-					// myDispatch(dispatch, 'common/getParkCamera')
 				}break
 				case 'del_channel': {
 					if (!selectTree || !selectTree.key || selectTree.type !== 'channel') {
 						warnBox('请选择需要删除的通道', 3)
 						return
 					}
-					myDispatch(dispatch, 'parkchannel/remove', {id: selectTree.key})
+					Modal.confirm({
+						title: '确认框',
+						content: '确认删除该通道？',
+						onOk () {
+							myDispatch(dispatch, 'parkchannel/remove', {id: selectTree.key})
+						}
+					})					
 				}break
 				case 'add_area': {
 					myDispatch(dispatch, 'parkarea/common', {modalType: 'create'})
+					myDispatch(dispatch, 'parkchannel/common', {modalType: 'init'})
 				}break
 				case 'del_area': {
 					if (!selectTree || !selectTree.key || selectTree.type !== 'area') {
 						warnBox('请选择需要删除的停车场', 3)
 						return
 					}
-					myDispatch(dispatch, 'parkarea/remove', {id: selectTree.key})
+					Modal.confirm({
+						title: '确认框',
+						content: '确认删除该停车场？',
+						onOk () {
+							myDispatch(dispatch, 'parkarea/remove', {id: selectTree.key})
+						}
+					})		
 				}break
 			}
 		}
